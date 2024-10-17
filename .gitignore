@@ -8,3 +8,6 @@ build
 .idea
 .vs
 
+# meson subprojects.
+/subprojects/*
+!/subprojects/*.wrap

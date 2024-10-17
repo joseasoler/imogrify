@@ -7,8 +7,8 @@ project('imogrify', 'cpp',
         default_options : ['warning_level=everything',
                            'cpp_std=c++20'])
 
-fmt_dependency = dependency('fmt', version : '>=11.0.0')
+fmt_dep = dependency('fmt', version : '>=11.0.0', fallback : ['fmt', 'fmt_dep'], default_options : ['default_library=static', 'warning_level=0'], include_type : 'system')
 
-imogrify = executable('imogrify', 'src/app/imogrify.cpp', dependencies : fmt_dependency, install : true)
+imogrify = executable('imogrify', 'src/app/imogrify.cpp', dependencies : fmt_dep, install : true)
 
 test('basic', imogrify)
