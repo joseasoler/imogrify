@@ -3,11 +3,16 @@
  * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+#include <imfy/markdown.hpp>
+
 #include <fmt/base.h>
 
 #include <cstdlib>
 
-int main() {
-	fmt::println("Hello world!");
+int main()
+{
+	imfy::markdown mark;
+	mark.add_heading(imfy::markdown::heading::level_1, "Hello world!");
+	fmt::println("{:s}", mark.view());
 	return EXIT_SUCCESS;
 }

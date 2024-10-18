@@ -9,4 +9,5 @@ project('imogrify', 'cpp', version : '0.1', license : 'MPL-2.0',
 fmt_dep = dependency('fmt', version : '>=11.0.0', fallback : ['fmt', 'fmt_dep'],
                      default_options : ['default_library=static', 'warning_level=0'], include_type : 'system')
 
+subdir('src/core')
 subdir('src/app')
