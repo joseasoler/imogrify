@@ -8,6 +8,6 @@
 #include <cstdlib>
 
 int main() {
-	fmt::println("Hello worfld!");
+	fmt::println("Hello world!");
 	return EXIT_SUCCESS;
 }
