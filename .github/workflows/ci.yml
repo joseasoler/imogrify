@@ -1,0 +1,42 @@
+# Copyright (c) 2020 GitHub
+# Copyright (c) 2024 Imogrify contributors
+# File licensed under the MIT license (see build_checks_LICENSE for details).
+# Based on: https://github.com/actions/starter-workflows/blob/main/ci/cmake-multi-platform.yml
+
+name: Build checks
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        os: [ ubuntu-24.04, windows-latest ]
+        build_type: [ debug, release ]
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Setup python
+        uses: actions/setup-python@v5
+
+      - name: Install build dependencies
+        run: pip install meson ninja
+
+      - name: Configure project
+        run: meson setup --wrap-mode forcefallback --buildtype ${{ matrix.build_type }} build
+
+      - name: Build project
+        run: meson compile -v -C build
+
+      - name: Run tests
+        run: meson test -v -C build
