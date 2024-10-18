@@ -11,4 +11,4 @@ fmt_dep = dependency('fmt', version : '>=11.0.0', fallback : ['fmt', 'fmt_dep'],
 
 # imogrify layers.
 subdir('src/core')
-subdir('src/app')
+subdir('src/imogrify')
