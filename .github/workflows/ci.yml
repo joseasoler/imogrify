@@ -28,6 +28,8 @@ jobs:
 
       - name: Setup python
         uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
 
       - name: Install build dependencies
         run: pip install meson ninja
