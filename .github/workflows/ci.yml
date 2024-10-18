@@ -19,8 +19,15 @@ jobs:
       fail-fast: false
 
       matrix:
-        os: [ ubuntu-24.04, windows-latest ]
+        os: [ macos-latest, ubuntu-24.04, windows-latest ]
         build_type: [ debug, release ]
+        exclude:
+          - os: macos-latest
+            build_type: release
+          - os: ubuntu-24.04
+            build_type: debug
+          - os: windows-latest
+            build_type: release
 
     steps:
       - name: Checkout sources
