@@ -1,0 +1,42 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
+ * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+#pragma once
+
+#include <array>
+#include <string_view>
+
+namespace imfy::build
+{
+
+/** Stores dependency information retrieved during compile time. */
+struct dependency_t
+{
+	/** Name of the dependency. */
+	std::string_view name;
+
+	/** Version of the project being used. */
+	std::string_view version;
+
+	/** SPDX identifier of the license. */
+	std::string_view license;
+};
+
+constexpr dependency_t project
+{
+	"@PROJECT_NAME@",
+	"@PROJECT_VERSION@",
+	"@PROJECT_LICENSE@"
+};
+
+inline constexpr std::string_view build_type{"@BUILD_TYPE@"};
+inline constexpr std::string_view compiler_name{"@COMPILER_NAME@"};
+inline constexpr std::string_view compiler_version{"@COMPILER_VERSION@"};
+
+constexpr auto dependencies = std::to_array<dependency_t>(
+{
+@DEPENDENCY_METADATA@});
+
+} // namespace imfy::build
