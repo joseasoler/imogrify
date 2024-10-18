@@ -6,8 +6,8 @@ compiler = meson.get_compiler('cpp')
 
 dependency_metadata_template = '\t{"@0@","@1@","@2@"},\n'
 dependency_metadata = ''
+dependency_metadata += dependency_metadata_template.format('catch2', catch2_dep.version(), 'BSL-1.0')
 dependency_metadata += dependency_metadata_template.format('fmt', fmt_dep.version(), 'MIT')
-
 
 conf_data_dict = {
     'PROJECT_NAME' : meson.project_name(),
