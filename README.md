@@ -22,9 +22,9 @@ Building imogrify requires [Meson](https://mesonbuild.com/) and a [compiler with
 
 imogrify requires the following dependencies. If they are not found on the system, Meson will compile wraps instead.
 
-* **[Catch2](https://github.com/catchorg/Catch2)**: Used for unit testing. Only required if `IMOGRIFY_BUILD_UNIT_TESTS` is set to on.
+* **[doctest](https://github.com/doctest/doctest)**: Fast C++ testing framework.
 
-* **[fmt](https://fmt.dev/latest/index.html)**: Provides formatting and printing utilities.
+* **[fmt](https://fmt.dev/latest/index.html)**: Modern formatting and printing library.
 
 ## Acknowledgements
 

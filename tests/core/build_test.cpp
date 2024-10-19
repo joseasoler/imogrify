@@ -7,8 +7,9 @@
 
 #include <algorithm>
 #include <array>
-#include <catch2/catch_test_macros.hpp>
 #include <string_view>
+
+#include <doctest.h>
 
 using namespace std::string_view_literals;
 
@@ -47,43 +48,43 @@ constexpr std::array compatible_licenses{"BSL-1.0"sv, "MIT"sv, "MPL-2.0"sv};
 
 } // Anonymous namespace
 
-TEST_CASE("Test data", "[core][build]")
+TEST_CASE("Test data")
 {
-	STATIC_REQUIRE(std::is_sorted(compatible_licenses.cbegin(), compatible_licenses.cend(), is_case_insensitive_less{}));
+	static_assert(std::is_sorted(compatible_licenses.cbegin(), compatible_licenses.cend(), is_case_insensitive_less{}));
 }
 
-TEST_CASE("Project information", "[core][build]")
+TEST_CASE("Project information")
 {
 	using namespace imfy::build;
 
-	STATIC_REQUIRE(!project.name.empty());
-	STATIC_REQUIRE(!project.version.empty());
-	STATIC_REQUIRE(project.license == "MPL-2.0"sv);
-	STATIC_REQUIRE(is_in_sorted_array(compatible_licenses, project.license));
+	static_assert(!project.name.empty());
+	static_assert(!project.version.empty());
+	static_assert(project.license == "MPL-2.0"sv);
+	static_assert(is_in_sorted_array(compatible_licenses, project.license));
 }
 
-TEST_CASE("Build information", "[core][build]")
+TEST_CASE("Build information")
 {
 	using namespace imfy::build;
 
-	STATIC_REQUIRE(!build_type.empty());
-	STATIC_REQUIRE(!compiler_name.empty());
-	STATIC_REQUIRE(!compiler_version.empty());
+	static_assert(!build_type.empty());
+	static_assert(!compiler_name.empty());
+	static_assert(!compiler_version.empty());
 }
 
-TEST_CASE("Dependency metadata", "[core][build]")
+TEST_CASE("Dependency metadata")
 {
 	using namespace imfy::build;
 
-	STATIC_REQUIRE(std::size(dependencies) > 0U);
-	STATIC_REQUIRE(std::is_sorted(dependencies.cbegin(), dependencies.cend(), is_case_insensitive_less{}));
+	static_assert(std::size(dependencies) > 0U);
+	static_assert(std::is_sorted(dependencies.cbegin(), dependencies.cend(), is_case_insensitive_less{}));
 
-	STATIC_REQUIRE(std::all_of(
+	static_assert(std::all_of(
 			dependencies.cbegin(), dependencies.cend(), [](const dependency_t& dependency) -> bool
 			{ return !dependency.name.empty() && !dependency.version.empty() && !dependency.license.empty(); }
 	));
 
-	STATIC_REQUIRE(std::all_of(
+	static_assert(std::all_of(
 			dependencies.cbegin(), dependencies.cend(),
 			[](const dependency_t& dependency) -> bool { return is_in_sorted_array(compatible_licenses, dependency.license); }
 	));

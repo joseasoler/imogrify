@@ -5,24 +5,25 @@
 
 #include "imfy/markdown.hpp"
 
-#include <catch2/catch_test_macros.hpp>
 #include <string_view>
+
+#include <doctest.h>
 
 using imfy::markdown;
 using namespace std::string_view_literals;
 
-TEST_CASE("Markdown headers", "[core][markdown]")
+TEST_CASE("Markdown headers")
 {
-	SECTION("Level 1")
+	SUBCASE("Level 1")
 	{
 		markdown mark;
 		mark.add_heading(markdown::heading::level_1, "Test"sv);
-		REQUIRE(mark.view() == "# Test\n\n"sv);
+		CHECK((mark.view() == "# Test\n\n"sv));
 	}
-	SECTION("Level 4")
+	SUBCASE("Level 4")
 	{
 		markdown mark;
 		mark.add_heading(markdown::heading::level_4, "Test"sv);
-		REQUIRE(mark.view() == "#### Test\n\n"sv);
+		CHECK((mark.view() == "#### Test\n\n"sv));
 	}
 }
