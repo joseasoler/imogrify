@@ -9,7 +9,10 @@ project('imogrify', 'cpp', version : '0.1.0', license : 'MPL-2.0', license_files
         ])
 
 
-compiler = meson.get_compiler('c')
+compiler = meson.get_compiler('cpp')
+if (compiler.get_id() == 'msvc')
+    add_project_arguments('/utf-8', language : 'cpp')
+endif
 
 # Third party dependencies.
 doctest_dep = dependency('doctest', version : '>=2.4.0', fallback : ['doctest', 'doctest_dep'],
