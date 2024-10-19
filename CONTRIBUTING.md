@@ -8,6 +8,4 @@ You can use the [issue tracker](https://github.com/joseasoler/imogrify/issues) t
 
 ## Contributions
 
-Before submitting a PR for a new feature, create an issue on the [tracker](https://github.com/joseasoler/imogrify/issues) to allow discussing and refining the idea before it is implemented.
-
-Source code contributions must follow the [style guide](STYLE_GUIDE.md). The easiest way to comply with it is to set up [clang-format](https://clang.llvm.org/docs/ClangFormat.html) and [clang-tidy](https://clang.llvm.org/extra/clang-tidy).
+Before submitting a PR for a new feature, create an issue on the [tracker](https://github.com/joseasoler/imogrify/issues) to allow discussing and refining the idea before it is implemented.  Source code contributions must follow the [style guide](STYLE_GUIDE.md). 

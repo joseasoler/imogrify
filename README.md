@@ -16,11 +16,11 @@ The repository includes third party dependencies as source code in the thirdpart
 
 ## Building
 
-Building imogrify requires [meson](https://mesonbuild.com/) and a [compiler with C++20 support](https://en.cppreference.com/w/cpp/compiler_support#cpp20).
+Building imogrify requires [Meson](https://mesonbuild.com/) and a [compiler with C++20 support](https://en.cppreference.com/w/cpp/compiler_support#cpp20).
 
 ### Dependencies
 
-imogrify requires the following dependencies. If they are not found on the system meson will compile wraps instead.
+imogrify requires the following dependencies. If they are not found on the system, Meson will compile wraps instead.
 
 * **[Catch2](https://github.com/catchorg/Catch2)**: Used for unit testing. Only required if `IMOGRIFY_BUILD_UNIT_TESTS` is set to on.
 

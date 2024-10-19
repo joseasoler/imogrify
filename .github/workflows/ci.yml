@@ -42,10 +42,18 @@ jobs:
         run: pip install meson ninja
 
       - name: Configure project
-        run: meson setup --wrap-mode forcefallback --buildtype ${{ matrix.build_type }} build
+        run: meson setup --warnlevel 3 --werror --wrap-mode forcefallback --buildtype ${{ matrix.build_type }} build_${{ matrix.build_type }}
 
       - name: Build project
-        run: meson compile -v -C build
+        run: meson compile -v -C build_${{ matrix.build_type }}
 
       - name: Run tests
-        run: meson test -v -C build
+        run: meson test -v -C build_${{ matrix.build_type }}
+
+      - name: clang-format warnings
+        if: matrix.os == 'ubuntu-24.04'
+        run: ninja -v -C build_${{ matrix.build_type }} clang-format-check
+
+      - name: clang-tidy warnings
+        if: matrix.os == 'ubuntu-24.04'
+        run: ninja -v -C build_${{ matrix.build_type }} clang-tidy
