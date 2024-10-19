@@ -19,6 +19,8 @@ doctest_dep = dependency('doctest', version : '>=2.4.0', fallback : ['doctest', 
                          default_options : ['default_library=static', 'warning_level=0'], include_type : 'system')
 fmt_dep = dependency('fmt', version : '>=11.0.0', fallback : ['fmt', 'fmt_dep'],
                      default_options : ['default_library=static', 'warning_level=0'], include_type : 'system')
+nowide_dep = dependency('nowide', version : '>=11.3.0', fallback : ['nowide', 'nowide_dep'],
+                     default_options : ['default_library=static', 'warning_level=0'], include_type : 'system')
 
 # Common layers.
 subdir('src/core')

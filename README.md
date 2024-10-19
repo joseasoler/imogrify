@@ -28,6 +28,8 @@ imogrify requires the following dependencies. If they are not found on the syste
 
 * **[fmt](https://fmt.dev/latest/index.html)**: Modern formatting and printing library.
 
+* **[Nowide](https://github.com/boostorg/nowide)**: Provides UTF-8 aware library functions on Windows without requiring to use the Wide API.
+
 ## Acknowledgements
 
 Check the [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) file for details.
