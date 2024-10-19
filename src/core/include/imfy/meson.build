@@ -2,8 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-compiler = meson.get_compiler('cpp')
-
 dependency_metadata_template = '\t{"@0@","@1@","@2@"},\n'
 dependency_metadata = ''
 dependency_metadata += dependency_metadata_template.format('doctest', doctest_dep.version(), 'MIT')

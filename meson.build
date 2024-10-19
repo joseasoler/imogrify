@@ -8,6 +8,9 @@ project('imogrify', 'cpp', version : '0.1.0', license : 'MPL-2.0', license_files
             'warning_level=3'
         ])
 
+
+compiler = meson.get_compiler('c')
+
 # Third party dependencies.
 doctest_dep = dependency('doctest', version : '>=2.4.0', fallback : ['doctest', 'doctest_dep'],
                          default_options : ['default_library=static', 'warning_level=0'], include_type : 'system')
