@@ -1,0 +1,2 @@
+option('test_clang_format', description: 'Checks project using clang-format when running tests. Requires the Ninja backend.', type : 'boolean', value : true)
+option('test_clang_tidy', description: 'Checks project using clang-format when running tests. Requires the Ninja backend.', type : 'boolean', value : false)

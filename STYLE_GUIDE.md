@@ -12,11 +12,11 @@ Code formatting is handled by the rules set in the [.clang-format](https://clang
 
 ## Tooling
 
-When clang-format and clang-tidy are installed, Meson will enable additional targets that can check and fix the style of the project.
+When clang-format and clang-tidy are installed and the Ninja backend is in use, Meson will enable additional targets that can check and fix the style of the project.
 
 ### Checking format errors
 
-These two checks will be performed by GitHub actions on pull requests.
+These checks will be performed automatically if the `test_clang_format` and `test_clang_tidy` Meson options are enabled. These checks will be performed by GitHub actions on pull requests.
 
 * `ninja -C buildDir clang-format-check`
 

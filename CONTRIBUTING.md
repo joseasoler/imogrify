@@ -8,4 +8,18 @@ You can use the [issue tracker](https://github.com/joseasoler/imogrify/issues) t
 
 ## Contributions
 
-Before submitting a PR for a new feature, create an issue on the [tracker](https://github.com/joseasoler/imogrify/issues) to allow discussing and refining the idea before it is implemented.  Source code contributions must follow the [style guide](STYLE_GUIDE.md). 
+Before submitting a pull request for a new feature, create an issue on the [tracker](https://github.com/joseasoler/imogrify/issues) to allow discussing and refining the idea before it is implemented.
+
+Source code contributions must met the following requirements. All of these criteria are checked by continuous integration.
+
+* Follow the [style guide](STYLE_GUIDE.md). This includes passing [clang-format](https://clang.llvm.org/docs/ClangFormat.html) and [clang-tidy](https://clang.llvm.org/extra/clang-tidy) checks.
+
+* All Meson tests should pass.
+
+* Add unit tests to check new features when appropriate.
+
+It is recommended to follow these guidelines to simplify the process:
+
+* Use the Ninja backend and enable the `test_clang_format` and `test_clang_tidy` Meson options.
+
+* Run Meson tests before committing your changes.

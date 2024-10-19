@@ -42,7 +42,10 @@ jobs:
         run: pip install meson ninja
 
       - name: Configure project
-        run: meson setup --warnlevel 3 --werror --wrap-mode forcefallback --buildtype ${{ matrix.build_type }} build_${{ matrix.build_type }}
+        # Enable all warnings and warnings as errors.
+        # forcefallback ensures that all dependencies are present.
+        # clang-format and clang-tidy are executed on separate CI steps.
+        run: meson setup --warnlevel 3 --werror --wrap-mode forcefallback --buildtype ${{ matrix.build_type }} -Dtest_clang_format=false -Dtest_clang_tidy=false build_${{ matrix.build_type }}
 
       - name: Build project
         run: meson compile -v -C build_${{ matrix.build_type }}
