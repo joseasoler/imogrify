@@ -18,6 +18,8 @@ The repository includes third party dependencies as source code in the thirdpart
 
 Building imogrify requires [Meson](https://mesonbuild.com/) and a [compiler with C++20 support](https://en.cppreference.com/w/cpp/compiler_support#cpp20).
 
+imogrify uses UTF-8 by default. See http://utf8everywhere.org/ for details.
+
 ### Dependencies
 
 imogrify requires the following dependencies. If they are not found on the system, Meson will compile wraps instead.

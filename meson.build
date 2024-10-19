@@ -3,11 +3,14 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 project('imogrify', 'cpp', version : '0.1.0', license : 'MPL-2.0', license_files : ['LICENSE'],
-        default_options : ['warning_level=3', 'cpp_std=c++20'])
+        default_options : [
+            'cpp_std=c++20',
+            'warning_level=3'
+        ])
 
 # Third party dependencies.
 doctest_dep = dependency('doctest', version : '>=2.4.0', fallback : ['doctest', 'doctest_dep'],
-                        default_options : ['default_library=static', 'warning_level=0'], include_type : 'system')
+                         default_options : ['default_library=static', 'warning_level=0'], include_type : 'system')
 fmt_dep = dependency('fmt', version : '>=11.0.0', fallback : ['fmt', 'fmt_dep'],
                      default_options : ['default_library=static', 'warning_level=0'], include_type : 'system')
 
