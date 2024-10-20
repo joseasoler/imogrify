@@ -30,6 +30,7 @@ WarningsAsErrors: '*'
 # bugprone-easily-swappable-parameters: I'd rather not implement strong types for width and height.
 # clang-diagnostic-unknown-warning-option: Triggered by GCC-only warnings.
 # clang-diagnostic-unused-command-line-argument: Ignore unused command line arguments.
+# cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers: Magic numbers are useful in unit testing.
 # cppcoreguidelines-owning-memory: Allow owning memory pointers without requiring gsl libraries.
 # cppcoreguidelines-pro-bounds-constant-array-index: Allow casting enum values to use them as array indexes.
 # llvm-header-guard: Allow use of #pragma once
@@ -47,6 +48,7 @@ Checks: '
 -bugprone-easily-swappable-parameters,
 -clang-diagnostic-unknown-warning-option,
 -clang-diagnostic-unused-command-line-argument,
+-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,
 -cppcoreguidelines-owning-memory,
 -cppcoreguidelines-pro-bounds-constant-array-index,
 -llvm-header-guard,
