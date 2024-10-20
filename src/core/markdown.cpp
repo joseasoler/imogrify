@@ -3,26 +3,27 @@
  * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include "include/imfy/markdown.hpp"
+#include "imfy/markdown.hpp"
+
+#include <imfy/string.hpp>
+#include <imfy/vector.hpp>
 
 #include <fmt/format.h>
 
 #include <algorithm>
 #include <cstddef>
-#include <string>
 #include <string_view>
-#include <vector>
 
 using namespace std::string_view_literals;
 
 namespace
 {
-std::vector<std::size_t> calculate_cell_width(
-		const std::vector<std::string_view>& header, const std::vector<std::vector<std::string>>& contents
+imfy::vector<std::size_t> calculate_cell_width(
+		const imfy::vector<std::string_view>& header, const imfy::vector<imfy::vector<imfy::string>>& contents
 )
 {
 	constexpr std::size_t cell_padding = 2U;
-	std::vector<std::size_t> cell_width(header.size(), 0U);
+	imfy::vector<std::size_t> cell_width(header.size(), 0U);
 	for (std::size_t cell_index{}; cell_index < cell_width.size(); ++cell_index)
 	{
 		cell_width[cell_index] = header[cell_index].size() + cell_padding;
@@ -49,11 +50,9 @@ void markdown::add_heading(const heading level, const std::string_view text)
 	output_ << fmt::format("{0:#>{1}} {2}\n\n"sv, "", static_cast<int>(level), text);
 }
 
-void markdown::add_table(
-		const std::vector<std::string_view>& header, const std::vector<std::vector<std::string>>& contents
-)
+void markdown::add_table(const vector<std::string_view>& header, const vector<vector<string>>& contents)
 {
-	const std::vector<std::size_t> cell_width = calculate_cell_width(header, contents);
+	const vector<std::size_t> cell_width = calculate_cell_width(header, contents);
 
 	// Note that both formats add an extra character at the end for right padding.
 	constexpr auto cell_format = "|{0: >{1}} "sv;

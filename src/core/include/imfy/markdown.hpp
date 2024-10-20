@@ -5,11 +5,12 @@
 
 #pragma once
 
+#include <imfy/string.hpp>
+#include <imfy/vector.hpp>
+
 #include <cstdint>
 #include <sstream>
-#include <string>
 #include <string_view>
-#include <vector>
 
 namespace imfy
 {
@@ -29,7 +30,7 @@ public:
 
 	void add_heading(heading level, std::string_view text);
 
-	void add_table(const std::vector<std::string_view>& header, const std::vector<std::vector<std::string>>& contents);
+	void add_table(const vector<std::string_view>& header, const vector<vector<string>>& contents);
 
 	[[nodiscard]] std::string_view view() const;
 
