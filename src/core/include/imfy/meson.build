@@ -6,6 +6,7 @@ dependency_metadata_template = '\t{"@0@","@1@","@2@"},\n'
 dependency_metadata = ''
 dependency_metadata += dependency_metadata_template.format('doctest', doctest_dep.version(), 'MIT')
 dependency_metadata += dependency_metadata_template.format('fmt', fmt_dep.version(), 'MIT')
+dependency_metadata += dependency_metadata_template.format('magic_enum', magic_enum_dep.version(), 'MIT')
 dependency_metadata += dependency_metadata_template.format('nowide', nowide_dep.version(), 'BSL-1.0')
 
 conf_data_dict = {
@@ -13,7 +14,7 @@ conf_data_dict = {
     'PROJECT_VERSION' : meson.project_version(),
     'PROJECT_LICENSE' : meson.project_license()[0],
     'BUILD_TYPE' : get_option('buildtype'),
-    'COMPILER_NAME' : compiler.get_id(),
+    'COMPILER_ID' : compiler.get_id().replace('-', '_').replace('_cl', ''),
     'COMPILER_VERSION' : compiler.version(),
     'DEPENDENCY_METADATA' : dependency_metadata
 }

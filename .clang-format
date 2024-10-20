@@ -121,6 +121,8 @@ IncludeCategories:
     Priority: 100
   - Regex: '^<fmt.*'
     Priority: 300
+  - Regex: '^<magic_enum.*'
+    Priority: 300
   - Regex: '^<nowide.*'
     Priority: 300
   - Regex: '^<doctest.*'

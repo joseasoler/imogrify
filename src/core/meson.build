@@ -5,4 +5,5 @@
 subdir('include/imfy')
 
 imogrify_core_include = include_directories('include')
-imogrify_core_lib = library('imogrify_core', 'markdown.cpp', include_directories : imogrify_core_include, dependencies : fmt_dep)
+imogrify_core_dependencies = [fmt_dep, magic_enum_dep]
+imogrify_core_lib = library('imogrify_core', 'markdown.cpp', include_directories : imogrify_core_include, dependencies : imogrify_core_dependencies)

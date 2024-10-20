@@ -8,7 +8,6 @@ project('imogrify', 'cpp', version : '0.1.0', license : 'MPL-2.0', license_files
             'warning_level=3'
         ])
 
-
 compiler = meson.get_compiler('cpp')
 if (compiler.get_id() == 'msvc')
     add_project_arguments('/utf-8', language : 'cpp')
@@ -19,8 +18,10 @@ doctest_dep = dependency('doctest', version : '>=2.4.0', fallback : ['doctest', 
                          default_options : ['default_library=static', 'warning_level=0'], include_type : 'system')
 fmt_dep = dependency('fmt', version : '>=11.0.0', fallback : ['fmt', 'fmt_dep'],
                      default_options : ['default_library=static', 'warning_level=0'], include_type : 'system')
+magic_enum_dep = dependency('magic_enum', version : '>=0.9.0', fallback : ['magic_enum', 'magic_enum_dep'],
+                            default_options : ['test=false', 'warning_level=0'], include_type : 'system')
 nowide_dep = dependency('nowide', version : '>=11.3.0', fallback : ['nowide', 'nowide_dep'],
-                     default_options : ['default_library=static', 'warning_level=0'], include_type : 'system')
+                        default_options : ['default_library=static', 'warning_level=0'], include_type : 'system')
 
 # Common layers.
 subdir('src/core')

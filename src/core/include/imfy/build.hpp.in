@@ -6,6 +6,7 @@
 #pragma once
 
 #include <array>
+#include <cstdint>
 #include <string_view>
 
 namespace imfy::build
@@ -24,19 +25,46 @@ struct dependency_t
 	std::string_view license;
 };
 
-constexpr dependency_t project
+constexpr dependency_t project{"@PROJECT_NAME@", "@PROJECT_VERSION@", "@PROJECT_LICENSE@"};
+
+/** See buildtype in https://mesonbuild.com/Builtin-options.html#core-options. */
+inline constexpr std::string_view build_type{"@BUILD_TYPE@"};
+
+enum class compiler_id : std::uint8_t
 {
-	"@PROJECT_NAME@",
-	"@PROJECT_VERSION@",
-	"@PROJECT_LICENSE@"
+	clang,
+	gcc,
+	intel_llvm,
+	msvc,
+	unknown
 };
 
-inline constexpr std::string_view build_type{"@BUILD_TYPE@"};
-inline constexpr std::string_view compiler_name{"@COMPILER_NAME@"};
+consteval compiler_id get_compiler_id()
+{
+	constexpr std::string_view compiler_str{"@COMPILER_ID@"};
+	if (compiler_str == "clang")
+	{
+		return compiler_id::clang;
+	}
+	else if (compiler_str == "gcc")
+	{
+		return compiler_id::gcc;
+	}
+	else if (compiler_str == "intel_llvm")
+	{
+		return compiler_id::intel_llvm;
+	}
+	else if (compiler_str == "msvc")
+	{
+		return compiler_id::msvc;
+	}
+	return compiler_id::unknown;
+}
+
+/** See https://mesonbuild.com/Reference-tables.html#compiler-ids. */
+inline constexpr compiler_id compiler{get_compiler_id()};
 inline constexpr std::string_view compiler_version{"@COMPILER_VERSION@"};
 
-constexpr auto dependencies = std::to_array<dependency_t>(
-{
-@DEPENDENCY_METADATA@});
+constexpr auto dependencies = std::to_array<dependency_t>({ @DEPENDENCY_METADATA@ });
 
 } // namespace imfy::build

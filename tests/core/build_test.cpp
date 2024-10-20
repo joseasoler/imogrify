@@ -61,14 +61,15 @@ TEST_CASE("Project information")
 	static_assert(!project.version.empty());
 	static_assert(project.license == "MPL-2.0"sv);
 	static_assert(is_in_sorted_array(compatible_licenses, project.license));
+	static_assert(!build_type.empty());
 }
 
-TEST_CASE("Build information")
+TEST_CASE("Compiler information")
 {
 	using namespace imfy::build;
-
-	static_assert(!build_type.empty());
-	static_assert(!compiler_name.empty());
+	static_assert(
+			compiler != compiler_id::unknown, "Unsupported compiler. Please update the compiler metadata information."
+	);
 	static_assert(!compiler_version.empty());
 }
 
