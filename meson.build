@@ -10,7 +10,7 @@ project('imogrify', 'cpp', version : '0.1.0', license : 'MPL-2.0', license_files
 
 compiler = meson.get_compiler('cpp')
 if (compiler.get_id() == 'msvc')
-    add_project_arguments('/utf-8', language : 'cpp')
+    add_project_arguments('/utf-8', '/permissive-', language : 'cpp')
 endif
 
 # Third party dependencies.
@@ -22,6 +22,34 @@ magic_enum_dep = dependency('magic_enum', version : '>=0.9.0', fallback : ['magi
                             default_options : ['test=false', 'warning_level=0'], include_type : 'system')
 nowide_dep = dependency('nowide', version : '>=11.3.0', fallback : ['nowide', 'nowide_dep'],
                         default_options : ['default_library=static', 'warning_level=0'], include_type : 'system')
+
+# Additional warnings to use in the project.
+imogrify_clang_gcc_warnings = [
+    '-Wcast-qual',
+    '-Wconversion',
+    '-Wdisabled-optimization',
+    '-Wdouble-promotion',
+    '-Wold-style-cast',
+    '-Wredundant-decls',
+    '-Wsign-conversion',
+    '-Wshadow',
+    '-Wundef',
+]
+
+imogrify_gcc_warnings = [
+    '-Wcast-align=strict',
+    '-Wduplicated-branches',
+    '-Wduplicated-cond',
+    '-Wlogical-op',
+    '-Wunsafe-loop-optimizations',
+    '-Wuseless-cast',
+]
+
+if (compiler.get_id() == 'gcc')
+    add_project_arguments(imogrify_clang_gcc_warnings + imogrify_gcc_warnings, language : 'cpp')
+elif (compiler.get_id() == 'clang')
+    add_project_arguments(imogrify_clang_gcc_warnings, language : 'cpp')
+endif
 
 # Common layers.
 subdir('src/core')
@@ -39,7 +67,9 @@ if (meson.backend() == 'ninja')
                  args : ['-C', meson.current_build_dir(), 'clang-format-check'])
         endif
     endif
-    if (get_option('test_clang_tidy'))
+    # clang-tidy fails with error: unknown warning option when using additional GCC warnings.
+    # meson does not seem to have a way to provide clang-tidy with the Wno-unknown-warning-option argument.
+    if (get_option('test_clang_tidy') and compiler.get_id() != 'gcc')
         clang_tidy_program = find_program('clang-tidy', required : false)
         if (clang_tidy_program.found())
             test('run_clang_tidy_checks', ninja_program, verbose : true,
