@@ -12,14 +12,12 @@ Before submitting a pull request for a new feature, create an issue on the [trac
 
 Source code contributions must met the following requirements. All of these criteria are checked by continuous integration.
 
-* Follow the [style guide](STYLE_GUIDE.md). This includes passing [clang-format](https://clang.llvm.org/docs/ClangFormat.html) and [clang-tidy](https://clang.llvm.org/extra/clang-tidy) checks.
+* Follow the [style guide](STYLE_GUIDE.md).
 
-* All Meson tests should pass.
+* Install clang-format. It will automatically emit format warnings during compilation.
 
-* Add unit tests to check new features when appropriate.
+* Enable the `IMOGRIFY_BUILD_UNIT_TESTS` CMake option and check that all unit tests are passing.
 
-It is recommended to follow these guidelines to simplify the process:
+* Install clang-tidy and enable the `IMOGRIFY_CLANG_TIDY` CMake option to run clang tidy checks when your code is compiled.
 
-* Use the Ninja backend and enable the `test_clang_format` and `test_clang_tidy` Meson options.
-
-* Run Meson tests before committing your changes.
+* Enable the `CMAKE_COMPILE_WARNING_AS_ERROR` CMake option.

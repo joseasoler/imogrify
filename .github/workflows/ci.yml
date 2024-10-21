@@ -1,6 +1,6 @@
 # Copyright (c) 2020 GitHub
 # Copyright (c) 2024 Imogrify contributors
-# File licensed under the MIT license (see build_checks_LICENSE for details).
+# File licensed under the MIT license (see ci_LICENSE for details).
 # Based on: https://github.com/actions/starter-workflows/blob/main/ci/cmake-multi-platform.yml
 
 name: Continuous integration
@@ -20,18 +20,44 @@ jobs:
 
       matrix:
         os: [ macos-latest, ubuntu-24.04, windows-latest ]
-        build_type: [ debug, release ]
-        exclude:
+        compiler: [ clang, gcc, msvc ]
+        include:
           - os: macos-latest
             build_type: release
+            cmake_os: macos
           - os: ubuntu-24.04
             build_type: debug
+            cmake_os: linux
           - os: windows-latest
             build_type: release
+            cmake_os: windows
+        exclude:
+          - os: macos-latest
+            compiler: gcc
+          - os: macos-latest
+            compiler: msvc
+          - os: ubuntu-24.04
+            compiler: msvc
+          - os: windows-latest
+            compiler: clang
+          - os: windows-latest
+            compiler: gcc
 
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
+
+      - name: Setup MSVC
+        if: matrix.compiler == 'msvc'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        env:
+          VCPKG_DISABLE_METRICS: 1
+        with:
+          # Must be updated along with cmake/dependencies/vcpkg.cmake.
+          vcpkgGitCommitId: 'c82f74667287d3dc386bce81e44964370c91a289' # 2024.09.30
 
       - name: Setup python
         uses: actions/setup-python@v5
@@ -39,24 +65,13 @@ jobs:
           python-version: '3.x'
 
       - name: Install build dependencies
-        run: pip install meson ninja
+        run: pip install ninja
 
       - name: Configure project
-        # Enable all warnings and warnings as errors.
-        # forcefallback ensures that all dependencies are present.
-        # clang-format and clang-tidy are executed on separate CI steps.
-        run: meson setup --warnlevel 3 --werror --wrap-mode forcefallback --buildtype ${{ matrix.build_type }} -Dtest_clang_format=false -Dtest_clang_tidy=false build_${{ matrix.build_type }}
+        run: cmake --preset ci-cfg-${{ matrix.cmake_os }}-${{ matrix.build_type }}-${{ matrix.compiler }}
 
       - name: Build project
-        run: meson compile -v -C build_${{ matrix.build_type }}
+        run: cmake --build --preset ci-build-${{ matrix.cmake_os }}-${{ matrix.build_type }}-${{ matrix.compiler }}
 
       - name: Run tests
-        run: meson test -v -C build_${{ matrix.build_type }}
-
-      - name: clang-format warnings
-        if: matrix.os == 'ubuntu-24.04'
-        run: ninja -v -C build_${{ matrix.build_type }} clang-format-check
-
-      - name: clang-tidy warnings
-        if: matrix.os == 'ubuntu-24.04'
-        run: ninja -v -C build_${{ matrix.build_type }} clang-tidy
+        run: ctest --preset ci-test-${{ matrix.cmake_os }}-${{ matrix.build_type }}-${{ matrix.compiler }} --output-on-failure

@@ -7,7 +7,7 @@
 
 #include <string_view>
 
-#include <doctest.h>
+#include <doctest/doctest.h>
 
 using imfy::markdown;
 using namespace std::string_view_literals;

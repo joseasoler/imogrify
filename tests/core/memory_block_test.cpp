@@ -14,7 +14,7 @@
 #include <cstring>
 #include <memory>
 
-#include <doctest.h>
+#include <doctest/doctest.h>
 
 namespace
 {

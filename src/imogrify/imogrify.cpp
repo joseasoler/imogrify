@@ -7,13 +7,11 @@
 #include <imfy/markdown.hpp>
 
 #include <fmt/base.h>
-#include <nowide/args.hpp>
 
 #include <cstdlib>
 
-int main(int argc, char* argv[])
+int main(int /*argc*/, char** /*argv*/)
 {
-	const nowide::args nowide_args{argc, argv};
 	imfy::markdown mark;
 	mark.add_heading(imfy::markdown::heading::level_1, imfy::build::project.name);
 	mark.add_heading(imfy::markdown::heading::level_2, "dependencies");

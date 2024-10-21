@@ -1,0 +1,16 @@
+{
+	"name": "imogrify",
+	"version": "0.1.0",
+	"dependencies": [
+		"fmt",
+		"magic-enum"
+	],
+	"features": {
+		"imogrify-tests": {
+			"description": "Build unit tests",
+			"dependencies": [
+				"doctest"
+			]
+		}
+	}
+}

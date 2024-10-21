@@ -9,7 +9,7 @@
 #include <array>
 #include <string_view>
 
-#include <doctest.h>
+#include <doctest/doctest.h>
 
 using namespace std::string_view_literals;
 
@@ -58,7 +58,7 @@ TEST_CASE("Project information")
 	using namespace imfy::build;
 
 	static_assert(!project.name.empty());
-	static_assert(!project.version.empty());
+	static_assert(project.version.major > 0U || project.version.minor > 0U || project.version.patch > 0U);
 	static_assert(project.license == "MPL-2.0"sv);
 	static_assert(is_in_sorted_array(compatible_licenses, project.license));
 	static_assert(!build_type.empty());
@@ -82,7 +82,12 @@ TEST_CASE("Dependency metadata")
 
 	static_assert(std::all_of(
 			dependencies.cbegin(), dependencies.cend(), [](const dependency_t& dependency) -> bool
-			{ return !dependency.name.empty() && !dependency.version.empty() && !dependency.license.empty(); }
+			{ return !dependency.name.empty() && !dependency.description.empty() && !dependency.license.empty(); }
+	));
+
+	static_assert(std::all_of(
+			dependencies.cbegin(), dependencies.cend(), [](const dependency_t& dependency) -> bool
+			{ return dependency.version.major != 0U || dependency.version.minor != 0U || dependency.version.patch != 0U; }
 	));
 
 	static_assert(std::all_of(

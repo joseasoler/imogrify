@@ -12,23 +12,43 @@
 namespace imfy::build
 {
 
+/** Version POD based on <A HREF="https://semver.org/">semantic versions</A>. */
+struct version_t final
+{
+	/** Incremented after making incompatible API changes. */
+	std::uint16_t major;
+	/** Incremented after adding functionality in a backwards compatible manner. */
+	std::uint16_t minor;
+	/** Incremented after making backwards compatible bug fixes. */
+	std::uint16_t patch;
+};
+
 /** Stores dependency information retrieved during compile time. */
 struct dependency_t
 {
 	/** Name of the dependency. */
 	std::string_view name;
 
-	/** Version of the project being used. */
-	std::string_view version;
+	/** <A HREF="https://semver.org/">Semantic version_t</A> being used. */
+	version_t version;
 
-	/** SPDX identifier of the license. */
+	/** Short description of the dependency */
+	std::string_view description;
+
+	/** SPDX identifier of the license ysed by the dependency. */
 	std::string_view license;
 };
 
-constexpr dependency_t project{"@PROJECT_NAME@", "@PROJECT_VERSION@", "@PROJECT_LICENSE@"};
+constexpr dependency_t project{
+		"@CMAKE_PROJECT_NAME@",
+		// clang-format off
+		{@CMAKE_PROJECT_VERSION_MAJOR@, @CMAKE_PROJECT_VERSION_MINOR@, @CMAKE_PROJECT_VERSION_PATCH@},
+		// clang-format on
+		"@CMAKE_PROJECT_DESCRIPTION@",
+		"MPL-2.0"
+};
 
-/** See buildtype in https://mesonbuild.com/Builtin-options.html#core-options. */
-inline constexpr std::string_view build_type{"@BUILD_TYPE@"};
+inline constexpr std::string_view build_type{"@CMAKE_BUILD_TYPE@"};
 
 enum class compiler_id : std::uint8_t
 {
@@ -41,30 +61,33 @@ enum class compiler_id : std::uint8_t
 
 consteval compiler_id get_compiler_id()
 {
-	constexpr std::string_view compiler_str{"@COMPILER_ID@"};
-	if (compiler_str == "clang")
+	constexpr std::string_view compiler_str{"@CMAKE_CXX_COMPILER_ID@"};
+	if (compiler_str == "Clang" || compiler_str == "AppleClang")
 	{
 		return compiler_id::clang;
 	}
-	else if (compiler_str == "gcc")
+	else if (compiler_str == "GNU")
 	{
 		return compiler_id::gcc;
 	}
-	else if (compiler_str == "intel_llvm")
+	else if (compiler_str == "IntelLLVM")
 	{
 		return compiler_id::intel_llvm;
 	}
-	else if (compiler_str == "msvc")
+	else if (compiler_str == "MSVC")
 	{
 		return compiler_id::msvc;
 	}
 	return compiler_id::unknown;
 }
 
-/** See https://mesonbuild.com/Reference-tables.html#compiler-ids. */
 inline constexpr compiler_id compiler{get_compiler_id()};
-inline constexpr std::string_view compiler_version{"@COMPILER_VERSION@"};
+inline constexpr std::string_view compiler_version{"@CMAKE_CXX_COMPILER_VERSION@"};
 
-constexpr auto dependencies = std::to_array<dependency_t>({ @DEPENDENCY_METADATA@ });
+constexpr auto dependencies = std::to_array<dependency_t>({
+	// clang-format off
+	@IMOGRIFY_DEPENDENCY_DATA_STRING@
+	// clang-format on
+});
 
 } // namespace imfy::build
