@@ -6,12 +6,14 @@ include_guard(GLOBAL)
 
 if (IMOGRIFY_BUILD_UNIT_TESTS)
 	find_package(doctest REQUIRED)
+
+	add_dependency_metadata(
+		NAME doctest
+		VERSION ${doctest_VERSION}
+		DESCRIPTION "Fast C++ testing framework."
+		LICENSE_SPDX "MIT"
+	)
+
 endif ()
 
-add_dependency_metadata(
-	NAME doctest
-	VERSION ${doctest_VERSION}
-	DESCRIPTION "Fast C++ testing framework."
-	LICENSE_SPDX "MIT"
-)
 

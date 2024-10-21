@@ -6,8 +6,6 @@ include_guard(GLOBAL)
 
 # Platform or compiler-specific defines.
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-	# imogrify uses UTF-8 by default, unless forced to do otherwise by the Windows API.
-	# See http://utf8everywhere.org/ for details.
 	add_compile_definitions(UNICODE _UNICODE)
 	add_compile_options(/utf-8)
 	add_compile_definitions(NOMINMAX WIN32_LEAN_AND_MEAN)

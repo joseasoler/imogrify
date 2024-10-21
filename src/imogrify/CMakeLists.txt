@@ -2,7 +2,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-add_executable(imogrify imogrify.cpp)
+add_executable(imogrify
+	imogrify.cpp
+	# https://learn.microsoft.com/en-us/windows/apps/design/globalizing/use-utf8-code-page
+	imogrify.manifest
+)
 
 target_compile_options(imogrify PRIVATE ${IMOGRIFY_CPP_WARNING_FLAGS})
 
