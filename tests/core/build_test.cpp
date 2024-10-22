@@ -70,7 +70,7 @@ TEST_CASE("Compiler information")
 	static_assert(
 			compiler != compiler_id::unknown, "Unsupported compiler. Please update the compiler metadata information."
 	);
-	static_assert(!compiler_version.empty());
+	static_assert(compiler_version.major > 0U || compiler_version.minor > 0U || compiler_version.patch > 0U);
 }
 
 TEST_CASE("Dependency metadata")

@@ -52,6 +52,7 @@ inline constexpr std::string_view build_type{"@CMAKE_BUILD_TYPE@"};
 
 enum class compiler_id : std::uint8_t
 {
+	apple_clang,
 	clang,
 	gcc,
 	intel_llvm,
@@ -61,20 +62,23 @@ enum class compiler_id : std::uint8_t
 
 consteval compiler_id get_compiler_id()
 {
-	constexpr std::string_view compiler_str{"@CMAKE_CXX_COMPILER_ID@"};
-	if (compiler_str == "Clang" || compiler_str == "AppleClang")
+	if (IMOGRIFY_COMPILER_APPLE_CLANG)
+	{
+		return compiler_id::apple_clang;
+	}
+	else if (IMOGRIFY_COMPILER_CLANG)
 	{
 		return compiler_id::clang;
 	}
-	else if (compiler_str == "GNU")
+	else if (IMOGRIFY_COMPILER_GCC)
 	{
 		return compiler_id::gcc;
 	}
-	else if (compiler_str == "IntelLLVM")
+	else if (IMOGRIFY_COMPILER_INTEL_LLVM)
 	{
 		return compiler_id::intel_llvm;
 	}
-	else if (compiler_str == "MSVC")
+	else if (IMOGRIFY_COMPILER_MSVC)
 	{
 		return compiler_id::msvc;
 	}
@@ -82,7 +86,11 @@ consteval compiler_id get_compiler_id()
 }
 
 inline constexpr compiler_id compiler{get_compiler_id()};
-inline constexpr std::string_view compiler_version{"@CMAKE_CXX_COMPILER_VERSION@"};
+inline constexpr version_t compiler_version{
+	// clang-format off
+	@IMOGRIFY_CXX_COMPILER_VERSION@
+	// clang-format on
+};
 
 constexpr auto dependencies = std::to_array<dependency_t>({
 	// clang-format off

@@ -5,6 +5,7 @@
 # Dependency metadata.
 list(SORT IMOGRIFY_DEPENDENCY_DATA_LIST CASE INSENSITIVE)
 string(REPLACE ";" "" IMOGRIFY_DEPENDENCY_DATA_STRING "${IMOGRIFY_DEPENDENCY_DATA_LIST}")
+string(REPLACE "." "," IMOGRIFY_CXX_COMPILER_VERSION "${CMAKE_CXX_COMPILER_VERSION}")
 configure_file(include/imfy/build.hpp.in include/imfy/build.hpp @ONLY)
 
 add_library(imogrify_core STATIC
@@ -22,7 +23,8 @@ target_include_directories(imogrify_core PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>/include
 )
 
-target_compile_options(imogrify_core PRIVATE ${IMOGRIFY_CPP_WARNING_FLAGS})
+target_compile_definitions(imogrify_core PRIVATE ${IMOGRIFY_CXX_COMPILE_DEFINITIONS})
+target_compile_options(imogrify_core PRIVATE ${IMOGRIFY_CXX_COMPILE_OPTIONS})
 
 target_link_libraries(imogrify_core PRIVATE
 	fmt::fmt

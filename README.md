@@ -18,6 +18,10 @@ The repository includes third party dependencies as source code in the thirdpart
 
 Building imogrify requires [CMake](https://cmake.org) and a [compiler with C++20 support](https://en.cppreference.com/w/cpp/compiler_support#cpp20).
 
+* **Clang:** Version 16 or newer.
+* **GCC:** Version 11 or newer.
+* **MSVC:** Version 19.30 or newer.
+
 ### CMake presets
 
 imogrify includes a set of CMake presets intended for use in CI, which can also be used for development. These presets use [vcpkg](https://github.com/microsoft/vcpkg) to retrieve and build the dependencies.

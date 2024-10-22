@@ -4,7 +4,9 @@
 
 cmake_minimum_required(VERSION 3.25)
 
+# Define CMake options.
 include(cmake/options.cmake)
+# Define vcpkg manifest features when using vcpkg.
 include(cmake/dependency_data.cmake)
 include(cmake/dependencies/vcpkg.cmake)
 
@@ -21,13 +23,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-include(cmake/compiler_support.cmake)
-include(cmake/operative_system_support.cmake)
+# Check compiler compatibility.
+include(cmake/compiler_compatibility.cmake)
 
-include(cmake/clang_format.cmake)
-include(cmake/clang_tidy.cmake)
+# Set common target compile options and definitions for imogrify targets.
+set(IMOGRIFY_CXX_COMPILE_OPTIONS)
+set(IMOGRIFY_CXX_COMPILE_DEFINITIONS)
+include(cmake/compiler_options.cmake)
+include(cmake/operative_system_options.cmake)
 include(cmake/compiler_warnings.cmake)
 
+# Tooling.
+include(cmake/clang_format.cmake)
+include(cmake/clang_tidy.cmake)
+
+# Project dependencies.
 include(cmake/dependencies/doctest.cmake)
 include(cmake/dependencies/fmt.cmake)
 include(cmake/dependencies/magic_enum.cmake)
