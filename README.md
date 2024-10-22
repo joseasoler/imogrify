@@ -45,10 +45,6 @@ Building imogrify requires the following dependencies.
 * `IMOGRIFY_CLANG_ALL_WARNINGS`: This option is only available when the [clang](https://clang.llvm.org) compiler is in use. This option enables almost every warning from this compiler, except for a few that cause issues with imogrify. This may trigger unexpected positives when using newer clang versions. Off by default.
 * `IMOGRIFY_CLANG_TIDY`: If [clang-tidy](https://clang.llvm.org/extra/clang-tidy) is available, it will be used to analyze the project. Off by default.
 
-### UTF-8 encoding
-
-imogrify uses UTF-8 by default. Check the [UTF-8 Everywhere Manifesto](http://utf8everywhere.org) for details.
-
 ## Acknowledgements
 
 Check the [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) file for details.

@@ -9,6 +9,8 @@ add_executable(imogrify_unit_tests
 	core/concepts_test.cpp
 	core/markdown_test.cpp
 	core/memory_block_test.cpp
+	image/image_size_test.cpp
+	image/raw_image_test.cpp
 	# https://learn.microsoft.com/en-us/windows/apps/design/globalizing/use-utf8-code-page
 	imogrify_unit_tests.manifest
 )
@@ -20,6 +22,7 @@ target_link_libraries(imogrify_unit_tests PRIVATE
 	doctest::doctest
 	fmt::fmt
 	imogrify_core
+	imogrify_image
 )
 
 if (IMOGRIFY_CLANG_FORMAT_BINARY)

@@ -29,9 +29,9 @@ public:
 	using value_type = Type;
 	using size_type = typename Allocator::size_type;
 
-	explicit memory_block(size_type size)
-		: block_{Allocator{}.allocate(size)}
-		, size_{size}
+	explicit memory_block(size_type block_size)
+		: block_{Allocator{}.allocate(block_size)}
+		, size_{block_size}
 	{
 	}
 	memory_block() = delete;
@@ -44,6 +44,7 @@ public:
 
 	[[nodiscard]] size_type size() const noexcept { return size_; }
 	[[nodiscard]] std::span<value_type> span() noexcept { return {block_, size_}; }
+	[[nodiscard]] std::span<const value_type> span() const noexcept { return {block_, size_}; }
 
 private:
 	value_type* block_;
