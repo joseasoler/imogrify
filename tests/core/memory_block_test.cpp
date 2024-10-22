@@ -5,47 +5,13 @@
 
 #include "imfy/memory_block.hpp"
 
-#include <imfy/string.hpp>
-#include <imfy/vector.hpp>
-
 #include <algorithm>
-#include <array>
 #include <cstdint>
 #include <cstring>
-#include <memory>
 
 #include <doctest/doctest.h>
 
-namespace
-{
-struct a_simple_struct
-{
-	std::int64_t first_value;
-	std::int8_t second_value;
-};
-
-struct a_weird_struct final : public a_simple_struct
-{
-	std::int8_t third_value;
-};
-
-} // namespace
-
 using imfy::memory_block;
-
-TEST_CASE("Types that can be used with memory blocks.")
-{
-	static_assert(imfy::trivial_standard_layout<std::uint8_t>);
-	// NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays,modernize-avoid-c-arrays)
-	static_assert(imfy::trivial_standard_layout<std::uint8_t[]>);
-	static_assert(imfy::trivial_standard_layout<std::array<std::uint8_t, 4U>>);
-	static_assert(imfy::trivial_standard_layout<a_simple_struct>);
-	static_assert(!imfy::trivial_standard_layout<a_weird_struct>);
-	static_assert(!imfy::trivial_standard_layout<memory_block<std::uint64_t>>);
-	static_assert(!imfy::trivial_standard_layout<imfy::vector<std::uint8_t>>);
-	static_assert(!imfy::trivial_standard_layout<imfy::string>);
-	static_assert(!imfy::trivial_standard_layout<std::unique_ptr<std::uint8_t>>);
-}
 
 TEST_CASE("Allocating memory blocks of specific sizes")
 {

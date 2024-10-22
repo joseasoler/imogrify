@@ -6,6 +6,7 @@ add_executable(imogrify_unit_tests
 	tests_main.cpp
 	preprocessor_definitions_test.cpp
 	core/build_test.cpp
+	core/concepts_test.cpp
 	core/markdown_test.cpp
 	core/memory_block_test.cpp
 	# https://learn.microsoft.com/en-us/windows/apps/design/globalizing/use-utf8-code-page

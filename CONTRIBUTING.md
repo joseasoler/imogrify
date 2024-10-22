@@ -14,10 +14,16 @@ Source code contributions must met the following requirements. All of these crit
 
 * Follow the [style guide](STYLE_GUIDE.md).
 
-* Install clang-format. It will automatically emit format warnings during compilation.
+* clang-format should issue no warnings. If the tool is installed, it will automatically emit format warnings during compilation.
 
-* Enable the `IMOGRIFY_BUILD_UNIT_TESTS` CMake option and check that all unit tests are passing.
+* Unit tests should be passing. Enable the `IMOGRIFY_BUILD_UNIT_TESTS` CMake option and run the tests to check this.
 
-* Install clang-tidy and enable the `IMOGRIFY_CLANG_TIDY` CMake option to run clang tidy checks when your code is compiled.
+* clang-tidy should not trigger any warnings. Enable the `IMOGRIFY_CLANG_TIDY` CMake option to run clang tidy checks each time your code is compiled.
 
-* Enable the `CMAKE_COMPILE_WARNING_AS_ERROR` CMake option.
+* Building should finish without warnings. Enable the `CMAKE_COMPILE_WARNING_AS_ERROR` CMake option to check this.
+
+### Other considerations
+
+imogrify uses UTF-8 by default. Check the [UTF-8 Everywhere Manifesto](http://utf8everywhere.org) for details.
+
+It must be possible to build imogrify with exceptions and RTTI disabled.
