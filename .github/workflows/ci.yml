@@ -19,10 +19,10 @@ jobs:
       fail-fast: false
 
       matrix:
-        os: [ macos-15-arm64, ubuntu-24.04, windows-latest ]
+        os: [ macos-15, ubuntu-24.04, windows-latest ]
         compiler: [ clang, gcc, msvc ]
         include:
-          - os: macos-15-arm64
+          - os: macos-15
             build_type: release
             cmake_os: macos
           - os: ubuntu-24.04
@@ -32,9 +32,9 @@ jobs:
             build_type: release
             cmake_os: windows
         exclude:
-          - os: macos-15-arm64
+          - os: macos-15
             compiler: gcc
-          - os: macos-15-arm64
+          - os: macos-15
             compiler: msvc
           - os: ubuntu-24.04
             compiler: msvc
