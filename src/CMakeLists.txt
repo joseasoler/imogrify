@@ -5,3 +5,7 @@
 add_subdirectory(core)
 add_subdirectory(image)
 add_subdirectory(imogrify)
+
+if (IMOGRIFY_BUILD_BENCHMARKS)
+	add_subdirectory(imogrify_benchmark)
+endif ()

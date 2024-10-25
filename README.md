@@ -32,15 +32,26 @@ To use these presets locally, you will need to [install vcpkg](https://learn.mic
 
 Building imogrify requires the following dependencies.
 
-* **[doctest](https://github.com/doctest/doctest)**: Fast C++ testing framework.
+* **[doctest](https://github.com/doctest/doctest)**: Fast C++ testing framework. Only required if `IMOGRIFY_BUILD_UNIT_TESTS` is enabled.
 
 * **[fmt](https://fmt.dev/latest/index.html)**: Modern formatting and printing library.
 
+* **[libpng](http://www.libpng.org)**: A library implementing an interface for reading and writing PNG (Portable Network Graphics) format files.
+
 * **[Magic Enum](https://github.com/Neargye/magic_enum)**: Provides static reflection for enums.
+
+* **[nanobench](https://nanobench.ankerl.com)**: A platform independent microbenchmarking library for C++. Only required if `IMOGRIFY_BUILD_BENCHMARKS` is enabled.
+
+Compiling with the `IMOGRIFY_BUILD_BENCHMARKS` CMake option enabled requires additional dependencies. These libraries are not used by the imogrify binary.
+
+* **[libspng](https://libspng.org)**: libspng (simple png) is a C library for reading and writing Portable Network Graphics (PNG) format files with a focus on security and ease of use.
+
+* **[lodepng](https://lodev.org/lodepng)**: LodePNG is a PNG image decoder and encoder, all in one, no dependency or linkage to zlib or libpng required.
 
 ### CMake options
 
 * `CMAKE_COMPILE_WARNING_AS_ERROR`: When this option is enabled, compilers will treat warnings as errors. If `IMOGRIFY_CLANG_TIDY` is enabled, [clang-tidy](https://clang.llvm.org/extra/clang-tidy) will also treat its warnings as errors.
+* `IMOGRIFY_BUILD_BENCHMARKS`: Builds benchmarks. Requires the [nanobench](https://nanobench.ankerl.com) library. Off by default.
 * `IMOGRIFY_BUILD_UNIT_TESTS`: Builds unit tests. Requires the [doctest](https://github.com/doctest/doctest) library. Off by default.
 * `IMOGRIFY_CLANG_ALL_WARNINGS`: This option is only available when the [clang](https://clang.llvm.org) compiler is in use. This option enables almost every warning from this compiler, except for a few that cause issues with imogrify. This may trigger unexpected positives when using newer clang versions. Off by default.
 * `IMOGRIFY_CLANG_TIDY`: If [clang-tidy](https://clang.llvm.org/extra/clang-tidy) is available, it will be used to analyze the project. Off by default.

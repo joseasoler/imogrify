@@ -14,7 +14,8 @@
 			"cacheVariables": {
 				"CMAKE_COMPILE_WARNING_AS_ERROR": "ON",
 				"CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-				"IMOGRIFY_BUILD_UNIT_TESTS": "ON"
+				"IMOGRIFY_BUILD_UNIT_TESTS": "ON",
+				"IMOGRIFY_BUILD_BENCHMARKS": "ON"
 			}
 		},
 		{

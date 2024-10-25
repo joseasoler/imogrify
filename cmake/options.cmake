@@ -5,6 +5,7 @@
 include_guard(GLOBAL)
 
 option(IMOGRIFY_BUILD_UNIT_TESTS "Build unit tests" OFF)
+option(IMOGRIFY_BUILD_BENCHMARKS "Build benchmarks" OFF)
 option(IMOGRIFY_CLANG_TIDY "Analyze the project with clang-tidy" OFF)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
