@@ -6,13 +6,12 @@
 #include <imfy/build.hpp>
 #include <imfy/markdown.hpp>
 
-#include <fmt/base.h>
-
 #include <cstdlib>
+#include <iostream>
 
 int main(int /*argc*/, char** /*argv*/)
 {
-	imfy::markdown mark;
+	imfy::markdown mark{std::cout};
 	mark.add_heading(imfy::markdown::heading::level_1, imfy::build::project.name);
 	mark.add_heading(imfy::markdown::heading::level_2, "dependencies");
 
@@ -20,6 +19,5 @@ int main(int /*argc*/, char** /*argv*/)
 	{
 		mark.add_heading(imfy::markdown::heading::level_3, dependency.name);
 	}
-	fmt::println("{:s}", mark.view());
 	return EXIT_SUCCESS;
 }
