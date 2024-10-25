@@ -38,13 +38,13 @@ struct is_case_insensitive_less final
 };
 
 template <typename array>
-[[nodiscard]] constexpr bool is_in_sorted_array(const array& arr, const std::string_view& str_view)
+[[nodiscard]] constexpr bool is_in_array(const array& arr, const std::string_view& str_view)
 {
-	const auto iterator = std::lower_bound(arr.cbegin(), arr.cend(), str_view);
+	const auto iterator = std::find(arr.cbegin(), arr.cend(), str_view);
 	return iterator != std::cend(arr) && (*iterator) == str_view;
 }
 
-constexpr std::array compatible_licenses{"BSL-1.0"sv, "MIT"sv, "MPL-2.0"sv};
+constexpr std::array compatible_licenses{"Apache-2.0"sv, "BSL-1.0"sv, "libpng-2.0"sv, "MIT"sv, "MPL-2.0"sv, "Zlib"sv};
 
 } // Anonymous namespace
 
@@ -60,7 +60,7 @@ TEST_CASE("Project information")
 	static_assert(!project.name.empty());
 	static_assert(project.version.major > 0U || project.version.minor > 0U || project.version.patch > 0U);
 	static_assert(project.license == "MPL-2.0"sv);
-	static_assert(is_in_sorted_array(compatible_licenses, project.license));
+	static_assert(is_in_array(compatible_licenses, project.license));
 	static_assert(!build_type.empty());
 }
 
@@ -92,6 +92,6 @@ TEST_CASE("Dependency metadata")
 
 	static_assert(std::all_of(
 			dependencies.cbegin(), dependencies.cend(),
-			[](const dependency_t& dependency) -> bool { return is_in_sorted_array(compatible_licenses, dependency.license); }
+			[](const dependency_t& dependency) -> bool { return is_in_array(compatible_licenses, dependency.license); }
 	));
 }

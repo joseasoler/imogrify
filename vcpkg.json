@@ -3,9 +3,19 @@
 	"version": "0.1.0",
 	"dependencies": [
 		"fmt",
-		"magic-enum"
+		"libpng",
+		"magic-enum",
+		"zlib"
 	],
 	"features": {
+		"imogrify-benchmark": {
+			"description": "Build benchmarks",
+			"dependencies": [
+				"nanobench",
+				"libspng",
+				"lodepng"
+			]
+		},
 		"imogrify-tests": {
 			"description": "Build unit tests",
 			"dependencies": [
