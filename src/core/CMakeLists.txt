@@ -14,6 +14,13 @@ while (${IMOGRIFY_CXX_COMPILER_VERSION_LIST_LENGTH} LESS 3)
 endwhile ()
 list(GET IMOGRIFY_CXX_COMPILER_VERSION_LIST 0 1 2 IMOGRIFY_CXX_COMPILER_VERSION_LIST)
 string(REPLACE ";" "," IMOGRIFY_CXX_COMPILER_VERSION "${IMOGRIFY_CXX_COMPILER_VERSION_LIST}")
+# Ensure a non-empty build type.
+set(IMOGRIFY_BUILD_TYPE ${CMAKE_BUILD_TYPE})
+if (IMOGRIFY_BUILD_TYPE STREQUAL "")
+	message(FATAL_ERROR "Unknown")
+endif ()
+
+
 
 configure_file(include/imfy/build.hpp.in include/imfy/build.hpp @ONLY)
 

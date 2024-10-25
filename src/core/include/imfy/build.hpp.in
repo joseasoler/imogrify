@@ -48,7 +48,7 @@ constexpr dependency_t project{
 		"MPL-2.0"
 };
 
-inline constexpr std::string_view build_type{"@CMAKE_BUILD_TYPE@"};
+inline constexpr std::string_view build_type{"@IMOGRIFY_BUILD_TYPE@"};
 
 enum class compiler_id : std::uint8_t
 {

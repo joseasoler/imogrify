@@ -38,14 +38,10 @@ int main(int /*argc*/, char** /*argv*/) // NOLINT
 	using imfy::encode_png_benchmark;
 	constexpr std::size_t test_size = 256U;
 
-	encode_png_benchmark<color_type::gray, 8U>(bench, mark, test_size, test_size, imfy::png::default_compression);
 	encode_png_benchmark<color_type::gray, 16U>(bench, mark, test_size, test_size, imfy::png::default_compression);
 	encode_png_benchmark<color_type::ga, 8U>(bench, mark, test_size, test_size, imfy::png::default_compression);
-	encode_png_benchmark<color_type::ga, 16U>(bench, mark, test_size, test_size, imfy::png::default_compression);
-	encode_png_benchmark<color_type::rgb, 8U>(bench, mark, test_size, test_size, imfy::png::default_compression);
 	encode_png_benchmark<color_type::rgb, 16U>(bench, mark, test_size, test_size, imfy::png::default_compression);
 	encode_png_benchmark<color_type::rgba, 8U>(bench, mark, test_size, test_size, imfy::png::default_compression);
-	encode_png_benchmark<color_type::rgba, 16U>(bench, mark, test_size, test_size, imfy::png::default_compression);
 	imfy::render_end_table(mark);
 
 	return EXIT_SUCCESS;
