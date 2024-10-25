@@ -20,17 +20,33 @@ using imfy::image::raw_image;
 namespace
 {
 
-constexpr image_size default_size{18U, 19U};
+constexpr image_size default_size{32U, 16U};
 
 template <std::uint8_t Channels, std::uint8_t BitSize>
-bool test_modulo_raw_image()
+void raw_image_checks()
+{
+	using raw_image_t = raw_image<Channels, BitSize>;
+	const raw_image_t test_image(default_size);
+	CHECK(test_image.width() == default_size.width);
+	CHECK(test_image.height() == default_size.height);
+	const auto area = static_cast<std::size_t>(default_size.width) * default_size.height;
+	CHECK(test_image.data().size() == area * Channels);
+	CHECK(test_image.raw_data().size() == area * Channels * sizeof(typename raw_image_t::value_type));
+}
+
+template <std::uint8_t Channels, std::uint8_t BitSize>
+bool consecutive_values_are_different()
 {
 	const raw_image<Channels, BitSize> image(default_size, imfy::image::initialization::modulo);
 	const auto data = image.data();
 	bool result = true;
-	for (std::size_t index = 0U; result && index < (data.size() - raw_image<Channels, BitSize>::pixel_size); ++index)
+	for (std::size_t index = 0U; index < (data.size() - Channels); ++index)
 	{
-		result = data[index] != data[index + raw_image<Channels, BitSize>::pixel_size];
+		result = data[index] != data[index + Channels];
+		if (!result)
+		{
+			break;
+		}
 	}
 	return result;
 }
@@ -46,21 +62,8 @@ TEST_CASE("Raw image type checks")
 
 TEST_CASE("Uninitialized raw image")
 {
-	const raw_image<4U, 8U> image_8(default_size);
-	CHECK(image_8.width() == default_size.width);
-	CHECK(image_8.height() == default_size.height);
-	CHECK(
-			image_8.data().size() ==
-			static_cast<std::size_t>(default_size.width) * default_size.height * raw_image<4U, 8U>::pixel_size
-	);
-
-	const raw_image<2U, 8U> image_16(default_size);
-	CHECK(image_16.width() == default_size.width);
-	CHECK(image_16.height() == default_size.height);
-	CHECK(
-			image_16.data().size() ==
-			static_cast<std::size_t>(default_size.width) * default_size.height * raw_image<2U, 8U>::pixel_size
-	);
+	raw_image_checks<4U, 8U>();
+	raw_image_checks<2U, 16U>();
 }
 
 TEST_CASE("Zeroed raw image")
@@ -72,8 +75,8 @@ TEST_CASE("Zeroed raw image")
 
 TEST_CASE("Modulo raw image")
 {
-	CHECK(test_modulo_raw_image<1U, 8U>());
-	CHECK(test_modulo_raw_image<2U, 16U>());
-	CHECK(test_modulo_raw_image<3U, 8U>());
-	CHECK(test_modulo_raw_image<4U, 16U>());
+	CHECK(consecutive_values_are_different<1U, 8U>());
+	CHECK(consecutive_values_are_different<2U, 16U>());
+	CHECK(consecutive_values_are_different<3U, 8U>());
+	CHECK(consecutive_values_are_different<4U, 16U>());
 }
