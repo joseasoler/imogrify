@@ -2,17 +2,17 @@
 	"name": "imogrify",
 	"version": "0.1.0",
 	"dependencies": [
+		"imfy-libpng-ng",
+		"imfy-zlib-ng",
 		"fmt",
-		"libpng",
-		"magic-enum",
-		"zlib"
+		"magic-enum"
 	],
 	"features": {
 		"imogrify-benchmark": {
 			"description": "Build benchmarks",
 			"dependencies": [
+				"imfy-libspng-ng",
 				"nanobench",
-				"libspng",
 				"lodepng"
 			]
 		},
