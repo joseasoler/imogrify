@@ -4,6 +4,8 @@
 
 cmake_minimum_required(VERSION 3.25)
 
+set(VCPKG_OVERLAY_TRIPLETS "${CMAKE_CURRENT_SOURCE_DIR}/cmake/custom_vcpkg/triplets")
+
 # Define CMake options.
 include(cmake/options.cmake)
 # Define vcpkg manifest features when using vcpkg.

@@ -33,10 +33,18 @@
 			"hidden": true
 		},
 		{
-			"name": "ci-cfg-clang",
+			"name": "ci-cfg-linux-gcc",
+			"cacheVariables": {
+				"VCPKG_TARGET_TRIPLET": "imfy-x64-linux-gcc"
+			},
+			"hidden": true
+		},
+		{
+			"name": "ci-cfg-linux-clang",
 			"cacheVariables": {
 				"CMAKE_C_COMPILER": "clang",
-				"CMAKE_CXX_COMPILER": "clang++"
+				"CMAKE_CXX_COMPILER": "clang++",
+				"VCPKG_TARGET_TRIPLET": "imfy-x64-linux-clang"
 			},
 			"hidden": true
 		},
@@ -55,7 +63,6 @@
 		{
 			"name": "ci-cfg-linux",
 			"cacheVariables": {
-				"VCPKG_TARGET_TRIPLET": "x64-linux",
 				"IMOGRIFY_CLANG_TIDY": "ON"
 			},
 			"condition": {
@@ -78,15 +85,6 @@
 			"hidden": true
 		},
 		{
-			"name": "ci-cfg-macos-debug-clang",
-			"inherits": [
-				"ci-cfg-base",
-				"ci-cfg-debug",
-				"ci-cfg-macos"
-			],
-			"displayName": "MacOS Debug Clang configuration"
-		},
-		{
 			"name": "ci-cfg-macos-release-clang",
 			"inherits": [
 				"ci-cfg-base",
@@ -99,8 +97,9 @@
 			"name": "ci-cfg-linux-debug-gcc",
 			"inherits": [
 				"ci-cfg-base",
+				"ci-cfg-linux",
 				"ci-cfg-debug",
-				"ci-cfg-linux"
+				"ci-cfg-linux-gcc"
 			],
 			"displayName": "Linux Debug GCC configuration"
 		},
@@ -108,8 +107,9 @@
 			"name": "ci-cfg-linux-release-gcc",
 			"inherits": [
 				"ci-cfg-base",
+				"ci-cfg-linux",
 				"ci-cfg-release",
-				"ci-cfg-linux"
+				"ci-cfg-linux-gcc"
 			],
 			"displayName": "Linux Release GCC configuration"
 		},
@@ -117,9 +117,9 @@
 			"name": "ci-cfg-linux-debug-clang",
 			"inherits": [
 				"ci-cfg-base",
+				"ci-cfg-linux",
 				"ci-cfg-debug",
-				"ci-cfg-clang",
-				"ci-cfg-linux"
+				"ci-cfg-linux-clang"
 			],
 			"displayName": "Linux Debug Clang configuration"
 		},
@@ -127,9 +127,9 @@
 			"name": "ci-cfg-linux-release-clang",
 			"inherits": [
 				"ci-cfg-base",
+				"ci-cfg-linux",
 				"ci-cfg-release",
-				"ci-cfg-clang",
-				"ci-cfg-linux"
+				"ci-cfg-linux-clang"
 			],
 			"displayName": "Linux Release Clang configuration"
 		},
@@ -161,11 +161,6 @@
 		}
 	],
 	"buildPresets": [
-		{
-			"name": "ci-build-macos-debug-clang",
-			"configurePreset": "ci-cfg-macos-debug-clang",
-			"displayName": "MacOS Debug Clang build"
-		},
 		{
 			"name": "ci-build-macos-release-clang",
 			"configurePreset": "ci-cfg-macos-release-clang",
@@ -203,11 +198,6 @@
 		}
 	],
 	"testPresets": [
-		{
-			"name": "ci-test-macos-debug-clang",
-			"configurePreset": "ci-cfg-macos-debug-clang",
-			"displayName": "MacOS Debug Clang tests"
-		},
 		{
 			"name": "ci-test-macos-release-clang",
 			"configurePreset": "ci-cfg-macos-release-clang",
