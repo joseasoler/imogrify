@@ -24,7 +24,7 @@ vcpkg_copy_pdbs()
 # Condition in `WIN32`, from https://github.com/zlib-ng/zlib-ng/blob/2.1.5/CMakeLists.txt#L1081-L1100
 # (dynamic) for `zlib` or (static `MSVC) for `zlibstatic` or default `z`
 # i.e. (windows) and not (static mingw) https://learn.microsoft.com/en-us/vcpkg/maintainers/variables#vcpkg_target_is_system
-if (VCPKG_TARGET_IS_WINDOWS AND (NOT (VCPKG_LIBRARY_LINKAGE STREQUAL static AND VCPKG_TARGET_IS_MINGW)))
+if (VCPKG_TARGET_IS_WINDOWS AND ((NOT VCPKG_LIBRARY_LINKAGE STREQUAL static AND VCPKG_TARGET_IS_MINGW)))
 	set(_port_suffix)
 	if (ZLIB_COMPAT)
 		set(_port_suffix "")
