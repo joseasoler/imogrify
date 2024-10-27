@@ -8,7 +8,9 @@
 #include <imfy/png_format.hpp>
 #include <imfy/vector.hpp>
 
-#include <fmt/base.h>
+// Older versions of fmt lack the fmt/base.h header.
+// NOLINTNEXTLINE(misc-include-cleaner)
+#include <fmt/ostream.h>
 #include <png.h>
 #include <tl/expected.hpp>
 
@@ -42,8 +44,9 @@ void write_data_to_buffer(png_struct* png_ptr, std::uint8_t* data, std::size_t w
  */
 [[noreturn]] void libpng_fatal_error(png_struct* /*png_ptr*/, const char* error_msg)
 {
-	// Since this function cannot return, errors cannot be handled elsewhere.
-	fmt::println("Fatal libpng error: {:s}", error_msg);
+	// Older versions of fmt lack the fmt/base.h header.
+	// NOLINTNEXTLINE(misc-include-cleaner)
+	fmt::print("Fatal libpng error: {:s}\n", error_msg);
 	std::terminate();
 }
 

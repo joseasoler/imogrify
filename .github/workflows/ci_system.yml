@@ -1,0 +1,50 @@
+# Copyright (c) 2020 GitHub
+# Copyright (c) 2024 Imogrify contributors
+# File licensed under the MIT license (see ci_LICENSE for details).
+# Based on: https://github.com/actions/starter-workflows/blob/main/ci/cmake-multi-platform.yml
+
+name: Continuous integration (system)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        os: [ ubuntu-24.04 ]
+        compiler: [ gcc ]
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install build dependencies
+        run: pip install ninja
+
+      - name: Install project dependencies
+        run: sudo apt-get install -y doctest-dev libfmt-dev libpng-dev libmagicenum-dev zlib1g-dev
+
+      - name: Configure project
+        run: |
+          mkdir system_build
+          cd system_build
+          cmake -DCMAKE_COMPILE_WARNING_AS_ERROR=ON -DIMOGRIFY_BUILD_UNIT_TESTS=ON ..
+
+      - name: Build project
+        run: cd system_build && cmake --build .
+
+      - name: Run tests
+        run: cd system_build && ctest --verbose .
