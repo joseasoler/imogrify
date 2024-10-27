@@ -131,6 +131,8 @@ IncludeCategories:
     Priority: 300
   - Regex: '^<spng.*'
     Priority: 300
+  - Regex: '^<tl.*'
+    Priority: 300
   - Regex: '^<doctest.*'
     Priority: 1000
   - Regex: '^<nanobench.*'

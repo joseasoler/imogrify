@@ -8,12 +8,15 @@
 #include <imfy/png_format.hpp>
 #include <imfy/vector.hpp>
 
+#include <tl/expected.hpp>
+
 #include <span>
+#include <string_view>
 
 namespace imfy::png
 {
 
-imfy::vector<std::uint8_t> encode(
+tl::expected<imfy::vector<std::uint8_t>, std::string_view> encode(
 		imfy::png::color_type color, std::uint8_t bit_depth, std::uint32_t width, std::uint32_t height,
 		std::span<const std::uint8_t> input_image, std::uint8_t compression_level
 );

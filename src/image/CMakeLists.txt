@@ -16,5 +16,7 @@ target_compile_options(imogrify_image PRIVATE ${IMOGRIFY_CXX_COMPILE_OPTIONS})
 
 target_link_libraries(imogrify_image PRIVATE
 	PNG::PNG
+	PUBLIC
+	tl::expected
 	imogrify_core
 )

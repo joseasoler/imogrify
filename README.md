@@ -24,7 +24,7 @@ Building imogrify requires [CMake](https://cmake.org) and a [compiler with C++20
 
 ### Dependencies
 
-Building imogrify requires the following dependencies. imogrify will expect to find them through the standard `find_package` CMake feature.
+Building imogrify requires the following dependencies. imogrify expects to find them through the standard `find_package` CMake feature.
 
 * **[fmt](https://fmt.dev/latest/index.html)**: Modern formatting and printing library.
 
@@ -45,6 +45,12 @@ Building with the `IMOGRIFY_BUILD_BENCHMARKS` CMake option enabled requires the 
 * **[libspng](https://libspng.org)**: libspng (simple png) is a C library for reading and writing Portable Network Graphics (PNG) format files with a focus on security and ease of use.
 
 * **[lodepng](https://lodev.org/lodepng)**: LodePNG is a PNG image decoder and encoder, all in one, no dependency or linkage to zlib or libpng required.
+
+#### Included dependencies
+
+The following dependencies are included in the imogrify code base. Each one of them has its own COPYING or LICENSE file.
+
+* **[tl-expected](https://github.com/TartanLlama/expected):** Single header implementation of `std::expected` with functional-style extensions.
 
 ### CMake options
 

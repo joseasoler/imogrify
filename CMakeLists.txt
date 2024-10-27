@@ -39,12 +39,14 @@ include(cmake/clang_tidy.cmake)
 
 # Project dependencies.
 include(cmake/dependencies/zlib.cmake)
-
+# ---
 include(cmake/dependencies/doctest.cmake)
 include(cmake/dependencies/fmt.cmake)
 include(cmake/dependencies/libpng.cmake)
 include(cmake/dependencies/magic_enum.cmake)
 include(cmake/dependencies/nanobench.cmake)
+# Contains dependencies in source form.
+add_subdirectory(thirdparty)
 
 add_subdirectory(src)
 

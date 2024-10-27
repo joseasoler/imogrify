@@ -64,9 +64,9 @@ void encode_png_benchmark(
 			bench, mark, "libpng", channels_str, test_image,
 			[&](const raw_image_t& image)
 			{
-				const auto data =
+				const auto result =
 						imfy::png::encode(color_type, bit_depth, image.width(), image.height(), raw_data, compression_level);
-				return data.size();
+				return result.has_value() ? result.value().size() : 0U;
 			}
 	);
 
