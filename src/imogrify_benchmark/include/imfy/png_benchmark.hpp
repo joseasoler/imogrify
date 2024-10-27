@@ -7,10 +7,10 @@
 
 #include <imfy/benchmark.hpp>
 #include <imfy/markdown.hpp>
-#include <imfy/png_encode_lodepng.hpp>
-#include <imfy/png_encode_spng.hpp>
 #include <imfy/png_encoder.hpp>
 #include <imfy/png_format.hpp>
+#include <imfy/png_lodepng.hpp>
+#include <imfy/png_spng.hpp>
 #include <imfy/raw_image.hpp>
 
 #include <magic_enum.hpp>

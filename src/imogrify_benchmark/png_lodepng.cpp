@@ -3,7 +3,7 @@
  * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include "imfy/png_encode_lodepng.hpp"
+#include "imfy/png_lodepng.hpp"
 
 #include <imfy/png_format.hpp>
 

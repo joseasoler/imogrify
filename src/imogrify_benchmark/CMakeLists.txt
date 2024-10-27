@@ -8,8 +8,8 @@ find_package(SPNG REQUIRED)
 add_executable(imogrify_benchmark
 	benchmark.cpp
 	imogrify_benchmark.cpp
-	png_encode_lodepng.cpp
-	png_encode_spng.cpp
+	png_lodepng.cpp
+	png_spng.cpp
 )
 
 target_include_directories(imogrify_benchmark PUBLIC
