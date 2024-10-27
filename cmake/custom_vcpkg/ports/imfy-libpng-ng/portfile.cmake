@@ -9,6 +9,8 @@ vcpkg_from_github(
         fix-export-targets.patch
         libm.patch
         pkgconfig.patch
+        always_use_prebuilt_pnglibconf.patch
+        pnglibconf_tweaks.patch
 )
 
 string(COMPARE EQUAL "${VCPKG_LIBRARY_LINKAGE}" "dynamic" PNG_SHARED)

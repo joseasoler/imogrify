@@ -1,0 +1,32 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 4e1303038..7a4eb8d54 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -363,7 +363,8 @@ else()
+   message(STATUS "Could not find an AWK-compatible program")
+ endif()
+ 
+-if(NOT AWK OR ANDROID OR IOS)
++# The imogrify vcpkg port provides its own prebuilt libpng configuration which should always be used.
++if(TRUE)
+   # No awk available to generate sources; use pre-built pnglibconf.h
+   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/pnglibconf.h.prebuilt
+                  ${CMAKE_CURRENT_BINARY_DIR}/pnglibconf.h)
+@@ -591,7 +592,7 @@ else()
+                             "${CMAKE_CURRENT_BINARY_DIR}/scripts/symbols.chk" png_scripts_symbols_chk
+                             "${CMAKE_CURRENT_BINARY_DIR}/scripts/symbols.out" png_scripts_symbols_out
+                             "${CMAKE_CURRENT_BINARY_DIR}/scripts/vers.out" png_scripts_vers_out)
+-endif(NOT AWK OR ANDROID OR IOS)
++endif()
+ 
+ # List the source code files.
+ set(libpng_public_hdrs
+@@ -605,7 +606,7 @@ set(libpng_private_hdrs
+     pnginfo.h
+     pngstruct.h
+ )
+-if(AWK AND NOT ANDROID AND NOT IOS)
++if(FALSE)
+   list(APPEND libpng_private_hdrs "${CMAKE_CURRENT_BINARY_DIR}/pngprefix.h")
+ endif()
+ set(libpng_sources
