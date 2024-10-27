@@ -5,6 +5,7 @@
 
 #include "imfy/png_spng.hpp"
 
+#include <imfy/image_size.hpp>
 #include <imfy/png_format.hpp>
 
 #include <spng.h>
@@ -50,7 +51,7 @@ namespace imfy
 {
 
 std::size_t encode_spng(
-		const color_type color, const std::uint8_t bit_depth, const std::uint32_t width, const std::uint32_t height,
+		const color_type color, const std::uint8_t bit_depth, const imfy::image_size img_size,
 		std::span<const std::uint8_t> input_image, const std::uint8_t compression_level
 )
 {
@@ -59,8 +60,8 @@ std::size_t encode_spng(
 	spng_set_option(context.get(), SPNG_IMG_COMPRESSION_LEVEL, compression_level);
 
 	spng_ihdr ihdr{};
-	ihdr.width = width;
-	ihdr.height = height;
+	ihdr.width = img_size.width;
+	ihdr.height = img_size.height;
 	ihdr.color_type = static_cast<std::uint8_t>(color);
 	ihdr.bit_depth = bit_depth;
 	spng_set_ihdr(context.get(), &ihdr);

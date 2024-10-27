@@ -5,6 +5,7 @@
 
 #include "imfy/png_lodepng.hpp"
 
+#include <imfy/image_size.hpp>
 #include <imfy/png_format.hpp>
 
 #include <lodepng.h>
@@ -27,8 +28,8 @@ namespace imfy
 {
 
 std::size_t encode_lodepng(
-		imfy::png::color_type color, std::uint8_t bit_depth, std::uint32_t width, std::uint32_t height,
-		std::span<const std::uint8_t> input_image, std::uint8_t /*compression_level*/
+		const imfy::png::color_type color, const std::uint8_t bit_depth, const imfy::image_size img_size,
+		std::span<const std::uint8_t> input_image, const std::uint8_t /*compression_level*/
 )
 {
 	unsigned char* png{};
@@ -41,7 +42,7 @@ std::size_t encode_lodepng(
 	state.info_png.color.colortype = static_cast<LodePNGColorType>(color);
 	state.info_png.color.bitdepth = bit_depth;
 
-	auto error = lodepng_encode(&png, &png_size, input_image.data(), width, height, &state);
+	auto error = lodepng_encode(&png, &png_size, input_image.data(), img_size.width, img_size.height, &state);
 	if (error != 0U) [[unlikely]]
 	{
 		std::abort();

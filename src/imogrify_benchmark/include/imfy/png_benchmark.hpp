@@ -57,27 +57,27 @@ void encode_png_benchmark(
 	constexpr auto channels = detail::channels_per_color_type(color_type);
 	using raw_image_t = imfy::image::raw_image<channels, bit_depth>;
 	constexpr auto channels_str = magic_enum::enum_name(color_type);
-	const raw_image_t test_image(imfy::image::image_size(width, height), imfy::image::initialization::modulo);
+	const imfy::image_size img_size{width, height};
+	const raw_image_t test_image(img_size, imfy::image::initialization::modulo);
 	const std::span<const std::uint8_t> raw_data = test_image.raw_data();
 
 	run_benchmark(
-			bench, mark, "libpng", channels_str, test_image,
-			[&](const raw_image_t& image)
+			bench, mark, "libpng", channels_str, bit_depth, img_size,
+			[&]() -> std::size_t
 			{
-				const auto result =
-						imfy::png::encode(color_type, bit_depth, image.width(), image.height(), raw_data, compression_level);
+				const auto result = imfy::png::encode(color_type, bit_depth, img_size, raw_data, compression_level);
 				return result.has_value() ? result.value().size() : 0U;
 			}
 	);
 
 	run_benchmark(
-			bench, mark, "lodepng", channels_str, test_image, [&](const raw_image_t& image) -> std::size_t
-			{ return encode_lodepng(color_type, bit_depth, image.width(), image.height(), raw_data, compression_level); }
+			bench, mark, "lodepng", channels_str, bit_depth, img_size,
+			[&]() -> std::size_t { return encode_lodepng(color_type, bit_depth, img_size, raw_data, compression_level); }
 	);
 
 	run_benchmark(
-			bench, mark, "spng", channels_str, test_image, [&](const raw_image_t& image) -> std::size_t
-			{ return encode_spng(color_type, bit_depth, image.width(), image.height(), raw_data, compression_level); }
+			bench, mark, "spng", channels_str, bit_depth, img_size,
+			[&]() -> std::size_t { return encode_spng(color_type, bit_depth, img_size, raw_data, compression_level); }
 	);
 }
 

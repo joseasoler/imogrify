@@ -41,5 +41,7 @@ int main(int /*argc*/, char** /*argv*/) // NOLINT
 	encode_png_benchmark<color_type::rgba, 8U>(bench, mark, test_size, test_size, imfy::png::default_compression);
 	imfy::render_end_table(mark);
 
+	mark.add_heading(markdown::heading::level_4, "Decoding comparison");
+
 	return EXIT_SUCCESS;
 }

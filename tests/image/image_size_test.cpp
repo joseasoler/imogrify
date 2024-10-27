@@ -9,7 +9,7 @@
 
 #include <doctest/doctest.h>
 
-using imfy::image::image_size;
+using imfy::image_size;
 
 TEST_CASE("Basic image_size checks")
 {

@@ -7,7 +7,7 @@
 
 #include <cstdint>
 
-namespace imfy::image
+namespace imfy
 {
 
 struct image_size final
@@ -16,4 +16,4 @@ struct image_size final
 	std::uint16_t height;
 };
 
-} // namespace imfy::image
+} // namespace imfy

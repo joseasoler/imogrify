@@ -8,6 +8,8 @@
 #include <imfy/png_format.hpp>
 #include <imfy/vector.hpp>
 
+#include "imfy/image_size.hpp"
+
 // Older versions of fmt lack the fmt/base.h header.
 // NOLINTNEXTLINE(misc-include-cleaner)
 #include <fmt/ostream.h>
@@ -113,8 +115,8 @@ namespace imfy::png
 {
 
 tl::expected<imfy::vector<std::uint8_t>, std::string_view> encode(
-		imfy::png::color_type color, std::uint8_t bit_depth, std::uint32_t width, std::uint32_t height,
-		std::span<const std::uint8_t> input_image, std::uint8_t compression_level
+		const imfy::png::color_type color, const std::uint8_t bit_depth, const image_size img_size,
+		std::span<const std::uint8_t> input_image, const std::uint8_t compression_level
 )
 {
 	const char* warning_message = nullptr;
@@ -129,7 +131,7 @@ tl::expected<imfy::vector<std::uint8_t>, std::string_view> encode(
 	png_set_compression_level(png_ptr, compression_level);
 
 	png_set_IHDR(
-			png_ptr, info_ptr, width, height, bit_depth, static_cast<int>(color), PNG_INTERLACE_NONE,
+			png_ptr, info_ptr, img_size.width, img_size.height, bit_depth, static_cast<int>(color), PNG_INTERLACE_NONE,
 			PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT
 	);
 
@@ -144,7 +146,7 @@ tl::expected<imfy::vector<std::uint8_t>, std::string_view> encode(
 	const std::uint8_t byte_depth = bit_depth / bits_in_byte;
 	const std::uint8_t channels = channels_of_color_type(color);
 
-	for (std::size_t row_index = 0U; row_index < height; ++row_index)
+	for (std::size_t row_index = 0U; row_index < img_size.height; ++row_index)
 	{
 		if (warning_message != nullptr) [[unlikely]]
 		{
@@ -153,7 +155,7 @@ tl::expected<imfy::vector<std::uint8_t>, std::string_view> encode(
 
 		png_write_row(png_ptr, row_pointer);
 		// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-		row_pointer += static_cast<std::size_t>(width) * byte_depth * channels;
+		row_pointer += static_cast<std::size_t>(img_size.width) * byte_depth * channels;
 	}
 	// Finish writing the image.
 	png_write_end(png_ptr, info_ptr);

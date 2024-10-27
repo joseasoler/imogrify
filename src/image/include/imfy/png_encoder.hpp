@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <imfy/image_size.hpp>
 #include <imfy/png_format.hpp>
 #include <imfy/vector.hpp>
 
@@ -17,8 +18,8 @@ namespace imfy::png
 {
 
 tl::expected<imfy::vector<std::uint8_t>, std::string_view> encode(
-		imfy::png::color_type color, std::uint8_t bit_depth, std::uint32_t width, std::uint32_t height,
-		std::span<const std::uint8_t> input_image, std::uint8_t compression_level
+		imfy::png::color_type color, std::uint8_t bit_depth, image_size img_size, std::span<const std::uint8_t> input_image,
+		std::uint8_t compression_level
 );
 
 } // namespace imfy::png

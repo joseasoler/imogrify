@@ -5,6 +5,7 @@
 
 #include "imfy/benchmark.hpp"
 
+#include <imfy/image_size.hpp>
 #include <imfy/markdown.hpp>
 
 #include <array>
@@ -76,15 +77,15 @@ void render_start_table(imfy::markdown& mark)
 
 void render_benchmark_row(
 		const std::string_view library, const std::string_view channels, const std::uint8_t bit_depth,
-		const std::uint16_t width, const std::uint16_t height, const std::size_t file_size,
-		const ankerl::nanobench::Result& data, imfy::markdown& mark
+		const imfy::image_size img_size, const std::size_t file_size, const ankerl::nanobench::Result& data,
+		imfy::markdown& mark
 )
 {
 	mark.add_table_cell(bench_cell_width[0U], library);
 	mark.add_table_cell(bench_cell_width[1U], channels);
 	mark.add_table_unsigned(bench_cell_width[2U], bit_depth);
-	mark.add_table_unsigned(bench_cell_width[3U], width);
-	mark.add_table_unsigned(bench_cell_width[4U], height);
+	mark.add_table_unsigned(bench_cell_width[3U], img_size.width);
+	mark.add_table_unsigned(bench_cell_width[4U], img_size.height);
 	mark.add_table_unsigned(bench_cell_width[5U], file_size);
 
 	using measure = ankerl::nanobench::Result::Measure;

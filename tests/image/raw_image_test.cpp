@@ -14,7 +14,7 @@
 
 #include <doctest/doctest.h>
 
-using imfy::image::image_size;
+using imfy::image_size;
 using imfy::image::raw_image;
 
 namespace
