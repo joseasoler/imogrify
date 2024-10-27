@@ -8,7 +8,6 @@ find_package(SPNG REQUIRED)
 add_executable(imogrify_benchmark
 	benchmark.cpp
 	imogrify_benchmark.cpp
-	png_encode_libpng.cpp
 	png_encode_lodepng.cpp
 	png_encode_spng.cpp
 )
@@ -25,7 +24,6 @@ target_link_libraries(imogrify_benchmark PRIVATE
 	lodepng
 	magic_enum::magic_enum
 	nanobench::nanobench
-	PNG::PNG
 	$<IF:$<TARGET_EXISTS:spng::spng_static>,spng::spng_static,spng::spng>
 	imogrify_core
 	imogrify_image

@@ -3,7 +3,7 @@
  * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include "imfy/png_encode_libpng.hpp"
+#include "imfy/png_encoder.hpp"
 
 #include <imfy/png_format.hpp>
 #include <imfy/vector.hpp>
@@ -56,16 +56,10 @@ void libpng_free(png_struct* /*png_ptr*/, void* raw_memory)
 
 } // namespace
 
-namespace imfy
+namespace imfy::png
 {
 
-/*
-std::size_t encode_libpng(
-		const std::uint32_t width, const std::uint32_t height, const std::span<const std::uint8_t> input_image,
-		const std::uint8_t color_type, const std::uint8_t bit_depth, const std::uint8_t compression_level
-)
- */
-std::size_t encode_libpng(
+imfy::vector<std::uint8_t> encode(
 		imfy::png::color_type color, std::uint8_t bit_depth, std::uint32_t width, std::uint32_t height,
 		std::span<const std::uint8_t> input_image, std::uint8_t compression_level
 )
@@ -139,7 +133,7 @@ std::size_t encode_libpng(
 	dmp.write(reinterpret_cast<const char*>(buffer.data()), static_cast<std::ptrdiff_t>(buffer.size())); // NOLINT
 	*/
 
-	return buffer.size();
+	return buffer;
 }
 
-} // namespace imfy
+} // namespace imfy::png

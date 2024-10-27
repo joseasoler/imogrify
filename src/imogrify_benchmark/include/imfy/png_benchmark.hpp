@@ -7,9 +7,9 @@
 
 #include <imfy/benchmark.hpp>
 #include <imfy/markdown.hpp>
-#include <imfy/png_encode_libpng.hpp>
 #include <imfy/png_encode_lodepng.hpp>
 #include <imfy/png_encode_spng.hpp>
+#include <imfy/png_encoder.hpp>
 #include <imfy/png_format.hpp>
 #include <imfy/raw_image.hpp>
 
@@ -61,8 +61,13 @@ void encode_png_benchmark(
 	const std::span<const std::uint8_t> raw_data = test_image.raw_data();
 
 	run_benchmark(
-			bench, mark, "libpng", channels_str, test_image, [&](const raw_image_t& image) -> std::size_t
-			{ return encode_libpng(color_type, bit_depth, image.width(), image.height(), raw_data, compression_level); }
+			bench, mark, "libpng", channels_str, test_image,
+			[&](const raw_image_t& image)
+			{
+				const auto data =
+						imfy::png::encode(color_type, bit_depth, image.width(), image.height(), raw_data, compression_level);
+				return data.size();
+			}
 	);
 
 	run_benchmark(

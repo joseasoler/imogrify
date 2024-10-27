@@ -10,7 +10,7 @@
 namespace imfy::png
 {
 
-/** Tested libraries use the color types in http://www.libpng.org/pub/png/spec/1.2/PNG-Chunks.html#C.IHDR */
+/** See http://www.libpng.org/pub/png/spec/1.2/PNG-Chunks.html#C.IHDR */
 enum class color_type : std::uint8_t
 {
 	gray = 0U,

@@ -6,15 +6,16 @@
 #pragma once
 
 #include <imfy/png_format.hpp>
+#include <imfy/vector.hpp>
 
 #include <span>
 
-namespace imfy
+namespace imfy::png
 {
 
-std::size_t encode_libpng(
+imfy::vector<std::uint8_t> encode(
 		imfy::png::color_type color, std::uint8_t bit_depth, std::uint32_t width, std::uint32_t height,
 		std::span<const std::uint8_t> input_image, std::uint8_t compression_level
 );
 
-} // namespace imfy
+} // namespace imfy::png

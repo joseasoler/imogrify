@@ -3,7 +3,7 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 add_library(imogrify_image STATIC
-	include/imfy/raw_image.hpp
+	png_encoder.cpp
 	raw_image.cpp
 )
 
@@ -15,5 +15,6 @@ target_compile_definitions(imogrify_image PRIVATE ${IMOGRIFY_CXX_COMPILE_DEFINIT
 target_compile_options(imogrify_image PRIVATE ${IMOGRIFY_CXX_COMPILE_OPTIONS})
 
 target_link_libraries(imogrify_image PRIVATE
+	PNG::PNG
 	imogrify_core
 )
