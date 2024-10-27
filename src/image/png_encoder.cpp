@@ -8,11 +8,13 @@
 #include <imfy/png_format.hpp>
 #include <imfy/vector.hpp>
 
+#include <fmt/base.h>
 #include <png.h>
 #include <tl/expected.hpp>
 
 #include <cstdint>
 #include <cstring>
+#include <exception>
 #include <span>
 #include <string_view>
 
@@ -33,10 +35,27 @@ void write_data_to_buffer(png_struct* png_ptr, std::uint8_t* data, std::size_t w
 	std::memcpy(&output_buffer[current_size], data, write_length);
 }
 
-void libpng_capture_error(png_struct* png_ptr, const char* error_msg)
+/**
+ * Used by libpng to report fatal errors. libpng expects this function to never return to the caller.
+ * @param png_ptr Libpng control structure.
+ * @param error_msg Error message emitted by libpng.
+ */
+[[noreturn]] void libpng_fatal_error(png_struct* /*png_ptr*/, const char* error_msg)
+{
+	// Since this function cannot return, errors cannot be handled elsewhere.
+	fmt::println("Fatal libpng error: {:s}", error_msg);
+	std::terminate();
+}
+
+/**
+ * Warnings sent by libpng should be reported back to the user.
+ * @param png_ptr Libpng control structure.
+ * @param warning_msg Warning message sent by libpng.
+ */
+void libpng_capture_warning(png_struct* png_ptr, const char* warning_msg)
 {
 	const char** error_ptr = static_cast<const char**>(png_get_error_ptr(png_ptr));
-	*error_ptr = error_msg;
+	*error_ptr = warning_msg;
 }
 
 class png_info_raii final
@@ -46,7 +65,7 @@ public:
 		: struct_ptr_{png_create_write_struct_2(
 					PNG_LIBPNG_VER_STRING,
 					error, // NOLINT
-					libpng_capture_error, libpng_capture_error, nullptr, nullptr, nullptr
+					libpng_fatal_error, libpng_capture_warning, nullptr, nullptr, nullptr
 			)}
 		, info_ptr_{struct_ptr_ != nullptr ? png_create_info_struct(struct_ptr_) : nullptr}
 	{
@@ -95,8 +114,8 @@ tl::expected<imfy::vector<std::uint8_t>, std::string_view> encode(
 		std::span<const std::uint8_t> input_image, std::uint8_t compression_level
 )
 {
-	const char* error_message = nullptr;
-	png_info_raii png_info{&error_message};
+	const char* warning_message = nullptr;
+	png_info_raii png_info{&warning_message};
 	auto* png_ptr = png_info.get_struct();
 	auto* info_ptr = png_info.get_info();
 	if (info_ptr == nullptr) [[unlikely]]
@@ -124,9 +143,9 @@ tl::expected<imfy::vector<std::uint8_t>, std::string_view> encode(
 
 	for (std::size_t row_index = 0U; row_index < height; ++row_index)
 	{
-		if (error_message != nullptr) [[unlikely]]
+		if (warning_message != nullptr) [[unlikely]]
 		{
-			return tl::unexpected(std::string_view{error_message});
+			return tl::unexpected(std::string_view{warning_message});
 		}
 
 		png_write_row(png_ptr, row_pointer);
