@@ -13,6 +13,8 @@
 			"generator": "Ninja",
 			"cacheVariables": {
 				"CMAKE_COMPILE_WARNING_AS_ERROR": "ON",
+				"VCPKG_OVERLAY_PORTS": "${sourceDir}/cmake/custom_vcpkg/ports",
+				"VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/cmake/custom_vcpkg/triplets",
 				"CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
 				"IMOGRIFY_BUILD_UNIT_TESTS": "ON",
 				"IMOGRIFY_BUILD_BENCHMARKS": "ON"

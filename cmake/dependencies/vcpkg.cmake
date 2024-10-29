@@ -5,16 +5,13 @@
 include_guard(GLOBAL)
 
 if (VCPKG_TARGET_TRIPLET)
-	# Define  vcpkg manifest features depending on CMake option status.
+	# Define vcpkg manifest features depending on CMake option status.
 	if (IMOGRIFY_BUILD_UNIT_TESTS)
 		list(APPEND VCPKG_MANIFEST_FEATURES "imogrify-tests")
 	endif ()
 	if (IMOGRIFY_BUILD_BENCHMARKS)
 		list(APPEND VCPKG_MANIFEST_FEATURES "imogrify-benchmark")
 	endif ()
-
-	set(VCPKG_OVERLAY_PORTS "${CMAKE_CURRENT_SOURCE_DIR}/cmake/custom_vcpkg/ports")
-	set(VCPKG_OVERLAY_TRIPLETS "${CMAKE_CURRENT_SOURCE_DIR}/cmake/custom_vcpkg/triplets")
 
 	add_dependency_metadata(
 		NAME vcpkg
