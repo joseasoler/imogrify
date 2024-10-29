@@ -5,6 +5,8 @@
 
 #include "imfy/image_size.hpp"
 
+#include <imfy/concepts.hpp>
+
 #include <cstdint>
 
 #include <doctest/doctest.h>
@@ -13,6 +15,7 @@ using imfy::image_size;
 
 TEST_CASE("Basic image_size checks")
 {
+	static_assert(imfy::pod_type<image_size>);
 	static_assert(sizeof(image_size) == 4U);
 	constexpr std::uint16_t width = 12U;
 	constexpr std::uint16_t height = 17U;

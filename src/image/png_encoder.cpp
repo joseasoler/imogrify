@@ -19,6 +19,8 @@
 #include <cstdint>
 #include <cstring>
 #include <exception>
+#include <fstream>
+#include <ios>
 #include <span>
 #include <string_view>
 
@@ -161,10 +163,8 @@ tl::expected<imfy::vector<std::uint8_t>, std::string_view> encode(
 	png_write_end(png_ptr, info_ptr);
 
 	// ToDo
-	/*
 	std::ofstream dmp{"libpng.png", std::ios::out | std::ios::binary};
 	dmp.write(reinterpret_cast<const char*>(buffer.data()), static_cast<std::ptrdiff_t>(buffer.size())); // NOLINT
-	*/
 
 	return buffer;
 }

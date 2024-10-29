@@ -26,7 +26,6 @@ add_library(imogrify_core STATIC
 	${CMAKE_CURRENT_BINARY_DIR}/include/imfy/build.hpp
 	include/imfy/allocator.hpp
 	include/imfy/markdown.hpp
-	include/imfy/memory_block.hpp
 	include/imfy/string.hpp
 	include/imfy/vector.hpp
 	markdown.cpp

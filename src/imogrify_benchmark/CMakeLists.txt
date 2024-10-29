@@ -8,6 +8,7 @@ find_package(SPNG REQUIRED)
 add_executable(imogrify_benchmark
 	benchmark.cpp
 	imogrify_benchmark.cpp
+	png_benchmark.cpp
 	png_lodepng.cpp
 	png_spng.cpp
 )

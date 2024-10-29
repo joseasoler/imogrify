@@ -9,11 +9,7 @@
 #include <imfy/markdown.hpp>
 #include <imfy/png_encoder.hpp>
 #include <imfy/png_format.hpp>
-#include <imfy/png_lodepng.hpp>
-#include <imfy/png_spng.hpp>
 #include <imfy/raw_image.hpp>
-
-#include <magic_enum.hpp>
 
 #include <cstdint>
 #include <span>
@@ -28,57 +24,14 @@ namespace imfy
 
 namespace detail
 {
-consteval std::uint8_t channels_per_color_type(imfy::png::color_type color_type)
-{
-	switch (color_type)
-	{
-		case color_type::gray:
-			return 1U;
-		case color_type::ga:
-			return 2U;
-		case color_type::palette:
-			return 1U;
-		case color_type::rgb:
-			return 3U;
-		case color_type::rgba:
-			return 4U;
-	}
+std::uint8_t channels_per_color_type(imfy::png::color_type color_type);
+raw_image get_initialized_image(std::uint8_t channels, std::uint8_t bit_depth, image_size img_size);
 
-	return 4U;
-}
 } // namespace detail
 
-template <imfy::png::color_type color_type, std::uint8_t bit_depth>
-void encode_png_benchmark(
-		ankerl::nanobench::Bench& bench, imfy::markdown& mark, std::uint16_t width, std::uint16_t height,
-		std::uint8_t compression_level
-)
-{
-	constexpr auto channels = detail::channels_per_color_type(color_type);
-	using raw_image_t = imfy::image::raw_image<channels, bit_depth>;
-	constexpr auto channels_str = magic_enum::enum_name(color_type);
-	const imfy::image_size img_size{width, height};
-	const raw_image_t test_image(img_size, imfy::image::initialization::modulo);
-	const std::span<const std::uint8_t> raw_data = test_image.raw_data();
-
-	run_benchmark(
-			bench, mark, "libpng", channels_str, bit_depth, img_size,
-			[&]() -> std::size_t
-			{
-				const auto result = imfy::png::encode(color_type, bit_depth, img_size, raw_data, compression_level);
-				return result.has_value() ? result.value().size() : 0U;
-			}
-	);
-
-	run_benchmark(
-			bench, mark, "lodepng", channels_str, bit_depth, img_size,
-			[&]() -> std::size_t { return encode_lodepng(color_type, bit_depth, img_size, raw_data, compression_level); }
-	);
-
-	run_benchmark(
-			bench, mark, "spng", channels_str, bit_depth, img_size,
-			[&]() -> std::size_t { return encode_spng(color_type, bit_depth, img_size, raw_data, compression_level); }
-	);
-}
+void benchmark_png_encoding(
+		ankerl::nanobench::Bench& bench, imfy::markdown& mark, imfy::png::color_type color_type, std::uint8_t bit_depth,
+		imfy::image_size img_size, std::uint8_t compression_level
+);
 
 } // namespace imfy

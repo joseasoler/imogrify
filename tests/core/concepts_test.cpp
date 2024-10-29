@@ -6,7 +6,6 @@
 #include "imfy/concepts.hpp"
 
 #include <imfy/allocator.hpp>
-#include <imfy/memory_block.hpp>
 #include <imfy/string.hpp>
 #include <imfy/vector.hpp>
 
@@ -39,7 +38,6 @@ TEST_CASE("Plain old object concept.")
 	static_assert(imfy::pod_type<std::array<std::uint8_t, 4U>>);
 	static_assert(imfy::pod_type<simple_struct>);
 	static_assert(!imfy::pod_type<inheritance_struct>);
-	static_assert(!imfy::pod_type<imfy::memory_block<std::uint64_t>>);
 	static_assert(!imfy::pod_type<imfy::vector<std::uint8_t>>);
 	static_assert(!imfy::pod_type<imfy::string>);
 	static_assert(!imfy::pod_type<std::unique_ptr<std::uint8_t>>);

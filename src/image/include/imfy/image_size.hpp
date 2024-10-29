@@ -14,6 +14,8 @@ struct image_size final
 {
 	std::uint16_t width;
 	std::uint16_t height;
+	bool operator==(const image_size& rhs) const noexcept { return width == rhs.width && height == rhs.height; }
+	bool operator!=(const image_size& rhs) const noexcept { return width != rhs.width || height != rhs.height; }
 };
 
 } // namespace imfy

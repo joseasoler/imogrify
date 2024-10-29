@@ -5,41 +5,46 @@
 
 #include "imfy/raw_image.hpp"
 
-#include <array>
+#include <imfy/image_size.hpp>
+
 #include <cstddef>
 #include <cstdint>
-#include <cstring>
 #include <span>
 
-namespace imfy::image::detail
+namespace imfy
 {
 
-void initialize_raw_data(
-		initialization initialization_type, std::uint8_t channels, std::uint8_t bit_depth, std::span<std::uint8_t> raw_data
-)
+raw_image::raw_image(std::uint8_t channels, std::uint8_t bit_depth, image_size img_size)
+	: data_(static_cast<std::size_t>(img_size.width * img_size.height) * channels * (bit_depth / 8U))
+	, image_size_{img_size}
+	, channels_{channels}
+	, bit_depth_{bit_depth}
 {
-	switch (initialization_type)
-	{
-		case initialization::zero:
-			std::memset(raw_data.data(), 0, raw_data.size());
-			break;
-
-		case initialization::modulo:
-			constexpr std::array<std::uint8_t, 4U> channel_modulo{251U, 241U, 239U, 233U};
-			const std::size_t byte_depth = bit_depth / 8U;
-			for (std::size_t index = 0U; index < raw_data.size(); index += channels * byte_depth)
-			{
-				for (std::size_t channel_index = 0U; channel_index < channels; ++channel_index)
-				{
-					for (std::size_t byte_index = 0U; byte_index < byte_depth; ++byte_index)
-					{
-						const auto value_index = index + (byte_depth * channel_index) + byte_index;
-						raw_data[value_index] = static_cast<std::uint8_t>(value_index % channel_modulo[channel_index]);
-					}
-				}
-			}
-			break;
-	}
 }
 
-} // namespace imfy::image::detail
+std::uint8_t raw_image::channels() const noexcept
+{
+	return channels_;
+}
+
+std::uint8_t raw_image::bit_depth() const noexcept
+{
+	return bit_depth_;
+}
+
+image_size raw_image::size() const noexcept
+{
+	return image_size_;
+}
+
+std::span<raw_image::value_type> raw_image::data() noexcept
+{
+	return data_.span();
+}
+
+std::span<const raw_image::value_type> raw_image::data() const noexcept
+{
+	return data_.span();
+}
+
+} // namespace imfy
