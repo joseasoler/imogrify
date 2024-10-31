@@ -5,6 +5,7 @@
 		"imfy-libpng-ng",
 		"imfy-zlib-ng",
 		"fmt",
+		"highway",
 		"magic-enum"
 	],
 	"features": {

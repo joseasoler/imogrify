@@ -121,6 +121,8 @@ IncludeCategories:
     Priority: 100
   - Regex: '^<fmt.*'
     Priority: 300
+  - Regex: '^<hwy.*'
+    Priority: 300
   - Regex: '^<lodepng.*'
     Priority: 300
   - Regex: '^<magic_enum.*'

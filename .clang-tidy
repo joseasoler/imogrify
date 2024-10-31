@@ -21,6 +21,8 @@ CheckOptions:
   - { key: readability-identifier-naming.TypeAliasCase,          value: lower_case }
   - { key: readability-identifier-naming.UnionCase,              value: lower_case }
   - { key: readability-identifier-naming.VariableCase,           value: lower_case }
+# Ignore public members in structs.
+  - { key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic, value: true }
 
 WarningsAsErrors: '*'
 
@@ -33,6 +35,7 @@ WarningsAsErrors: '*'
 # cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers: Magic numbers are useful in unit testing.
 # cppcoreguidelines-owning-memory: Allow owning memory pointers without requiring gsl libraries.
 # cppcoreguidelines-pro-bounds-constant-array-index: Allow casting enum values to use them as array indexes.
+# cppcoreguidelines-pro-bounds-pointer-arithmetic: Allow using pointer arithmetic.
 # llvm-header-guard: Allow use of #pragma once
 # modernize-use-trailing-return-type: Do not force use of trailing return types.
 
@@ -51,6 +54,7 @@ Checks: '
 -cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,
 -cppcoreguidelines-owning-memory,
 -cppcoreguidelines-pro-bounds-constant-array-index,
+-cppcoreguidelines-pro-bounds-pointer-arithmetic,
 -llvm-header-guard,
 -modernize-use-trailing-return-type,
 '

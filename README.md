@@ -28,6 +28,8 @@ Building imogrify requires the following dependencies. imogrify expects to find 
 
 * **[fmt](https://fmt.dev/latest/index.html)**: Modern formatting and printing library.
 
+* **[Highway](https://google.github.io/highway/en/master)**: A C++ library that provides portable SIMD/vector intrinsics.
+
 * **[libpng](http://www.libpng.org)**: A library implementing an interface for reading and writing PNG (Portable Network Graphics) format files.
 
 * **[Magic Enum](https://github.com/Neargye/magic_enum)**: Provides static reflection for enums.
