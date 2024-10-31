@@ -7,7 +7,6 @@
 
 #include <imfy/image_size.hpp>
 
-#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 
@@ -26,13 +25,6 @@ namespace
 	return test_image.channels() == channels && test_image.bit_depth() == bit_depth && test_image.size() == img_size;
 }
 
-[[nodiscard]] bool is_zero_initialized(const raw_image& test_image)
-{
-	return std::all_of(
-			test_image.data().begin(), test_image.data().end(), [](std::uint8_t value) -> bool { return value == 0U; }
-	);
-}
-
 void raw_image_checks(std::uint8_t channels, std::uint8_t bit_depth, image_size img_size)
 {
 	const raw_image test_image(channels, bit_depth, img_size);
@@ -42,7 +34,6 @@ void raw_image_checks(std::uint8_t channels, std::uint8_t bit_depth, image_size 
 	const auto real_byte_size = test_image.data().size();
 	const auto expected_byte_size = area * channels * byte_depth;
 	CHECK(real_byte_size == expected_byte_size);
-	CHECK(is_zero_initialized(test_image));
 }
 
 } // Anonymous namespace

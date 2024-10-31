@@ -28,6 +28,7 @@ add_library(imogrify_core STATIC
 	include/imfy/markdown.hpp
 	include/imfy/string.hpp
 	include/imfy/vector.hpp
+	aligned_allocation.cpp
 	markdown.cpp
 	runtime.cpp
 )

@@ -5,6 +5,7 @@
 add_executable(imogrify_unit_tests
 	tests_main.cpp
 	preprocessor_definitions_test.cpp
+	core/aligned_allocation_test.cpp
 	core/build_test.cpp
 	core/concepts_test.cpp
 	core/memory_block_test.cpp
