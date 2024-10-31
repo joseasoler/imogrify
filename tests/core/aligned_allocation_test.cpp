@@ -18,7 +18,10 @@ TEST_CASE("Match memory alignment size used in Google Highway and imogrify.")
 
 TEST_CASE("Alignment of allocated memory")
 {
-	void* data = imfy::aligned_allocation(64U);
-	CHECK(hwy::IsAligned(data, imfy::memory_alignment_size));
-	imfy::aligned_deallocation(data);
+	for (std::size_t block_size = 8U; block_size < 128U; block_size += 8U)
+	{
+		void* data = imfy::aligned_allocation(block_size);
+		CHECK(hwy::IsAligned(data, imfy::memory_alignment_size));
+		imfy::aligned_deallocation(data);
+	}
 }
