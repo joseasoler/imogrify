@@ -4,3 +4,5 @@
 
 set(CMAKE_C_COMPILER "clang")
 set(CMAKE_CXX_COMPILER "clang++")
+set(CMAKE_C_FLAGS "-march=x86-64-v3 -mavx2")
+set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS}")
