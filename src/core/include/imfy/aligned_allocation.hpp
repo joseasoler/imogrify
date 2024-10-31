@@ -16,12 +16,24 @@ namespace imfy
 inline constexpr std::size_t memory_alignment_size = 128U;
 
 template <typename Type>
-IMFY_ALWAYS_INLINE constexpr Type* assume_aligned(Type* ptr)
+IMFY_ALWAYS_INLINE constexpr Type* assume_aligned(Type* pointer)
 {
-	return std::assume_aligned<memory_alignment_size, Type>(ptr);
+	return std::assume_aligned<memory_alignment_size, Type>(pointer);
 }
 
-void* aligned_allocation(std::size_t size);
-void aligned_deallocation(const void* aligned_pointer);
+void* aligned_allocation_bytes(std::size_t size);
+void aligned_deallocation_bytes(const void* aligned_pointer);
+
+template <typename Type>
+Type* aligned_allocation(std::size_t size)
+{
+	return imfy::assume_aligned(static_cast<Type*>(imfy::aligned_allocation_bytes(sizeof(Type) * size)));
+}
+
+template <typename Type>
+void aligned_deallocation(const Type* aligned_pointer)
+{
+	imfy::aligned_deallocation_bytes(static_cast<const void*>(aligned_pointer));
+}
 
 } // namespace imfy

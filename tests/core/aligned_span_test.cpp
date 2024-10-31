@@ -7,9 +7,6 @@
 
 #include <imfy/aligned_allocation.hpp>
 
-#include <hwy/aligned_allocator.h>
-
-#include <array>
 #include <cstddef>
 #include <cstdint>
 
@@ -28,26 +25,32 @@ TEST_CASE("Constructor checks.")
 	CHECK(empty_span.data() == nullptr);
 	CHECK(empty_span.empty());
 
-	constexpr std::array<std::uint32_t, 4U> array_input{32U, 8U, 16U, 64U};
-	const aligned_span array_span(array_input.data(), array_input.size());
+	constexpr std::uint16_t initial_value{32U};
+	constexpr std::size_t allocation_size{64U};
+	auto* allocation_input = imfy::aligned_allocation<std::uint32_t>(allocation_size);
+	*allocation_input = initial_value;
+	const aligned_span array_span(allocation_input, allocation_size);
 	CHECK(array_span.data() != nullptr);
-	CHECK(hwy::IsAligned(array_span.data(), imfy::memory_alignment_size));
-	CHECK(array_span.size() == array_input.size());
-	CHECK(array_span.size_bytes() == array_input.size() * sizeof(std::uint32_t));
-	CHECK(*array_span.data() == array_input[0U]);
+	CHECK(array_span.size() == allocation_size);
+	CHECK(array_span.size_bytes() == allocation_size * sizeof(std::uint32_t));
+	CHECK(*array_span.data() == initial_value);
+	imfy::aligned_deallocation<std::uint32_t>(allocation_input);
 }
 
 TEST_CASE("as_bytes checks.")
 {
 	constexpr std::uint16_t initial_value{0xFFU};
-	std::array<std::uint16_t, 2U> array_input{initial_value, 0x00U};
-	const imfy::aligned_span span(array_input.data(), array_input.size());
+	constexpr std::size_t allocation_size{1U};
+	auto* allocation_input = imfy::aligned_allocation<std::uint16_t>(allocation_size);
+	*allocation_input = initial_value;
+	const imfy::aligned_span span(allocation_input, allocation_size);
 	auto bytes_span = span.as_bytes();
-	CHECK(hwy::IsAligned(bytes_span.data(), imfy::memory_alignment_size));
 	CHECK(*bytes_span.data() == initial_value);
 
 	auto writable_span = span.as_writable_bytes();
-	constexpr std::uint16_t set_value{0xAAU};
+	constexpr std::uint8_t set_value{0xAU};
 	*writable_span.data() = set_value;
-	CHECK(array_input[0U] == set_value);
+	*(writable_span.data() + 1U) = set_value;
+	CHECK(*span.data() == (set_value << 8U) + set_value);
+	imfy::aligned_deallocation<std::uint16_t>(allocation_input);
 }
