@@ -29,6 +29,7 @@ add_library(imogrify_core STATIC
 	include/imfy/string.hpp
 	include/imfy/vector.hpp
 	markdown.cpp
+	runtime.cpp
 )
 
 target_include_directories(imogrify_core PUBLIC
@@ -41,4 +42,5 @@ target_compile_options(imogrify_core PRIVATE ${IMOGRIFY_CXX_COMPILE_OPTIONS})
 
 target_link_libraries(imogrify_core PRIVATE
 	fmt::fmt
+	hwy::hwy
 )

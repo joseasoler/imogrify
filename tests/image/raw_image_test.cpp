@@ -6,7 +6,6 @@
 #include "imfy/raw_image.hpp"
 
 #include <imfy/image_size.hpp>
-#include <imfy/vector.hpp>
 
 #include <algorithm>
 #include <cstddef>
@@ -50,7 +49,6 @@ void raw_image_checks(std::uint8_t channels, std::uint8_t bit_depth, image_size 
 
 TEST_CASE("Raw image")
 {
-	static_assert(sizeof(raw_image) == sizeof(imfy::vector<std::uint8_t>) + sizeof(std::uint64_t));
 	raw_image_checks(4U, 8U, {24U, 38U});
 	raw_image_checks(2U, 16U, {1024U, 2048U});
 }

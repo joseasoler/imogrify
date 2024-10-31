@@ -7,6 +7,8 @@ add_executable(imogrify_unit_tests
 	preprocessor_definitions_test.cpp
 	core/build_test.cpp
 	core/concepts_test.cpp
+	core/memory_block_test.cpp
+	core/runtime_test.cpp
 	image/image_size_test.cpp
 	image/png_format_test.cpp
 	image/raw_image_test.cpp
