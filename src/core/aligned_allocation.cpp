@@ -5,6 +5,8 @@
 
 #include "imfy/aligned_allocation.hpp"
 
+#include <imfy/attributes.hpp>
+
 #include <hwy/aligned_allocator.h>
 
 #include <cstddef>
@@ -14,6 +16,7 @@ namespace imfy
 
 void* aligned_allocation_bytes(std::size_t size)
 {
+	IMFY_ASSUME(size > 0);
 	return imfy::assume_aligned(hwy::AllocateAlignedBytes(size, nullptr, nullptr));
 }
 

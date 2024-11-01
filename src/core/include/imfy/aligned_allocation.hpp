@@ -43,7 +43,7 @@ void aligned_deallocation_bytes(const void* aligned_pointer);
 /**
  * Allocates a contiguous memory array of elements of a specific type.
  * @tparam Type Type of the elements.
- * @param size Size of the block. size * sizeof(Type) must be less than std::numeric_limits<size_t>::max() / 2.
+ * @param size Size of the block. size * sizeof(Type) must be less than std::numeric_limits<std::size_t>::max() / 2.
  * @return Pointer to the newly allocated memory.
  */
 template <typename Type>

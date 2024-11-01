@@ -33,17 +33,20 @@ public:
 	using size_type = std::size_t;
 
 	explicit memory_block(size_type block_size)
-		: block_{block_size > 0U ? aligned_allocation<value_type>(block_size) : nullptr}
-		, size_{block_size}
 	{
+		IMFY_ASSUME(block_size > 0);
+		block_ = aligned_allocation<value_type>(block_size);
+		size_ = block_size;
 	}
+
 	memory_block() = delete;
 	memory_block(const memory_block&) = delete;
 	memory_block(memory_block&& other) noexcept
 		: block_{other.block_}
 		, size_{other.size_}
 	{
-		other = memory_block(0U);
+		other.block_ = nullptr;
+		other.size_ = 0U;
 	}
 	memory_block& operator=(const memory_block&) = delete;
 	memory_block& operator=(memory_block&& rhs) noexcept

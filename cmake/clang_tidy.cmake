@@ -17,6 +17,7 @@ if (IMOGRIFY_CLANG_TIDY)
 			-extra-arg=-Wno-unknown-warning-option
 			-extra-arg=-Wno-ignored-optimization-argument
 			-extra-arg=-Wno-unused-command-line-argument
+			-extra-arg=-DIMOGRIFY_CLANG_TIDY
 		)
 
 		if (CMAKE_COMPILE_WARNING_AS_ERROR)
