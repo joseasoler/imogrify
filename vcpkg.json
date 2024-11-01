@@ -6,7 +6,8 @@
 		"imfy-zlib-ng",
 		"fmt",
 		"highway",
-		"magic-enum"
+		"magic-enum",
+		"tl-expected"
 	],
 	"features": {
 		"imogrify-benchmark": {

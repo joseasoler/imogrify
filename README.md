@@ -34,6 +34,8 @@ Building imogrify requires the following dependencies. imogrify expects to find 
 
 * **[Magic Enum](https://github.com/Neargye/magic_enum)**: Provides static reflection for enums.
 
+* **[tl-expected](https://github.com/TartanLlama/expected):** Single header implementation of `std::expected` with functional-style extensions.
+
 * **[zlib](https://www.zlib.net)**: A free, lossless data-compression library.
 
 Building with the `IMOGRIFY_BUILD_UNIT_TESTS` CMake option requires the following additional dependency. This dependency is not used by main the imogrify binary.
@@ -47,12 +49,6 @@ Building with the `IMOGRIFY_BUILD_BENCHMARKS` CMake option enabled requires the 
 * **[libspng](https://libspng.org)**: libspng (simple png) is a C library for reading and writing Portable Network Graphics (PNG) format files with a focus on security and ease of use.
 
 * **[lodepng](https://lodev.org/lodepng)**: LodePNG is a PNG image decoder and encoder, all in one, no dependency or linkage to zlib or libpng required.
-
-#### Included dependencies
-
-The following dependencies are included in the imogrify code base. Each one of them has its own COPYING or LICENSE file.
-
-* **[tl-expected](https://github.com/TartanLlama/expected):** Single header implementation of `std::expected` with functional-style extensions.
 
 ### CMake options
 

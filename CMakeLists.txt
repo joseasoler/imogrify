@@ -48,8 +48,7 @@ include(cmake/dependencies/lodepng.cmake)
 include(cmake/dependencies/highway.cmake)
 include(cmake/dependencies/magic_enum.cmake)
 include(cmake/dependencies/nanobench.cmake)
-# Contains dependencies in source form.
-add_subdirectory(thirdparty)
+include(cmake/dependencies/tl-expected.cmake)
 
 add_subdirectory(src)
 
