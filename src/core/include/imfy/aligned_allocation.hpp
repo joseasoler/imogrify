@@ -55,7 +55,7 @@ Type* aligned_allocation(std::size_t size)
 /**
  * Deallocates a memory array allocated by aligned_allocation_bytes.
  * @tparam Type Type of the elements.
-*  @param aligned_pointer Memory to deallocate. Must have been allocated by aligned_allocation.
+ *  @param aligned_pointer Memory to deallocate. Must have been allocated by aligned_allocation.
  */
 template <typename Type>
 void aligned_deallocation(const Type* aligned_pointer)

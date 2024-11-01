@@ -11,3 +11,10 @@
 #else
 #define IMFY_ALWAYS_INLINE inline __attribute__((always_inline))
 #endif
+
+// IMFY_RESTRICT: For the lifetime of a pointer, no other pointer will be access the object to which it points.
+#if IMOGRIFY_COMPILER_MSVC
+#define IMFY_RESTRICT __restrict
+#else
+#define IMFY_RESTRICT __restrict__
+#endif

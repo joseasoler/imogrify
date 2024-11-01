@@ -6,6 +6,7 @@
 #include "imfy/png_encoder.hpp"
 
 #include <imfy/aligned_span.hpp>
+#include <imfy/attributes.hpp>
 #include <imfy/png_format.hpp>
 #include <imfy/vector.hpp>
 
@@ -20,15 +21,13 @@
 #include <cstdint>
 #include <cstring>
 #include <exception>
-#include <fstream>
-#include <ios>
 #include <string_view>
 
 namespace
 {
 using data_buffer = imfy::vector<std::uint8_t>;
 
-void write_data_to_buffer(png_struct* png_ptr, std::uint8_t* data, std::size_t write_length)
+void write_data_to_buffer(png_struct* png_ptr, std::uint8_t* IMFY_RESTRICT data, std::size_t write_length)
 {
 	auto& output_buffer = *static_cast<data_buffer*>(png_get_io_ptr(png_ptr));
 	const auto current_size = output_buffer.size();
@@ -143,7 +142,7 @@ tl::expected<imfy::vector<std::uint8_t>, std::string_view> encode(
 
 	png_write_info(png_ptr, info_ptr);
 	// Write PNG file row by row to avoid arrays of row pointers and const casting.
-	const std::uint8_t* row_pointer = input_image.data();
+	const std::uint8_t* IMFY_RESTRICT row_pointer = input_image.data();
 	constexpr std::uint8_t bits_in_byte = 8U;
 	const std::uint8_t byte_depth = bit_depth / bits_in_byte;
 	const std::uint8_t channels = channels_of_color_type(color);
@@ -156,15 +155,10 @@ tl::expected<imfy::vector<std::uint8_t>, std::string_view> encode(
 		}
 
 		png_write_row(png_ptr, row_pointer);
-		// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 		row_pointer += static_cast<std::size_t>(img_size.width) * byte_depth * channels;
 	}
 	// Finish writing the image.
 	png_write_end(png_ptr, info_ptr);
-
-	// ToDo
-	std::ofstream dmp{"libpng.png", std::ios::out | std::ios::binary};
-	dmp.write(reinterpret_cast<const char*>(buffer.data()), static_cast<std::ptrdiff_t>(buffer.size())); // NOLINT
 
 	return buffer;
 }
