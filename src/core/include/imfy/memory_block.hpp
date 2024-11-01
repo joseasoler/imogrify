@@ -7,9 +7,11 @@
 
 #include <imfy/aligned_allocation.hpp>
 #include <imfy/aligned_span.hpp>
+#include <imfy/attributes.hpp>
 #include <imfy/concepts.hpp>
 
 #include <cstddef>
+#include <cstring>
 #include <memory>
 #include <new>
 #include <type_traits>
@@ -31,20 +33,41 @@ public:
 	using size_type = std::size_t;
 
 	explicit memory_block(size_type block_size)
-		: block_{aligned_allocation<value_type>(block_size)}
+		: block_{block_size > 0U ? aligned_allocation<value_type>(block_size) : nullptr}
 		, size_{block_size}
 	{
 	}
 	memory_block() = delete;
 	memory_block(const memory_block&) = delete;
-	memory_block(memory_block&&) noexcept = default;
+	memory_block(memory_block&& other) noexcept
+		: block_{other.block_}
+		, size_{other.size_}
+	{
+		other = memory_block(0U);
+	}
 	memory_block& operator=(const memory_block&) = delete;
-	memory_block& operator=(memory_block&&) noexcept = default;
+	memory_block& operator=(memory_block&& rhs) noexcept
+	{
+		block_ = rhs.block_;
+		size_ = rhs.size_;
+		rhs.block_ = nullptr;
+		rhs.size_ = 0U;
+		return *this;
+	}
 	~memory_block() { aligned_deallocation(block_); }
 
 	[[nodiscard]] size_type size() const noexcept { return size_; }
 	[[nodiscard]] aligned_span<value_type> span() noexcept { return {block_, size()}; }
 	[[nodiscard]] aligned_span<const value_type> span() const noexcept { return {block_, size()}; }
+
+	void enlarge(size_type block_size)
+	{
+		memory_block new_block(block_size);
+		value_type* IMFY_RESTRICT current_pointer = block_;
+		value_type* IMFY_RESTRICT new_pointer = new_block.block_;
+		std::memcpy(current_pointer, new_pointer, size_);
+		std::swap(new_block, *this);
+	}
 
 private:
 	value_type* block_;

@@ -80,7 +80,7 @@ void benchmark_png_encoding(
 			[&]() -> std::size_t
 			{
 				const auto result = imfy::png::encode(color_type, bit_depth, img_size, raw_data_span, compression_level);
-				return result.has_value() ? result.value().size() : 0U;
+				return result.has_value() ? result.value().size : 0U;
 			}
 	);
 

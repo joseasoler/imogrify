@@ -7,8 +7,8 @@
 
 #include <imfy/aligned_span.hpp>
 #include <imfy/image_size.hpp>
+#include <imfy/memory_block.hpp>
 #include <imfy/png_format.hpp>
-#include <imfy/vector.hpp>
 
 #include <tl/expected.hpp>
 
@@ -17,7 +17,24 @@
 namespace imfy::png
 {
 
-tl::expected<imfy::vector<std::uint8_t>, std::string_view> encode(
+// Since the encoder may allocate more memory than strictly necessary, this structure includes the actual encoded size.
+struct encoded_png final
+{
+	std::size_t size{};
+	imfy::memory_block<std::uint8_t> memory;
+
+	explicit encoded_png(std::size_t buffer_size)
+		: memory(buffer_size)
+	{
+	}
+	encoded_png(const encoded_png&) = delete;
+	encoded_png(encoded_png&&) noexcept = default;
+	encoded_png& operator=(const encoded_png&) = delete;
+	encoded_png& operator=(encoded_png&&) noexcept = default;
+	~encoded_png() = default;
+};
+
+tl::expected<encoded_png, std::string_view> encode(
 		imfy::png::color_type color, std::uint8_t bit_depth, image_size img_size,
 		aligned_span<const std::uint8_t> input_image, std::uint8_t compression_level
 );

@@ -7,8 +7,8 @@
 
 #include <imfy/aligned_span.hpp>
 #include <imfy/attributes.hpp>
+#include <imfy/memory_block.hpp>
 #include <imfy/png_format.hpp>
-#include <imfy/vector.hpp>
 
 #include "imfy/image_size.hpp"
 
@@ -25,19 +25,19 @@
 
 namespace
 {
-using data_buffer = imfy::vector<std::uint8_t>;
 
 void write_data_to_buffer(png_struct* png_ptr, std::uint8_t* IMFY_RESTRICT data, std::size_t write_length)
 {
-	auto& output_buffer = *static_cast<data_buffer*>(png_get_io_ptr(png_ptr));
-	const auto current_size = output_buffer.size();
-	const auto new_size = current_size + write_length;
-	if (output_buffer.size() < new_size)
+	auto& output_buffer = *static_cast<imfy::png::encoded_png*>(png_get_io_ptr(png_ptr));
+	const auto current_index = output_buffer.size;
+	const auto new_size = current_index + write_length;
+	if (output_buffer.memory.size() < new_size)
 	{
-		output_buffer.resize(new_size);
+		output_buffer.memory.enlarge(new_size);
 	}
 
-	std::memcpy(&output_buffer[current_size], data, write_length);
+	std::memcpy(output_buffer.memory.span().data() + current_index, data, write_length);
+	output_buffer.size = new_size;
 }
 
 /**
@@ -115,7 +115,7 @@ std::uint8_t channels_of_color_type(color_type color)
 namespace imfy::png
 {
 
-tl::expected<imfy::vector<std::uint8_t>, std::string_view> encode(
+tl::expected<encoded_png, std::string_view> encode(
 		const imfy::png::color_type color, const std::uint8_t bit_depth, const image_size img_size,
 		aligned_span<const std::uint8_t> input_image, const std::uint8_t compression_level
 )
@@ -136,8 +136,8 @@ tl::expected<imfy::vector<std::uint8_t>, std::string_view> encode(
 			PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT
 	);
 
-	// Write data to a memory buffer.
-	data_buffer buffer{};
+	// The memory buffer is pre-allocated with an estimated size to avoid repeated resize/copy operations.
+	encoded_png buffer(input_image.size_bytes());
 	png_set_write_fn(png_ptr, &buffer, write_data_to_buffer, nullptr);
 
 	png_write_info(png_ptr, info_ptr);
@@ -159,7 +159,6 @@ tl::expected<imfy::vector<std::uint8_t>, std::string_view> encode(
 	}
 	// Finish writing the image.
 	png_write_end(png_ptr, info_ptr);
-
 	return buffer;
 }
 
