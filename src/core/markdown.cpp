@@ -5,7 +5,10 @@
 
 #include "imfy/markdown.hpp"
 
+#include <imfy/build.hpp>
+
 #include <fmt/format.h>
+#include <magic_enum.hpp>
 
 #include <cstddef>
 #include <cstdint>
@@ -34,6 +37,41 @@ markdown::markdown(std::ostream& output)
 void markdown::add_heading(const heading level, const std::string_view text)
 {
 	output_ << fmt::format("{0:#>{1}} {2}\n\n"sv, "", static_cast<int>(level), text);
+}
+
+void markdown::add_build_information(heading level)
+{
+	add_heading(level, "Build information");
+
+	constexpr auto bullet_text_description = " * **{:s}:** {:s}\n\n";
+	constexpr auto bullet_version_description = " * **{:s}:** {:d}.{:d}.{:d}\n\n";
+
+	using namespace imfy::build;
+	output_ << fmt::format(
+			bullet_version_description, imfy::build::project.name, imfy::build::project.version.major, project.version.minor,
+			imfy::build::project.version.patch
+	);
+
+	output_ << fmt::format(bullet_text_description, "Build type", build_type);
+	output_ << fmt::format(
+			" * **Compiler:** {:s} {:d}.{:d}.{:d}\n\n", magic_enum::enum_name(compiler), compiler_version.major,
+			compiler_version.minor, compiler_version.patch
+	);
+
+	const auto next_level = static_cast<heading>(static_cast<std::uint8_t>(level) + 1);
+	add_heading(next_level, "Dependencies");
+	for (const auto& dependency : dependencies)
+	{
+		if (dependency.use != dependency_use::imogrify)
+		{
+			continue;
+		}
+
+		output_ << fmt::format(
+				" * **{:s}:** {:d}.{:d}.{:d}\n\n", dependency.name, dependency.version.major, dependency.version.minor,
+				dependency.version.patch
+		);
+	}
 }
 
 void markdown::add_table_header(

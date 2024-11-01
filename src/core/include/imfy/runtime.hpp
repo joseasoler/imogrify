@@ -11,5 +11,7 @@
 
 namespace imfy::runtime
 {
+
 vector<std::string_view> simd_target_names();
-}
+
+} // namespace imfy::runtime

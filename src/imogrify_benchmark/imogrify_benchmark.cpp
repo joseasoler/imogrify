@@ -27,8 +27,12 @@ int main(int /*argc*/, char** /*argv*/) // NOLINT
 	markdown mark{std::cout};
 
 	mark.add_heading(markdown::heading::level_1, "Library benchmarks");
-	// ToDo build information
+
+	mark.add_build_information(markdown::heading::level_2);
+
 	// ToDo system information
+	mark.add_heading(markdown::heading::level_2, "Benchmarks");
+
 	mark.add_heading(markdown::heading::level_3, "PNG");
 	// ToDo library metadata.
 	mark.add_heading(markdown::heading::level_4, "Encoding comparison");
