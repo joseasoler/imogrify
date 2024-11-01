@@ -5,11 +5,11 @@
 
 #include "imfy/raw_image.hpp"
 
+#include <imfy/aligned_span.hpp>
 #include <imfy/image_size.hpp>
 
 #include <cstddef>
 #include <cstdint>
-#include <span>
 
 namespace imfy
 {
@@ -37,12 +37,12 @@ image_size raw_image::size() const noexcept
 	return image_size_;
 }
 
-std::span<raw_image::value_type> raw_image::data() noexcept
+aligned_span<raw_image::value_type> raw_image::data() noexcept
 {
 	return data_.span();
 }
 
-std::span<const raw_image::value_type> raw_image::data() const noexcept
+aligned_span<const raw_image::value_type> raw_image::data() const noexcept
 {
 	return data_.span();
 }

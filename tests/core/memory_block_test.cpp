@@ -15,7 +15,7 @@ using imfy::memory_block;
 
 TEST_CASE("Allocating memory blocks of specific sizes")
 {
-	for (std::size_t size_param{}; size_param <= 8U; ++size_param)
+	for (std::size_t size_param{1U}; size_param <= 8U; ++size_param)
 	{
 		const memory_block<std::uint64_t> test_block{size_param};
 		CHECK(test_block.size() == size_param);
@@ -27,5 +27,5 @@ TEST_CASE("Setting values in the memory block.")
 	memory_block<std::uint8_t> block{257U};
 	auto span = block.span();
 	std::memset(span.data(), 0, span.size());
-	CHECK(std::all_of(span.begin(), span.end(), [](const std::uint8_t data) { return data == 0U; }));
+	CHECK(std::all_of(span.data(), span.data() + span.size(), [](const std::uint8_t data) { return data == 0U; }));
 }

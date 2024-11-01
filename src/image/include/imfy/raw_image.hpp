@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <imfy/aligned_span.hpp>
 #include <imfy/concepts.hpp>
 #include <imfy/image_size.hpp>
 #include <imfy/memory_block.hpp>
@@ -12,7 +13,6 @@
 #include <array>
 #include <cstddef>
 #include <limits>
-#include <span>
 
 namespace imfy
 {
@@ -33,8 +33,8 @@ public:
 	[[nodiscard]] std::uint8_t channels() const noexcept;
 	[[nodiscard]] std::uint8_t bit_depth() const noexcept;
 	[[nodiscard]] image_size size() const noexcept;
-	[[nodiscard]] std::span<raw_image::value_type> data() noexcept;
-	[[nodiscard]] std::span<const raw_image::value_type> data() const noexcept;
+	[[nodiscard]] aligned_span<raw_image::value_type> data() noexcept;
+	[[nodiscard]] aligned_span<const raw_image::value_type> data() const noexcept;
 
 private:
 	imfy::memory_block<value_type> data_;

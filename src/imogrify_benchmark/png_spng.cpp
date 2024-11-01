@@ -5,6 +5,7 @@
 
 #include "imfy/png_spng.hpp"
 
+#include <imfy/aligned_span.hpp>
 #include <imfy/image_size.hpp>
 #include <imfy/png_format.hpp>
 
@@ -13,7 +14,6 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
-#include <span>
 
 using imfy::png::color_type;
 
@@ -52,7 +52,7 @@ namespace imfy
 
 std::size_t encode_spng(
 		const color_type color, const std::uint8_t bit_depth, const imfy::image_size img_size,
-		std::span<const std::uint8_t> input_image, const std::uint8_t compression_level
+		aligned_span<const std::uint8_t> input_image, const std::uint8_t compression_level
 )
 {
 	spng_context context{SPNG_CTX_ENCODER};

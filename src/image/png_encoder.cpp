@@ -5,6 +5,7 @@
 
 #include "imfy/png_encoder.hpp"
 
+#include <imfy/aligned_span.hpp>
 #include <imfy/png_format.hpp>
 #include <imfy/vector.hpp>
 
@@ -21,7 +22,6 @@
 #include <exception>
 #include <fstream>
 #include <ios>
-#include <span>
 #include <string_view>
 
 namespace
@@ -118,7 +118,7 @@ namespace imfy::png
 
 tl::expected<imfy::vector<std::uint8_t>, std::string_view> encode(
 		const imfy::png::color_type color, const std::uint8_t bit_depth, const image_size img_size,
-		std::span<const std::uint8_t> input_image, const std::uint8_t compression_level
+		aligned_span<const std::uint8_t> input_image, const std::uint8_t compression_level
 )
 {
 	const char* warning_message = nullptr;

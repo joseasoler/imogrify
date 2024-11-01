@@ -5,34 +5,17 @@
 
 #pragma once
 
-#include <imfy/allocator.hpp>
+#include <imfy/aligned_allocation.hpp>
+#include <imfy/aligned_span.hpp>
 #include <imfy/concepts.hpp>
 
 #include <cstddef>
 #include <memory>
 #include <new>
-#include <span>
 #include <type_traits>
 
 namespace imfy
 {
-
-namespace detail
-{
-
-template <pod_type Type, standard_empty_allocator Allocator>
-struct memory_block_delete final
-{
-	explicit memory_block_delete(std::size_t blck_size) noexcept
-		: block_size{blck_size}
-	{
-	}
-	void operator()(Type* pointer) const { Allocator{}.deallocate(pointer, block_size); }
-
-	std::size_t block_size;
-};
-
-} // namespace detail
 
 /**
  * Memory block with managed allocation and de-allocation.
@@ -40,15 +23,16 @@ struct memory_block_delete final
  * Aborts on memory allocation failures.
  * @tparam Type Standard layout type stored by the memory block.
  */
-template <pod_type Type, standard_empty_allocator Allocator = imfy::allocator<Type>>
+template <pod_type Type>
 class memory_block final
 {
 public:
 	using value_type = Type;
-	using size_type = typename Allocator::size_type;
+	using size_type = std::size_t;
 
 	explicit memory_block(size_type block_size)
-		: block_{Allocator{}.allocate(block_size), detail::memory_block_delete<value_type, Allocator>{block_size}}
+		: block_{aligned_allocation<value_type>(block_size)}
+		, size_{block_size}
 	{
 	}
 	memory_block() = delete;
@@ -56,14 +40,15 @@ public:
 	memory_block(memory_block&&) noexcept = default;
 	memory_block& operator=(const memory_block&) = delete;
 	memory_block& operator=(memory_block&&) noexcept = default;
-	~memory_block() = default;
+	~memory_block() { aligned_deallocation(block_); }
 
-	[[nodiscard]] size_type size() const noexcept { return block_.get_deleter().block_size; }
-	[[nodiscard]] std::span<value_type> span() noexcept { return {block_.get(), size()}; }
-	[[nodiscard]] std::span<const value_type> span() const noexcept { return {block_.get(), size()}; }
+	[[nodiscard]] size_type size() const noexcept { return size_; }
+	[[nodiscard]] aligned_span<value_type> span() noexcept { return {block_, size()}; }
+	[[nodiscard]] aligned_span<const value_type> span() const noexcept { return {block_, size()}; }
 
 private:
-	std::unique_ptr<value_type, detail::memory_block_delete<value_type, Allocator>> block_;
+	value_type* block_;
+	size_type size_;
 };
 
 } // namespace imfy

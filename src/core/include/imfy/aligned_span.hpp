@@ -42,9 +42,9 @@ public:
 	{
 	}
 
-	aligned_span(const aligned_span&) = delete;
+	aligned_span(const aligned_span&) = default;
 	aligned_span(aligned_span&&) noexcept = default;
-	aligned_span& operator=(const aligned_span&) = delete;
+	aligned_span& operator=(const aligned_span&) = default;
 	aligned_span& operator=(aligned_span&&) noexcept = default;
 	~aligned_span() = default;
 

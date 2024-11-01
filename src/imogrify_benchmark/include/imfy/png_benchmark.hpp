@@ -12,7 +12,6 @@
 #include <imfy/raw_image.hpp>
 
 #include <cstdint>
-#include <span>
 #include <string_view>
 
 #include <nanobench.h>

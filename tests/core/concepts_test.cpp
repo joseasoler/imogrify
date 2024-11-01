@@ -5,7 +5,6 @@
 
 #include "imfy/concepts.hpp"
 
-#include <imfy/allocator.hpp>
 #include <imfy/string.hpp>
 #include <imfy/vector.hpp>
 
@@ -41,10 +40,4 @@ TEST_CASE("Plain old object concept.")
 	static_assert(!imfy::pod_type<imfy::vector<std::uint8_t>>);
 	static_assert(!imfy::pod_type<imfy::string>);
 	static_assert(!imfy::pod_type<std::unique_ptr<std::uint8_t>>);
-}
-
-TEST_CASE("standard_allocator concept")
-{
-	static_assert(imfy::standard_empty_allocator<std::allocator<int>>);
-	static_assert(imfy::standard_empty_allocator<imfy::allocator<int>>);
 }
