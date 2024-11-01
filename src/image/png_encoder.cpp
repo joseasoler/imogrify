@@ -5,9 +5,9 @@
 
 #include "imfy/png_encoder.hpp"
 
+#include <imfy/aligned_allocation.hpp>
 #include <imfy/aligned_span.hpp>
 #include <imfy/attributes.hpp>
-#include <imfy/memory_block.hpp>
 #include <imfy/png_format.hpp>
 
 #include "imfy/image_size.hpp"
@@ -64,6 +64,16 @@ void libpng_capture_warning(png_struct* png_ptr, const char* warning_msg)
 	*error_ptr = warning_msg;
 }
 
+void* libpng_malloc(png_struct* /*png_ptr*/, std::size_t size)
+{
+	return imfy::aligned_allocation_bytes(size);
+}
+
+void libpng_free(png_struct* /*png_ptr*/, void* pointer)
+{
+	imfy::aligned_deallocation_bytes(pointer);
+}
+
 class png_info_raii final
 {
 public:
@@ -71,7 +81,7 @@ public:
 		: struct_ptr_{png_create_write_struct_2(
 					PNG_LIBPNG_VER_STRING,
 					error, // NOLINT
-					libpng_fatal_error, libpng_capture_warning, nullptr, nullptr, nullptr
+					libpng_fatal_error, libpng_capture_warning, nullptr, libpng_malloc, libpng_free
 			)}
 		, info_ptr_{struct_ptr_ != nullptr ? png_create_info_struct(struct_ptr_) : nullptr}
 	{
