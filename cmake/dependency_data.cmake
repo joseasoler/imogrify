@@ -16,6 +16,7 @@ function(add_dependency_metadata)
 		VERSION      # Version of the project.
 		DESCRIPTION  # Used to set the additional target property DESCRIPTION.
 		LICENSE_SPDX # Used to set the additional target property LICENSE_SPDX.
+		USAGE        # Determines if this is a main, benchmark, or test dependency.
 	)
 	cmake_parse_arguments(DPND "${OPTION_ARGS}" "${ONE_VALUE_ARGS}" "" ${ARGN})
 	if (NOT DEFINED DPND_NAME)
@@ -26,6 +27,10 @@ function(add_dependency_metadata)
 		message(FATAL_ERROR "add_dependency_metadata(${DPND_NAME}) called without a DESCRIPTION.")
 	elseif (NOT DEFINED DPND_LICENSE_SPDX)
 		message(FATAL_ERROR "add_dependency_metadata(${DPND_NAME}) called without a LICENSE_SPDX.")
+	elseif (NOT DEFINED DPND_USAGE)
+		message(FATAL_ERROR "add_dependency_metadata(${DPND_NAME}) called without a USAGE.")
+	elseif (NOT DPND_USAGE STREQUAL "imogrify" AND NOT DPND_USAGE STREQUAL "benchmark" AND NOT DPND_USAGE STREQUAL "test")
+		message(FATAL_ERROR "add_dependency_metadata(${DPND_NAME}) USAGE must be imogrify, benchmark or test.")
 	endif ()
 
 	# Convert version format.
@@ -38,7 +43,7 @@ function(add_dependency_metadata)
 	string(REPLACE "." "," DPND_VERSION ${DPND_VERSION})
 	set(DPND_VERSION "{${DPND_VERSION}}")
 
-	set(DPND_METADATA "dependency_t{\"${DPND_NAME}\",${DPND_VERSION},\"${DPND_DESCRIPTION}\",\"${DPND_LICENSE_SPDX}\",},\n")
+	set(DPND_METADATA "dependency_t{\"${DPND_NAME}\",${DPND_VERSION},\"${DPND_DESCRIPTION}\",\"${DPND_LICENSE_SPDX}\",dependency_use::${DPND_USAGE}},\n")
 
 	# Append the target to the list of known dependency targets.
 	list(APPEND IMOGRIFY_DEPENDENCY_DATA_LIST "${DPND_METADATA} ")

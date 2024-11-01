@@ -5,13 +5,13 @@
 include_guard(GLOBAL)
 
 if (IMOGRIFY_BUILD_BENCHMARKS)
-	find_package(nanobench REQUIRED)
+	find_package(SPNG REQUIRED)
 
 	add_dependency_metadata(
-		NAME nanobench
-		VERSION 4.3.11
-		DESCRIPTION "A platform independent microbenchmarking library for C++."
-		LICENSE_SPDX "MIT"
+		NAME libspng
+		VERSION ${SPNG_VERSION}
+		DESCRIPTION "C library for reading and writing Portable Network Graphics (PNG) format files with a focus on security and ease of use."
+		LICENSE_SPDX "BSD-2-Clause"
 		USAGE "benchmark"
 	)
 

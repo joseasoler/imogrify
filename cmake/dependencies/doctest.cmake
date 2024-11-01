@@ -12,6 +12,7 @@ if (IMOGRIFY_BUILD_UNIT_TESTS)
 		VERSION ${doctest_VERSION}
 		DESCRIPTION "Fast C++ testing framework."
 		LICENSE_SPDX "MIT"
+		USAGE "test"
 	)
 
 endif ()

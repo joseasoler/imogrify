@@ -23,6 +23,14 @@ struct version_t final
 	std::uint16_t patch;
 };
 
+/** How a dependency is used. */
+enum class dependency_use : std::uint8_t
+{
+	imogrify, // Imogrify main binary.
+	benchmark, // Benchmarks only.
+	test, // Testing only.
+};
+
 /** Stores dependency information retrieved during compile time. */
 struct dependency_t
 {
@@ -37,6 +45,9 @@ struct dependency_t
 
 	/** SPDX identifier of the license ysed by the dependency. */
 	std::string_view license;
+
+	/** How the dependency is used. */
+	dependency_use use;
 };
 
 constexpr dependency_t project{
@@ -45,7 +56,8 @@ constexpr dependency_t project{
 		{@CMAKE_PROJECT_VERSION_MAJOR@, @CMAKE_PROJECT_VERSION_MINOR@, @CMAKE_PROJECT_VERSION_PATCH@},
 		// clang-format on
 		"@CMAKE_PROJECT_DESCRIPTION@",
-		"MPL-2.0"
+		"MPL-2.0",
+		dependency_use::imogrify
 };
 
 inline constexpr std::string_view build_type{"@IMOGRIFY_BUILD_TYPE@"};

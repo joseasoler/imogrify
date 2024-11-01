@@ -11,5 +11,6 @@ add_dependency_metadata(
 	VERSION ${hwy_VERSION}
 	DESCRIPTION "Performance-portable, length-agnostic SIMD with runtime dispatch."
 	LICENSE_SPDX "Apache-2.0"
+	USAGE "imogrify"
 )
 

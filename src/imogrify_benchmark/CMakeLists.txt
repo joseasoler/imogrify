@@ -2,8 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-find_package(lodepng REQUIRED)
-find_package(SPNG REQUIRED)
 
 add_executable(imogrify_benchmark
 	benchmark.cpp

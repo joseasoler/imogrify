@@ -20,6 +20,7 @@ if (VCPKG_TARGET_TRIPLET)
 		VERSION "${ZLIB_NG_VERSION}"
 		DESCRIPTION "A zlib data compression library for the next generation systems."
 		LICENSE_SPDX "Zlib"
+		USAGE "imogrify"
 	)
 else ()
 	add_dependency_metadata(
@@ -27,6 +28,7 @@ else ()
 		VERSION "${ZLIB_VERSION_STRING}"
 		DESCRIPTION "A free, lossless data-compression library."
 		LICENSE_SPDX "Zlib"
+		USAGE "imogrify"
 	)
 endif ()
 

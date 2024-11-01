@@ -11,5 +11,6 @@ add_dependency_metadata(
 	VERSION ${fmt_VERSION}
 	DESCRIPTION "An open-source formatting library."
 	LICENSE_SPDX "MIT"
+	USAGE "imogrify"
 )
 

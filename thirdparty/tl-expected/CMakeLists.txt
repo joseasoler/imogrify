@@ -10,4 +10,5 @@ add_dependency_metadata(
 	VERSION 1.1.0
 	DESCRIPTION "Single header implementation of std::expected with functional-style extensions."
 	LICENSE_SPDX "CC0-1.0"
+	USAGE "imogrify"
 )

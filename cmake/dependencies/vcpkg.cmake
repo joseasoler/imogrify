@@ -18,6 +18,7 @@ if (VCPKG_TARGET_TRIPLET)
 		VERSION "2024.9.30" # Needs to be updated along with .github/workflows/build_checks.yml
 		DESCRIPTION "A free and open-source C/C++ package manager."
 		LICENSE_SPDX "MIT"
+		USAGE "imogrify"
 	)
 
 endif ()

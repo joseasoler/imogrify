@@ -11,5 +11,6 @@ add_dependency_metadata(
 	VERSION ${magic_enum_VERSION}
 	DESCRIPTION "Provides static reflection for enums."
 	LICENSE_SPDX "MIT"
+	USAGE "imogrify"
 )
 

@@ -5,13 +5,13 @@
 include_guard(GLOBAL)
 
 if (IMOGRIFY_BUILD_BENCHMARKS)
-	find_package(nanobench REQUIRED)
+	find_package(lodepng REQUIRED)
 
 	add_dependency_metadata(
-		NAME nanobench
-		VERSION 4.3.11
-		DESCRIPTION "A platform independent microbenchmarking library for C++."
-		LICENSE_SPDX "MIT"
+		NAME lodepng
+		VERSION "2021.12.4"
+		DESCRIPTION "PNG image decoder and encoder, all in one, no dependency or linkage to zlib or libpng required."
+		LICENSE_SPDX "Zlib"
 		USAGE "benchmark"
 	)
 

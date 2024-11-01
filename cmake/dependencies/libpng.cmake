@@ -11,5 +11,6 @@ add_dependency_metadata(
 	VERSION "${PNG_VERSION_STRING}"
 	DESCRIPTION "A library implementing an interface for reading and writing PNG (Portable Network Graphics) format files."
 	LICENSE_SPDX "libpng-2.0"
+	USAGE "imogrify"
 )
 
