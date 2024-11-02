@@ -5,116 +5,84 @@
 
 #include "imfy/runtime.hpp"
 
-#include <array>
+#include <imfy/vector.hpp>
 
-#include "cpu_features_macros.h"
+#include <hwy/detect_targets.h>
+#include <hwy/targets.h>
+#include <libcpuid/libcpuid.h>
+#include <tl/expected.hpp>
 
-#if defined(CPU_FEATURES_ARCH_AARCH64)
-#include "cpuinfo_aarch64.h"
-#elif defined(CPU_FEATURES_ARCH_ARM)
-#include "cpuinfo_arm.h"
-#elif defined(CPU_FEATURES_ARCH_LOONGARCH)
-#include "cpuinfo_loongarch.h"
-#elif defined(CPU_FEATURES_ARCH_MIPS)
-#include "cpuinfo_mips.h"
-#elif defined(CPU_FEATURES_ARCH_PPC)
-#include "cpuinfo_ppc.h"
-#elif defined(CPU_FEATURES_ARCH_RISCV)
-#include "cpuinfo_riscv.h"
-#elif defined(CPU_FEATURES_ARCH_S390X)
-#include "cpuinfo_s390x.h"
-#elif defined(CPU_FEATURES_ARCH_X86)
-#include "cpuinfo_x86.h"
-#endif
+#include <cstdint>
+#include <string_view>
 
 namespace
 {
 
-using namespace cpu_features;
+tl::expected<cpu_raw_data_t, std::string_view> get_raw_data()
+{
+	cpu_raw_data_t raw_data{};
+	if (cpuid_get_raw_data(&raw_data) != 0)
+	{
+		return tl::unexpected(cpuid_error());
+	}
 
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define DEFINE_PLATFORM_ALIASES_CONCATENATION(PlatformId)                             \
-	constexpr auto get_cpu_info = Get##PlatformId##Info;                                \
-	constexpr auto get_microarchitecture = Get##PlatformId##Microarchitecture;          \
-	constexpr auto get_microarchitecture_name = Get##PlatformId##MicroarchitectureName; \
-	using cpu_feature_id = PlatformId##FeaturesEnum;                                    \
-	constexpr auto has_cpu_feature = Get##PlatformId##FeaturesEnumValue;                \
-	constexpr auto get_feature_name = Get##PlatformId##FeaturesEnumName
+	return raw_data;
+}
 
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define DEFINE_PLATFORM_ALIASES(PlatformId) DEFINE_PLATFORM_ALIASES_CONCATENATION(PlatformId)
+tl::expected<cpu_id_t, std::string_view> get_cpu_id(cpu_raw_data_t raw_data)
+{
+	cpu_id_t cpu_id{};
+	if (cpu_identify(&raw_data, &cpu_id) != 0)
+	{
+		return tl::unexpected(cpuid_error());
+	}
 
-// Each platform must define its aliases and a list of feature ids to report.
-// Untested platforms have an empty list of feature ids.
-#if defined(CPU_FEATURES_ARCH_AARCH64)
+	return cpu_id;
+}
 
-DEFINE_PLATFORM_ALIASES(Aarch64);
-constexpr std::array<cpu_feature_id, 0U> cpu_feature_ids{};
+imfy::vector<std::string_view> simd_target_names()
+{
+	// See hwy::SupportedAndGeneratedTargets.
+	imfy::vector<std::string_view> result;
+	auto targets = static_cast<std::uint64_t>(hwy::SupportedTargets()) & HWY_TARGETS;
+	for (; targets != 0U; targets = targets & (targets - 1U))
+	{
+		const std::uint64_t current_target = targets & ~(targets - 1U);
+		result.emplace_back(hwy::TargetName(static_cast<std::int64_t>(current_target)));
+	}
+	return result;
+}
 
-#elif defined(CPU_FEATURES_ARCH_ARM)
+tl::expected<imfy::runtime::cpu_info, std::string_view> get_cpu_information(cpu_id_t cpu_id)
+{
+	imfy::runtime::cpu_info output_cpu_info;
+	output_cpu_info.brand = static_cast<const char*>(cpu_id.brand_str);
+	// Remove trailing spaces from the CPU brand string.
+	auto last_index = output_cpu_info.brand.find_last_not_of(' ');
+	output_cpu_info.brand.resize(last_index + 1U);
 
-DEFINE_PLATFORM_ALIASES(Arm);
-constexpr std::array<cpu_feature_id, 0U> cpu_feature_ids{};
+	output_cpu_info.microarchitecture = cpu_feature_level_str(cpu_id.feature_level);
 
-#elif defined(CPU_FEATURES_ARCH_LOONGARCH)
+	output_cpu_info.features = simd_target_names();
 
-DEFINE_PLATFORM_ALIASES(LoongArch);
-constexpr std::array<cpu_feature_id, 0U> cpu_feature_ids{};
-
-#elif defined(CPU_FEATURES_ARCH_MIPS)
-
-DEFINE_PLATFORM_ALIASES(Mips);
-constexpr std::array<cpu_feature_id, 0U> cpu_feature_ids{};
-
-#elif defined(CPU_FEATURES_ARCH_PPC)
-
-DEFINE_PLATFORM_ALIASES(PPC);
-constexpr std::array<cpu_feature_id, 0U> cpu_feature_ids{};
-
-#elif defined(CPU_FEATURES_ARCH_RISCV)
-
-DEFINE_PLATFORM_ALIASES(Riscv);
-constexpr std::array<cpu_feature_id, 0U> cpu_feature_ids{};
-
-#elif defined(CPU_FEATURES_ARCH_S390X)
-
-DEFINE_PLATFORM_ALIASES(S390X);
-constexpr std::array<cpu_feature_id, 0U> cpu_feature_ids{};
-
-#elif defined(CPU_FEATURES_ARCH_X86)
-
-DEFINE_PLATFORM_ALIASES(X86);
-constexpr std::array cpu_feature_ids{X86_SSE,		 X86_SSE2,	X86_SSE3, X86_SSSE3,		X86_SSE4_1,
-																		 X86_SSE4_2, X86_SSE4A, X86_AVX,	X86_AVX_VNNI, X86_AVX2};
-
-#endif
+	return output_cpu_info;
+}
 
 } // namespace
 
 namespace imfy::runtime
 {
 
-cpu_info cpu_information()
+tl::expected<cpu_info, std::string_view> cpu_information()
 {
-	const auto raw_cpu_info = get_cpu_info();
-	cpu_info output_cpu_info{};
+	/*
 
-	// Remove trailing spaces from the CPU brand string.
-	output_cpu_info.brand = static_cast<const char*>(raw_cpu_info.brand_string);
-	auto last_index = output_cpu_info.brand.find_last_not_of(' ');
-	output_cpu_info.brand.resize(last_index + 1U);
+constexpr std::array cpu_feature_ids{X86_SSE,			X86_SSE2,	 X86_SSE3, X86_SSSE3,		 X86_SSE4_1,
+																		 -X86_SSE4_2, X86_SSE4A, X86_AVX,	 X86_AVX_VNNI, X86_AVX2};
 
-	output_cpu_info.microarchitecture = get_microarchitecture_name(get_microarchitecture(&raw_cpu_info));
+	 */
 
-	for (const auto& cpu_feature_id : cpu_feature_ids)
-	{
-		if (has_cpu_feature(&raw_cpu_info.features, cpu_feature_id) != 0)
-		{
-			output_cpu_info.features.emplace_back(get_feature_name(cpu_feature_id));
-		}
-	}
-
-	return output_cpu_info;
+	return get_raw_data().and_then(get_cpu_id).and_then(get_cpu_information);
 }
 
 } // namespace imfy::runtime

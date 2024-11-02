@@ -40,9 +40,9 @@ include(cmake/clang_tidy.cmake)
 # Project dependencies.
 include(cmake/dependencies/zlib.cmake)
 # ---
-include(cmake/dependencies/cpu_features.cmake)
 include(cmake/dependencies/doctest.cmake)
 include(cmake/dependencies/fmt.cmake)
+include(cmake/dependencies/libcpuid.cmake)
 include(cmake/dependencies/libpng.cmake)
 include(cmake/dependencies/libspng.cmake)
 include(cmake/dependencies/lodepng.cmake)

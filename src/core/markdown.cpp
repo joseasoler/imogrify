@@ -78,8 +78,13 @@ void markdown::add_build_information(heading level)
 
 void markdown::add_runtime_information([[maybe_unused]] heading level)
 {
+	const auto cpu_information_result = runtime::cpu_information();
+	if (!cpu_information_result.has_value())
+	{
+		return;
+	}
 	add_heading(level, "Runtime information");
-	const auto cpu_information = runtime::cpu_information();
+	const auto& cpu_information = cpu_information_result.value();
 
 	output_ << fmt::format(bullet_text_description, "CPU brand", cpu_information.brand);
 	output_ << fmt::format(bullet_text_description, "CPU microarchitecture", cpu_information.microarchitecture);

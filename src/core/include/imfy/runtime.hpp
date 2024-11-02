@@ -8,6 +8,8 @@
 #include <imfy/string.hpp>
 #include <imfy/vector.hpp>
 
+#include <tl/expected.hpp>
+
 #include <cstdint>
 #include <string_view>
 
@@ -23,8 +25,8 @@ struct cpu_info final
 
 /**
  * Gathers all required information about the CPU. Intended for writing reports.
- * @return CPU information structure.
+ * @return CPU information structure or an error description.
  */
-cpu_info cpu_information();
+tl::expected<cpu_info, std::string_view> cpu_information();
 
 } // namespace imfy::runtime

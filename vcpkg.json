@@ -2,7 +2,6 @@
 	"name": "imogrify",
 	"version": "0.1.0",
 	"dependencies": [
-		"cpu-features",
 		"imfy-libpng-ng",
 		"imfy-zlib-ng",
 		"fmt",
@@ -17,6 +16,12 @@
 				"imfy-libspng-ng",
 				"nanobench",
 				"lodepng"
+			]
+		},
+		"imogrify-cpu-information": {
+			"description": "CPU information support",
+			"dependencies": [
+				"cpuid"
 			]
 		},
 		"imogrify-tests": {

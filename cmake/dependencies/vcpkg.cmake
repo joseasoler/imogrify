@@ -12,6 +12,9 @@ if (VCPKG_TARGET_TRIPLET)
 	if (IMOGRIFY_BUILD_BENCHMARKS)
 		list(APPEND VCPKG_MANIFEST_FEATURES "imogrify-benchmark")
 	endif ()
+	if (IMOGRIFY_BUILD_CPU_INFORMATION)
+		list(APPEND VCPKG_MANIFEST_FEATURES "imogrify-cpu-information")
+	endif ()
 
 	add_dependency_metadata(
 		NAME vcpkg

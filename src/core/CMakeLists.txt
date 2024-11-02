@@ -22,11 +22,18 @@ endif ()
 
 configure_file(include/imfy/build.hpp.in include/imfy/build.hpp @ONLY)
 
-add_library(imogrify_core STATIC
+set(IMOGRIFY_CORE_SOURCE_FILES
 	aligned_allocation.cpp
 	markdown.cpp
-	runtime.cpp
 )
+
+if (IMOGRIFY_BUILD_CPU_INFORMATION)
+	list(APPEND IMOGRIFY_CORE_SOURCE_FILES runtime.cpp)
+else ()
+	list(APPEND IMOGRIFY_CORE_SOURCE_FILES runtime_no_cpuid.cpp)
+endif ()
+
+add_library(imogrify_core STATIC ${IMOGRIFY_CORE_SOURCE_FILES})
 
 target_include_directories(imogrify_core PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>/include
@@ -36,9 +43,15 @@ target_include_directories(imogrify_core PUBLIC
 target_compile_definitions(imogrify_core PRIVATE ${IMOGRIFY_CXX_COMPILE_DEFINITIONS})
 target_compile_options(imogrify_core PRIVATE ${IMOGRIFY_CXX_COMPILE_OPTIONS})
 
-target_link_libraries(imogrify_core PRIVATE
-	CpuFeatures::cpu_features
+set(IMOGRIFY_CORE_LINK_LIBRARIES
 	fmt::fmt
 	hwy::hwy
 	magic_enum::magic_enum
+	tl::expected
 )
+
+if (IMOGRIFY_BUILD_CPU_INFORMATION)
+	list(APPEND IMOGRIFY_CORE_LINK_LIBRARIES cpuid::cpuid)
+endif ()
+
+target_link_libraries(imogrify_core PRIVATE ${IMOGRIFY_CORE_LINK_LIBRARIES})
