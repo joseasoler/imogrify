@@ -24,12 +24,15 @@ jobs:
         include:
           - os: macos-15
             build_type: release
+            cmake_system: arm64
             cmake_os: macos
           - os: ubuntu-24.04
             build_type: debug
+            cmake_system: x64
             cmake_os: linux
           - os: windows-latest
             build_type: release
+            cmake_system: x64
             cmake_os: windows
         exclude:
           - os: macos-15
@@ -68,10 +71,10 @@ jobs:
         run: pip install ninja
 
       - name: Configure project
-        run: cmake --preset ci-cfg-${{ matrix.cmake_os }}-${{ matrix.build_type }}-${{ matrix.compiler }}
+        run: cmake --preset cfg-${{ matrix.cmake_system }}-${{ matrix.cmake_os }}-${{ matrix.build_type }}-${{ matrix.compiler }}
 
       - name: Build project
-        run: cmake --build --preset ci-build-${{ matrix.cmake_os }}-${{ matrix.build_type }}-${{ matrix.compiler }}
+        run: cmake --build --preset build-${{ matrix.cmake_system }}-${{ matrix.cmake_os }}-${{ matrix.build_type }}-${{ matrix.compiler }}
 
       - name: Run tests
-        run: ctest --preset ci-test-${{ matrix.cmake_os }}-${{ matrix.build_type }}-${{ matrix.compiler }} --output-on-failure
+        run: ctest --preset test-${{ matrix.cmake_system }}-${{ matrix.cmake_os }}-${{ matrix.build_type }}-${{ matrix.compiler }} --output-on-failure

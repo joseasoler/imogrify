@@ -7,7 +7,7 @@
 	},
 	"configurePresets": [
 		{
-			"name": "ci-cfg-base",
+			"name": "cfg-base",
 			"binaryDir": "build/${presetName}",
 			"hidden": true,
 			"generator": "Ninja",
@@ -21,141 +21,144 @@
 			}
 		},
 		{
-			"name": "ci-cfg-debug",
+			"name": "cfg-debug",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "Debug"
 			},
 			"hidden": true
 		},
 		{
-			"name": "ci-cfg-release",
+			"name": "cfg-release",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "Release"
 			},
 			"hidden": true
 		},
 		{
-			"name": "ci-cfg-linux-gcc",
-			"cacheVariables": {
-				"VCPKG_TARGET_TRIPLET": "imfy-x64-linux-gcc"
-			},
-			"hidden": true
-		},
-		{
-			"name": "ci-cfg-linux-clang",
-			"cacheVariables": {
-				"CMAKE_C_COMPILER": "clang",
-				"CMAKE_CXX_COMPILER": "clang++",
-				"VCPKG_TARGET_TRIPLET": "imfy-x64-linux-clang"
-			},
-			"hidden": true
-		},
-		{
-			"name": "ci-cfg-macos",
-			"cacheVariables": {
-				"VCPKG_TARGET_TRIPLET": "arm64-osx"
-			},
+			"name": "cfg-arm64-macos",
 			"condition": {
 				"type": "equals",
 				"lhs": "${hostSystemName}",
 				"rhs": "Darwin"
 			},
+			"cacheVariables": {
+				"VCPKG_TARGET_TRIPLET": "arm64-osx"
+			},
 			"hidden": true
 		},
 		{
-			"name": "ci-cfg-linux",
-			"cacheVariables": {
-				"IMOGRIFY_CLANG_TIDY": "ON"
-			},
+			"name": "cfg-x64-linux",
 			"condition": {
 				"type": "equals",
 				"lhs": "${hostSystemName}",
 				"rhs": "Linux"
 			},
+			"cacheVariables": {
+				"IMOGRIFY_CLANG_TIDY": "ON",
+				"CMAKE_CXX_FLAGS": "-march=x86-64-v3 -mavx2"
+			},
 			"hidden": true
 		},
 		{
-			"name": "ci-cfg-windows",
+			"name": "cfg-x64-linux-gcc",
 			"cacheVariables": {
-				"VCPKG_TARGET_TRIPLET": "x64-windows-static"
+				"VCPKG_TARGET_TRIPLET": "imfy-x64-linux-gcc"
 			},
+			"inherits": [
+				"cfg-x64-linux"
+			],
+			"hidden": true
+		},
+		{
+			"name": "cfg-x64-linux-clang",
+			"cacheVariables": {
+				"CMAKE_C_COMPILER": "clang",
+				"CMAKE_CXX_COMPILER": "clang++",
+				"VCPKG_TARGET_TRIPLET": "imfy-x64-linux-clang"
+			},
+			"inherits": [
+				"cfg-x64-linux"
+			],
+			"hidden": true
+		},
+		{
+			"name": "cfg-x64-windows",
 			"condition": {
 				"type": "equals",
 				"lhs": "${hostSystemName}",
 				"rhs": "Windows"
 			},
+			"cacheVariables": {
+				"VCPKG_TARGET_TRIPLET": "x64-windows-static"
+			},
 			"hidden": true
 		},
 		{
-			"name": "ci-cfg-macos-release-clang",
+			"name": "cfg-arm64-macos-release-clang",
 			"inherits": [
-				"ci-cfg-base",
-				"ci-cfg-release",
-				"ci-cfg-macos"
+				"cfg-base",
+				"cfg-release",
+				"cfg-arm64-macos"
 			],
-			"displayName": "MacOS Release Clang configuration"
+			"displayName": "Arm64 MacOS Release Clang configuration"
 		},
 		{
-			"name": "ci-cfg-linux-debug-gcc",
+			"name": "cfg-x64-linux-debug-gcc",
 			"inherits": [
-				"ci-cfg-base",
-				"ci-cfg-linux",
-				"ci-cfg-debug",
-				"ci-cfg-linux-gcc"
+				"cfg-base",
+				"cfg-debug",
+				"cfg-x64-linux-gcc"
 			],
-			"displayName": "Linux Debug GCC configuration"
+			"displayName": "x64 Linux Debug GCC configuration"
 		},
 		{
-			"name": "ci-cfg-linux-release-gcc",
+			"name": "cfg-x64-linux-release-gcc",
 			"inherits": [
-				"ci-cfg-base",
-				"ci-cfg-linux",
-				"ci-cfg-release",
-				"ci-cfg-linux-gcc"
+				"cfg-base",
+				"cfg-release",
+				"cfg-x64-linux-gcc"
 			],
-			"displayName": "Linux Release GCC configuration"
+			"displayName": "x64 Linux Release GCC configuration"
 		},
 		{
-			"name": "ci-cfg-linux-debug-clang",
+			"name": "cfg-x64-linux-debug-clang",
 			"inherits": [
-				"ci-cfg-base",
-				"ci-cfg-linux",
-				"ci-cfg-debug",
-				"ci-cfg-linux-clang"
+				"cfg-base",
+				"cfg-debug",
+				"cfg-x64-linux-clang"
 			],
-			"displayName": "Linux Debug Clang configuration"
+			"displayName": "x64 Linux Debug Clang configuration"
 		},
 		{
-			"name": "ci-cfg-linux-release-clang",
+			"name": "cfg-x64-linux-release-clang",
 			"inherits": [
-				"ci-cfg-base",
-				"ci-cfg-linux",
-				"ci-cfg-release",
-				"ci-cfg-linux-clang"
+				"cfg-base",
+				"cfg-release",
+				"cfg-x64-linux-clang"
 			],
-			"displayName": "Linux Release Clang configuration"
+			"displayName": "x64 Linux Release Clang configuration"
 		},
 		{
-			"name": "ci-cfg-windows-debug-msvc",
+			"name": "cfg-x64-windows-debug-msvc",
 			"inherits": [
-				"ci-cfg-base",
-				"ci-cfg-debug",
-				"ci-cfg-windows"
+				"cfg-base",
+				"cfg-debug",
+				"cfg-x64-windows"
 			],
-			"displayName": "Windows MSVC debug configuration",
+			"displayName": "x64 Windows MSVC debug configuration",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "Debug",
 				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreadedDebug"
 			}
 		},
 		{
-			"name": "ci-cfg-windows-release-msvc",
+			"name": "cfg-x64-windows-release-msvc",
 			"inherits": [
-				"ci-cfg-base",
-				"ci-cfg-release",
-				"ci-cfg-windows"
+				"cfg-base",
+				"cfg-release",
+				"cfg-x64-windows"
 			],
-			"displayName": "Windows MSVC release config",
+			"displayName": "x64 Windows MSVC release config",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "Release",
 				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded"
@@ -164,76 +167,76 @@
 	],
 	"buildPresets": [
 		{
-			"name": "ci-build-macos-release-clang",
-			"configurePreset": "ci-cfg-macos-release-clang",
-			"displayName": "MacOS Release Clang build"
+			"name": "build-arm64-macos-release-clang",
+			"configurePreset": "cfg-arm64-macos-release-clang",
+			"displayName": "Arm64 MacOS Release Clang build"
 		},
 		{
-			"name": "ci-build-linux-debug-gcc",
-			"configurePreset": "ci-cfg-linux-debug-gcc",
+			"name": "build-x64-linux-debug-gcc",
+			"configurePreset": "cfg-x64-linux-debug-gcc",
 			"displayName": "Linux Debug GCC build"
 		},
 		{
-			"name": "ci-build-linux-release-gcc",
-			"configurePreset": "ci-cfg-linux-release-gcc",
+			"name": "build-x64-linux-release-gcc",
+			"configurePreset": "cfg-x64-linux-release-gcc",
 			"displayName": "Linux Release GCC build"
 		},
 		{
-			"name": "ci-build-linux-debug-clang",
-			"configurePreset": "ci-cfg-linux-debug-clang",
+			"name": "build-x64-linux-debug-clang",
+			"configurePreset": "cfg-x64-linux-debug-clang",
 			"displayName": "Linux Debug Clang build"
 		},
 		{
-			"name": "ci-build-linux-release-clang",
-			"configurePreset": "ci-cfg-linux-release-clang",
+			"name": "build-x64-linux-release-clang",
+			"configurePreset": "cfg-x64-linux-release-clang",
 			"displayName": "Linux Release Clang build"
 		},
 		{
-			"name": "ci-build-windows-debug-msvc",
-			"configurePreset": "ci-cfg-windows-debug-msvc",
+			"name": "build-x64-windows-debug-msvc",
+			"configurePreset": "cfg-x64-windows-debug-msvc",
 			"displayName": "Windows Debug MSVC build"
 		},
 		{
-			"name": "ci-build-windows-release-msvc",
-			"configurePreset": "ci-cfg-windows-release-msvc",
+			"name": "build-x64-windows-release-msvc",
+			"configurePreset": "cfg-x64-windows-release-msvc",
 			"displayName": "Windows Release MSVC build"
 		}
 	],
 	"testPresets": [
 		{
-			"name": "ci-test-macos-release-clang",
-			"configurePreset": "ci-cfg-macos-release-clang",
-			"displayName": "MacOS Release Clang tests"
+			"name": "test-arm64-macos-release-clang",
+			"configurePreset": "cfg-arm64-macos-release-clang",
+			"displayName": "Arm64 MacOS Release Clang tests"
 		},
 		{
-			"name": "ci-test-linux-debug-gcc",
-			"configurePreset": "ci-cfg-linux-debug-gcc",
-			"displayName": "Linux Debug GCC tests"
+			"name": "test-x64-linux-debug-gcc",
+			"configurePreset": "cfg-x64-linux-debug-gcc",
+			"displayName": "X64 Linux Debug GCC tests"
 		},
 		{
-			"name": "ci-test-linux-release-gcc",
-			"configurePreset": "ci-cfg-linux-release-gcc",
-			"displayName": "Linux Release GCC tests"
+			"name": "test-x64-linux-release-gcc",
+			"configurePreset": "cfg-x64-linux-release-gcc",
+			"displayName": "X64 Linux Release GCC tests"
 		},
 		{
-			"name": "ci-test-linux-debug-clang",
-			"configurePreset": "ci-cfg-linux-debug-clang",
-			"displayName": "Linux Debug Clang tests"
+			"name": "test-x64-linux-debug-clang",
+			"configurePreset": "cfg-x64-linux-debug-clang",
+			"displayName": "X64 Linux Debug Clang tests"
 		},
 		{
-			"name": "ci-test-linux-release-clang",
-			"configurePreset": "ci-cfg-linux-release-clang",
-			"displayName": "Linux Release Clang tests"
+			"name": "test-x64-linux-release-clang",
+			"configurePreset": "cfg-x64-linux-release-clang",
+			"displayName": "X64 Linux Release Clang tests"
 		},
 		{
-			"name": "ci-test-windows-debug-msvc",
-			"configurePreset": "ci-cfg-windows-debug-msvc",
-			"displayName": "Windows Debug MSVC tests"
+			"name": "test-x64-windows-debug-msvc",
+			"configurePreset": "cfg-x64-windows-debug-msvc",
+			"displayName": "X64 Windows Debug MSVC tests"
 		},
 		{
-			"name": "ci-test-windows-release-msvc",
-			"configurePreset": "ci-cfg-windows-release-msvc",
-			"displayName": "Windows Release MSVC tests"
+			"name": "test-x64-windows-release-msvc",
+			"configurePreset": "cfg-x64-windows-release-msvc",
+			"displayName": "X64 Windows Release MSVC tests"
 		}
 	]
 }

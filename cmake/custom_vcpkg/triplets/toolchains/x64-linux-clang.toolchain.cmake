@@ -4,5 +4,6 @@
 
 set(CMAKE_C_COMPILER "clang")
 set(CMAKE_CXX_COMPILER "clang++")
-set(CMAKE_C_FLAGS "-march=x86-64-v3 -mavx2")
-set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS}")
+set(VCPKG_C_FLAGS "-march=x86-64-v3 -mavx2")
+set(VCPKG_CXX_FLAGS "${VCPKG_C_FLAGS}")
+include($ENV{VCPKG_ROOT}/scripts/toolchains/linux.cmake)
