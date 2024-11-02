@@ -5,13 +5,26 @@
 
 #pragma once
 
+#include <imfy/string.hpp>
 #include <imfy/vector.hpp>
 
+#include <cstdint>
 #include <string_view>
 
 namespace imfy::runtime
 {
 
-vector<std::string_view> simd_target_names();
+struct cpu_info final
+{
+	imfy::string brand;
+	std::string_view microarchitecture;
+	imfy::vector<std::string_view> features;
+};
+
+/**
+ * Gathers all required information about the CPU. Intended for writing reports.
+ * @return CPU information structure.
+ */
+cpu_info cpu_information();
 
 } // namespace imfy::runtime

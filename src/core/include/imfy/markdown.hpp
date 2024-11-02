@@ -65,6 +65,7 @@ public:
 	void add_heading(heading level, std::string_view text);
 
 	void add_build_information(heading level);
+	void add_runtime_information(heading level);
 
 	void add_table_header(std::span<const std::uint8_t> cell_width, std::span<const std::string_view> header);
 	void add_table_cell(uint8_t cell_width, std::string_view cell);

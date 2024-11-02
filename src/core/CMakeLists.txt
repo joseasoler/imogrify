@@ -23,11 +23,6 @@ endif ()
 configure_file(include/imfy/build.hpp.in include/imfy/build.hpp @ONLY)
 
 add_library(imogrify_core STATIC
-	${CMAKE_CURRENT_BINARY_DIR}/include/imfy/build.hpp
-	include/imfy/allocator.hpp
-	include/imfy/markdown.hpp
-	include/imfy/string.hpp
-	include/imfy/vector.hpp
 	aligned_allocation.cpp
 	markdown.cpp
 	runtime.cpp
@@ -42,6 +37,7 @@ target_compile_definitions(imogrify_core PRIVATE ${IMOGRIFY_CXX_COMPILE_DEFINITI
 target_compile_options(imogrify_core PRIVATE ${IMOGRIFY_CXX_COMPILE_OPTIONS})
 
 target_link_libraries(imogrify_core PRIVATE
+	CpuFeatures::cpu_features
 	fmt::fmt
 	hwy::hwy
 	magic_enum::magic_enum

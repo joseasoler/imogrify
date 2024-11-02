@@ -6,6 +6,7 @@
 #include "imfy/markdown.hpp"
 
 #include <imfy/build.hpp>
+#include <imfy/runtime.hpp>
 
 #include <fmt/format.h>
 #include <magic_enum.hpp>
@@ -23,6 +24,8 @@ namespace
 constexpr auto table_row_end = "|\n"sv;
 
 constexpr auto table_cell_format = "|{0: ^{1}}"sv;
+
+constexpr auto bullet_text_description = " * **{:s}:** {:s}\n\n";
 
 } // Anonymous namespace
 
@@ -43,7 +46,6 @@ void markdown::add_build_information(heading level)
 {
 	add_heading(level, "Build information");
 
-	constexpr auto bullet_text_description = " * **{:s}:** {:s}\n\n";
 	constexpr auto bullet_version_description = " * **{:s}:** {:d}.{:d}.{:d}\n\n";
 
 	using namespace imfy::build;
@@ -72,6 +74,28 @@ void markdown::add_build_information(heading level)
 				dependency.version.patch
 		);
 	}
+}
+
+void markdown::add_runtime_information([[maybe_unused]] heading level)
+{
+	add_heading(level, "Runtime information");
+	const auto cpu_information = runtime::cpu_information();
+
+	output_ << fmt::format(bullet_text_description, "CPU brand", cpu_information.brand);
+	output_ << fmt::format(bullet_text_description, "CPU microarchitecture", cpu_information.microarchitecture);
+
+	output_ << " * **CPU features:** ";
+	bool first = true;
+	for (const auto& feature : cpu_information.features)
+	{
+		if (!first) [[likely]]
+		{
+			output_ << ", ";
+		}
+		first = false;
+		output_ << feature;
+	}
+	output_ << "\n\n";
 }
 
 void markdown::add_table_header(

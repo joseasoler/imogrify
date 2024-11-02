@@ -5,7 +5,6 @@
 
 #include <imfy/build.hpp>
 #include <imfy/markdown.hpp>
-#include <imfy/runtime.hpp>
 
 #include <cstdlib>
 #include <iostream>
@@ -21,11 +20,5 @@ int main(int /*argc*/, char** /*argv*/)
 		mark.add_heading(imfy::markdown::heading::level_3, dependency.name);
 	}
 
-	mark.add_heading(imfy::markdown::heading::level_2, "Runtime information");
-	mark.add_heading(imfy::markdown::heading::level_3, "Supported SIMD");
-	for (const auto& simd_target : imfy::runtime::simd_target_names())
-	{
-		mark.add_heading(imfy::markdown::heading::level_4, simd_target);
-	}
 	return EXIT_SUCCESS;
 }

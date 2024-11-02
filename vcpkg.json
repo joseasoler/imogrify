@@ -2,6 +2,7 @@
 	"name": "imogrify",
 	"version": "0.1.0",
 	"dependencies": [
+		"cpu-features",
 		"imfy-libpng-ng",
 		"imfy-zlib-ng",
 		"fmt",

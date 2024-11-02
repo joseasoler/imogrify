@@ -29,8 +29,8 @@ int main(int /*argc*/, char** /*argv*/) // NOLINT
 	mark.add_heading(markdown::heading::level_1, "Library benchmarks");
 
 	mark.add_build_information(markdown::heading::level_2);
+	mark.add_runtime_information(markdown::heading::level_2);
 
-	// ToDo system information
 	mark.add_heading(markdown::heading::level_2, "Benchmarks");
 
 	mark.add_heading(markdown::heading::level_3, "PNG");

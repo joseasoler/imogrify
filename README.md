@@ -12,8 +12,6 @@ imogrify encourages community involvement and contributions. Check the [CONTRIBU
 
 imogrify is licensed under the Mozilla Public License, v. 2.0. See the [LICENSE](LICENSE) file for details. Check the [MPL 2.0 FAQ](https://www.mozilla.org/en-US/MPL/2.0/FAQ) to learn more.
 
-The repository includes third party dependencies as source code in the thirdparty subfolder. Each one of them is under their own license, which is included in their respective folder. 
-
 ## Building
 
 Building imogrify requires [CMake](https://cmake.org) and a [compiler with C++20 support](https://en.cppreference.com/w/cpp/compiler_support#cpp20).
@@ -26,9 +24,11 @@ Building imogrify requires [CMake](https://cmake.org) and a [compiler with C++20
 
 Building imogrify requires the following dependencies. imogrify expects to find them through the standard `find_package` CMake feature.
 
+* **[cpu_features](https://github.com/google/cpu_features)**: A cross-platform C library to retrieve CPU features at runtime.
+
 * **[fmt](https://fmt.dev/latest/index.html)**: Modern formatting and printing library.
 
-* **[Highway](https://google.github.io/highway/en/master)**: A C++ library that provides portable SIMD/vector intrinsics.
+* **[Highway](https://google.github.io/highway/en/master)**: A C++ library that provides portable SIMD/vector intrinsics.
 
 * **[libpng](http://www.libpng.org)**: A library implementing an interface for reading and writing PNG (Portable Network Graphics) format files.
 
@@ -38,11 +38,11 @@ Building imogrify requires the following dependencies. imogrify expects to find 
 
 * **[zlib](https://www.zlib.net)**: A free, lossless data-compression library.
 
-Building with the `IMOGRIFY_BUILD_UNIT_TESTS` CMake option requires the following additional dependency. This dependency is not used by main the imogrify binary.
+Building with the `IMOGRIFY_BUILD_UNIT_TESTS` CMake option requires the following additional dependency. This dependency is not used by the main imogrify binary.
 
 * **[doctest](https://github.com/doctest/doctest)**: Fast C++ testing framework.
 
-Building with the `IMOGRIFY_BUILD_BENCHMARKS` CMake option enabled requires the following additional dependencies. These dependencies is not used by main the imogrify binary.
+Building with the `IMOGRIFY_BUILD_BENCHMARKS` CMake option enabled requires the following additional dependencies. These dependencies are not used by the main imogrify binary.
 
 * **[nanobench](https://nanobench.ankerl.com)**: A platform independent microbenchmarking library for C++.
 
