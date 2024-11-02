@@ -90,7 +90,8 @@
 				"rhs": "Windows"
 			},
 			"cacheVariables": {
-				"VCPKG_TARGET_TRIPLET": "x64-windows-static"
+				"VCPKG_TARGET_TRIPLET": "imfy-x64-windows-msvc",
+				"CMAKE_CXX_FLAGS_INIT": "/arch:AVX2"
 			},
 			"hidden": true
 		},
@@ -148,7 +149,6 @@
 			],
 			"displayName": "x64 Windows MSVC debug configuration",
 			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "Debug",
 				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreadedDebug"
 			}
 		},
@@ -161,7 +161,6 @@
 			],
 			"displayName": "x64 Windows MSVC release config",
 			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "Release",
 				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded"
 			}
 		}
