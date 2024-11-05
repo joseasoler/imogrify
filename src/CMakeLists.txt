@@ -6,6 +6,6 @@ add_subdirectory(core)
 add_subdirectory(image)
 add_subdirectory(imogrify)
 
-if (IMOGRIFY_BUILD_BENCHMARKS)
+if (IMOGRIFY_BUILD_MICROBENCHMARKS)
 	add_subdirectory(imogrify_benchmark)
 endif ()

@@ -4,7 +4,7 @@
 
 include_guard(GLOBAL)
 
-if (IMOGRIFY_BUILD_BENCHMARKS)
+if (IMOGRIFY_BUILD_MICROBENCHMARKS)
 	find_package(nanobench REQUIRED)
 
 	add_dependency_metadata(

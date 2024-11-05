@@ -42,7 +42,7 @@ Building with the `IMOGRIFY_BUILD_UNIT_TESTS` CMake option requires the followin
 
 * **[doctest](https://github.com/doctest/doctest)**: Fast C++ testing framework.
 
-Building with the `IMOGRIFY_BUILD_BENCHMARKS` CMake option enabled requires the following additional dependencies. These dependencies are not used by the main imogrify binary.
+Building with the `IMOGRIFY_BUILD_MICROBENCHMARKS` CMake option enabled requires the following additional dependencies. These dependencies are not used by the main imogrify binary.
 
 * **[nanobench](https://nanobench.ankerl.com)**: A platform independent microbenchmarking library for C++.
 
@@ -59,7 +59,7 @@ The following dependencies are included in the thirdparty subfolder of the imogr
 ### CMake options
 
 * `CMAKE_COMPILE_WARNING_AS_ERROR`: When this option is enabled, compilers will treat warnings as errors. If `IMOGRIFY_CLANG_TIDY` is enabled, [clang-tidy](https://clang.llvm.org/extra/clang-tidy) will also treat its warnings as errors.
-* `IMOGRIFY_BUILD_BENCHMARKS`: Builds benchmarks. Requires the [nanobench](https://nanobench.ankerl.com) library. Off by default.
+* `IMOGRIFY_BUILD_MICROBENCHMARKS`: Builds microbenchmarks. Requires the [nanobench](https://nanobench.ankerl.com) library. Off by default.
 * `IMOGRIFY_BUILD_UNIT_TESTS`: Builds unit tests. Requires the [doctest](https://github.com/doctest/doctest) library. Off by default.
 * `IMOGRIFY_CLANG_ALL_WARNINGS`: This option is only available when the [clang](https://clang.llvm.org) compiler is in use. This option enables almost every warning from this compiler, except for a few that cause issues with imogrify. This may trigger unexpected positives when using newer clang versions. Off by default.
 * `IMOGRIFY_CLANG_TIDY`: If [clang-tidy](https://clang.llvm.org/extra/clang-tidy) is available, it will be used to analyze the project. Off by default.
