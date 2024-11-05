@@ -3,49 +3,65 @@
  * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include <imfy/benchmark.hpp>
-#include <imfy/markdown.hpp>
-#include <imfy/png_benchmark.hpp>
+#include <imfy/benchmark_definition.hpp>
+#include <imfy/benchmark_execution.hpp>
+#include <imfy/benchmark_images.hpp>
+#include <imfy/benchmark_output.hpp>
+#include <imfy/benchmark_parameters.hpp>
+#include <imfy/benchmark_result.hpp>
 #include <imfy/png_format.hpp>
+#include <imfy/vector.hpp>
 
+#include <algorithm>
+#include <array>
+#include <cstdint>
 #include <cstdlib>
-#include <iostream>
+#include <string_view>
 
-#include <nanobench.h>
+namespace
+{
+
+using imfy::bench::definition;
+using imfy::bench::format_def;
+using imfy::bench::library_flags;
+using imfy::bench::operation_def;
+using imfy::bench::size_def;
+
+constexpr auto png_encode_libs = library_flags::libspng | library_flags::libpng | library_flags::lodepng;
+
+constexpr std::array definitions{
+		definition{
+				.format = format_def::png,
+				.operation = operation_def::encode,
+				.libraries = png_encode_libs,
+				.channels = 4U,
+				.bit_depth = 8U,
+				.size = size_def::large,
+				.compression = static_cast<std::int32_t>(imfy::png::default_compression)
+		},
+};
+
+} // namespace
 
 int main(int /*argc*/, char** /*argv*/) // NOLINT
 {
-	ankerl::nanobench::Bench bench{};
-#if ANKERL_NANOBENCH(PERF_COUNTERS)
-	// Enable performance counters feature when possible.
-	bench.performanceCounters(true);
-#endif // ANKERL_NANOBENCH(PERF_COUNTERS)
-	// Disable nanobench rendering.
-	bench.output(nullptr);
+	using namespace imfy::bench;
 
-	using imfy::markdown;
-	markdown mark{std::cout};
+	// ToDo CLI arguments parsing.
+	constexpr std::string_view hardcoded_output_path{"."};
+	constexpr std::array renderers{renderer::markdown};
+	imfy::vector<definition> sorted_definitions(definitions.cbegin(), definitions.cend());
+	std::sort(sorted_definitions.begin(), sorted_definitions.end());
 
-	mark.add_heading(markdown::heading::level_1, "Library benchmarks");
+	const imfy::bench::benchmark_images images(definitions, hardcoded_output_path);
+	benchmark_execution execution(images);
+	benchmark_output output(hardcoded_output_path, renderers);
 
-	mark.add_build_information(markdown::heading::level_2);
-	mark.add_runtime_information(markdown::heading::level_2);
-
-	mark.add_heading(markdown::heading::level_2, "Benchmarks");
-
-	mark.add_heading(markdown::heading::level_3, "PNG");
-	// ToDo library metadata.
-	mark.add_heading(markdown::heading::level_4, "Encoding comparison");
-	using namespace imfy::png;
-
-	imfy::render_start_table(mark);
-	using imfy::benchmark_png_encoding;
-	constexpr std::size_t test_size = 2048U;
-
-	benchmark_png_encoding(bench, mark, color_type::rgba, 8U, {test_size, test_size}, imfy::png::default_compression);
-	imfy::render_end_table(mark);
-
-	mark.add_heading(markdown::heading::level_4, "Decoding comparison");
+	for (const auto& def : sorted_definitions)
+	{
+		const result res = execution.run(def);
+		output.output(res);
+	}
 
 	return EXIT_SUCCESS;
 }

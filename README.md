@@ -50,6 +50,12 @@ Building with the `IMOGRIFY_BUILD_BENCHMARKS` CMake option enabled requires the 
 
 * **[lodepng](https://lodev.org/lodepng)**: LodePNG is a PNG image decoder and encoder, all in one, no dependency or linkage to zlib or libpng required.
 
+#### Included dependencies
+
+The following dependencies are included in the thirdparty subfolder of the imogrify code base. Each one of them has its own COPYING or LICENSE file.
+
+* **ToDo:**
+
 ### CMake options
 
 * `CMAKE_COMPILE_WARNING_AS_ERROR`: When this option is enabled, compilers will treat warnings as errors. If `IMOGRIFY_CLANG_TIDY` is enabled, [clang-tidy](https://clang.llvm.org/extra/clang-tidy) will also treat its warnings as errors.

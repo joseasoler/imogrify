@@ -7,6 +7,8 @@
 
 #include <imfy/build.hpp>
 #include <imfy/runtime.hpp>
+#include <imfy/string.hpp>
+#include <imfy/vector.hpp>
 
 #include <fmt/format.h>
 #include <magic_enum.hpp>
@@ -14,16 +16,13 @@
 #include <cstddef>
 #include <cstdint>
 #include <iostream>
-#include <span>
 #include <string_view>
+#include <utility>
 
 using namespace std::string_view_literals;
 
 namespace
 {
-constexpr auto table_row_end = "|\n"sv;
-
-constexpr auto table_cell_format = "|{0: ^{1}}"sv;
 
 constexpr auto bullet_text_description = " * **{:s}:** {:s}\n\n";
 
@@ -31,6 +30,55 @@ constexpr auto bullet_text_description = " * **{:s}:** {:s}\n\n";
 
 namespace imfy
 {
+
+/** An empty last row is used to signal that the table's real last row is complete. */
+markdown_table::markdown_table()
+	: data_(1U)
+{
+}
+
+void markdown_table::add_cell_str(imfy::string value)
+{
+	const std::size_t index = data_.back().size();
+	if (width_.size() < (index + 1U))
+	{
+		width_.emplace_back(0U);
+	}
+	auto& width = width_[index];
+	width = value.size() > width ? value.size() : width;
+	data_.back().emplace_back(std::move(value));
+}
+
+void markdown_table::add_cell_str(std::string_view value)
+{
+	add_cell_str(std::string{value});
+}
+
+void markdown_table::add_cell_uint(std::uint64_t value)
+{
+	add_cell_str(fmt::format("{:d}"sv, value));
+}
+
+void markdown_table::add_cell_double(double value, std::string_view postfix)
+{
+	add_cell_str(fmt::format("{:.1Lf}{:s}"sv, value, postfix));
+}
+
+void markdown_table::end_row()
+{
+	// Create an empty row at the end. This signal that the previous row is over, and prepares the table for further
+	// insertions.
+	data_.emplace_back();
+}
+
+vector<std::size_t> markdown_table::width() const noexcept
+{
+	return width_;
+}
+vector<vector<string>> markdown_table::data() const noexcept
+{
+	return data_;
+}
 
 markdown::markdown(std::ostream& output)
 	: output_{output}
@@ -103,49 +151,38 @@ void markdown::add_runtime_information([[maybe_unused]] heading level)
 	output_ << "\n\n";
 }
 
-void markdown::add_table_header(
-		const std::span<const std::uint8_t> cell_width, const std::span<const std::string_view> header
-)
+void markdown::add_table(const markdown_table& table)
 {
-	constexpr auto header_line_format = "|{0:->{1}}"sv;
+	const auto& width = table.width();
+	const auto& data = table.data();
 
-	for (std::size_t cell_index{}; cell_index < cell_width.size(); ++cell_index)
+	constexpr std::size_t padding = 2U;
+	for (std::size_t row_index{0U}; row_index < data.size(); ++row_index)
 	{
-		output_ << fmt::format(table_cell_format, header[cell_index], cell_width[cell_index]);
+		const auto& row = data[row_index];
+		if (row.empty())
+		{
+			break;
+		}
+
+		for (std::size_t cell_index{0U}; cell_index < width.size(); ++cell_index)
+		{
+			output_ << fmt::format("|{0: ^{1}}"sv, row[cell_index], width[cell_index] + padding);
+		}
+		output_ << "|\n"sv;
+
+		if (row_index == 0U)
+		{
+			// Header separator line.
+			for (const std::size_t current_width : width)
+			{
+				output_ << fmt::format("|{0:->{1}}"sv, ""sv, current_width + padding);
+			}
+			output_ << "|\n"sv;
+		}
 	}
-	output_ << table_row_end;
-	for (const std::size_t current_width : cell_width)
-	{
-		output_ << fmt::format(header_line_format, ""sv, current_width);
-	}
-	output_ << table_row_end;
-}
 
-void markdown::add_table_cell(const uint8_t cell_width, const std::string_view cell)
-{
-	output_ << fmt::format(table_cell_format, cell, cell_width);
-}
-
-void markdown::add_table_percent(uint8_t cell_width, double cell_value)
-{
-	constexpr auto format_percent = "{:.1Lf}%"sv;
-	add_table_cell(cell_width, fmt::format(format_percent, cell_value, cell_width));
-}
-
-void markdown::add_table_unsigned(uint8_t cell_width, std::uint64_t cell_value)
-{
-	constexpr auto format_unsigned = "{:d}"sv;
-	add_table_cell(cell_width, fmt::format(format_unsigned, cell_value, cell_width));
-}
-
-void markdown::end_table_row()
-{
-	output_ << table_row_end;
-}
-
-void markdown::end_table()
-{
-	output_ << '\n';
+	output_ << "\n";
 }
 
 } // namespace imfy

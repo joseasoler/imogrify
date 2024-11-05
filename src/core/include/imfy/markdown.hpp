@@ -5,6 +5,9 @@
 
 #pragma once
 
+#include <imfy/string.hpp>
+#include <imfy/vector.hpp>
+
 #include <cstdint>
 #include <ios>
 #include <span>
@@ -13,33 +16,29 @@
 namespace imfy
 {
 
-namespace detail
+class markdown_table final
 {
-constexpr std::uint8_t cell_padding = 2U;
-} // namespace detail
+public:
+	markdown_table();
+	markdown_table(const markdown_table&) = delete;
+	markdown_table(markdown_table&&) noexcept = default;
+	markdown_table& operator=(const markdown_table&) = delete;
+	markdown_table& operator=(markdown_table&&) noexcept = default;
+	~markdown_table() = default;
 
-template <std::size_t row_cell_count>
-consteval std::array<std::uint8_t, row_cell_count> get_cell_width(
-		const std::array<std::uint8_t, row_cell_count>& data_width,
-		const std::array<std::string_view, row_cell_count>& header
-)
-{
-	std::array<std::uint8_t, row_cell_count> cell_width{};
+	void add_cell_str(imfy::string value);
+	void add_cell_str(std::string_view value);
+	void add_cell_uint(std::uint64_t value);
+	void add_cell_double(double value, std::string_view postfix);
+	void end_row();
 
-	for (std::size_t cell_index{0U}; cell_index < cell_width.size(); ++cell_index)
-	{
-		const auto header_text_width = static_cast<std::uint8_t>(header[cell_index].size());
-		const auto max_width =
-				data_width[cell_index] > header[cell_index].size() ? data_width[cell_index] : header_text_width;
-		cell_width[cell_index] = max_width + detail::cell_padding;
-		if (cell_width[cell_index] % 2U != header_text_width % 2U)
-		{
-			++cell_width[cell_index];
-		}
-	}
+	[[nodiscard]] vector<std::size_t> width() const noexcept;
+	[[nodiscard]] vector<vector<string>> data() const noexcept;
 
-	return cell_width;
-}
+private:
+	vector<std::size_t> width_;
+	vector<vector<string>> data_;
+};
 
 class markdown final
 {
@@ -67,12 +66,7 @@ public:
 	void add_build_information(heading level);
 	void add_runtime_information(heading level);
 
-	void add_table_header(std::span<const std::uint8_t> cell_width, std::span<const std::string_view> header);
-	void add_table_cell(uint8_t cell_width, std::string_view cell);
-	void add_table_percent(uint8_t cell_width, double cell_value);
-	void add_table_unsigned(uint8_t cell_width, std::uint64_t cell_value);
-	void end_table_row();
-	void end_table();
+	void add_table(const markdown_table& table);
 
 private:
 	std::ostream& output_;
