@@ -9,6 +9,7 @@
 #include <imfy/vector.hpp>
 
 #include <memory>
+#include <span>
 #include <string_view>
 
 namespace imfy::bench
