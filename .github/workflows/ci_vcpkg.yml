@@ -56,8 +56,6 @@ jobs:
 
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
-        env:
-          VCPKG_DISABLE_METRICS: 1
         with:
           # Must be updated along with cmake/dependencies/vcpkg.cmake.
           vcpkgGitCommitId: 'c82f74667287d3dc386bce81e44964370c91a289' # 2024.09.30

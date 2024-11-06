@@ -24,7 +24,6 @@ Building imogrify requires [CMake](https://cmake.org) and a [compiler with C++20
 
 Building imogrify requires the following dependencies. imogrify expects to find them through the standard `find_package` CMake feature.
 
-* **[cpu_features](https://github.com/google/cpu_features)**: A cross-platform C library to retrieve CPU features at runtime.
 
 * **[fmt](https://fmt.dev/latest/index.html)**: Modern formatting and printing library.
 
@@ -37,6 +36,10 @@ Building imogrify requires the following dependencies. imogrify expects to find 
 * **[tl-expected](https://github.com/TartanLlama/expected):** Single header implementation of `std::expected` with functional-style extensions.
 
 * **[zlib](https://www.zlib.net)**: A free, lossless data-compression library.
+
+Building with the `IMOGRIFY_BUILD_CPU_INFORMATION` CMake option requires the following additional dependency.
+
+* **[libcpuid](https://github.com/anrieff/libcpuid)**: Provides CPU identification.
 
 Building with the `IMOGRIFY_BUILD_UNIT_TESTS` CMake option requires the following additional dependency. This dependency is not used by the main imogrify binary.
 
@@ -59,6 +62,7 @@ The following dependencies are included in the thirdparty subfolder of the imogr
 ### CMake options
 
 * `CMAKE_COMPILE_WARNING_AS_ERROR`: When this option is enabled, compilers will treat warnings as errors. If `IMOGRIFY_CLANG_TIDY` is enabled, [clang-tidy](https://clang.llvm.org/extra/clang-tidy) will also treat its warnings as errors.
+* `IMOGRIFY_BUILD_CPU_INFORMATION`: With this option enabled, imogrify can gather additional runtime information about the CPU in use. Requires the [libcpuid](https://github.com/anrieff/libcpuid) library. Off by default.
 * `IMOGRIFY_BUILD_MICROBENCHMARKS`: Builds microbenchmarks. Requires the [nanobench](https://nanobench.ankerl.com) library. Off by default.
 * `IMOGRIFY_BUILD_UNIT_TESTS`: Builds unit tests. Requires the [doctest](https://github.com/doctest/doctest) library. Off by default.
 * `IMOGRIFY_CLANG_ALL_WARNINGS`: This option is only available when the [clang](https://clang.llvm.org) compiler is in use. This option enables almost every warning from this compiler, except for a few that cause issues with imogrify. This may trigger unexpected positives when using newer clang versions. Off by default.
@@ -66,11 +70,17 @@ The following dependencies are included in the thirdparty subfolder of the imogr
 
 ### vcpkg support
 
-Alternatively, imogrify can be built using [vcpkg](https://github.com/microsoft/vcpkg) to retrieve dependencies. The CMake presets found in the `CMakePresets.json` file are used for continuous integration, but they can also be used for development. 
+imogrify can be built using [vcpkg](https://github.com/microsoft/vcpkg) to retrieve dependencies. The CMake presets found in the `CMakePresets.json` file are meant for continuous integration, but they can also be used for development.
 
-To use these presets locally, you will need to [install vcpkg](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started) and set the environment variable `VCPKG_ROOT` to its path. It is recommended to install vcpkg in a short path to avoid building issues with some dependencies. Keep in mind that [vcpkg collects telemetry data by default](https://learn.microsoft.com/en-us/vcpkg/about/privacy). It is possible to disable it by setting the `VCPKG_DISABLE_METRICS` environment variable.
+To use these presets locally, you will need to [install vcpkg](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started) and set the environment variable `VCPKG_ROOT` to its path. It is recommended to install vcpkg in a short path to avoid building issues with some dependencies.
 
-vcpkg builds replace zlib with **[zlib-ng](https://github.com/zlib-ng/zlib-ng)**. zlib-ng is a zlib data compression library for the next generation systems.
+imogrify's vcpkg support uses custom triplets and ports found in the `cmake/custom_vcpkg` subfolder. The port changes include:
+
+* Replacing zlib with **[zlib-ng](https://github.com/zlib-ng/zlib-ng)**. zlib-ng is a zlib data compression library for the next generation systems.
+
+* Using zlib-ng instead of zlib in [libpng](http://www.libpng.org)** and [libspng](https://libspng.org).
+
+* Using a recent version of [libcpuid](https://github.com/anrieff/libcpuid). This will be removed in the future when vcpkg is updated.
 
 ## Acknowledgements
 
