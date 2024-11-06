@@ -9,6 +9,7 @@
 #include <imfy/benchmark_output.hpp>
 #include <imfy/benchmark_parameters.hpp>
 #include <imfy/benchmark_result.hpp>
+#include <imfy/encoding.hpp>
 #include <imfy/png_format.hpp>
 #include <imfy/vector.hpp>
 
@@ -45,6 +46,12 @@ constexpr std::array definitions{
 
 int main(int /*argc*/, char** /*argv*/) // NOLINT
 {
+	if (!imfy::set_terminal())
+	{
+		std::cerr << "Could not configure terminal output.\n";
+		return EXIT_FAILURE;
+	}
+
 	using namespace imfy::bench;
 
 	// ToDo CLI arguments parsing.
