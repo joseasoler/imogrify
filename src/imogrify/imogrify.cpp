@@ -4,6 +4,7 @@
  */
 
 #include <imfy/build.hpp>
+#include <imfy/encoding.hpp>
 #include <imfy/markdown.hpp>
 
 #include <cstdlib>
@@ -11,6 +12,12 @@
 
 int main(int /*argc*/, char** /*argv*/)
 {
+	if (!imfy::set_terminal())
+	{
+		std::cerr << "Could not configure terminal output.\n";
+		return EXIT_FAILURE;
+	}
+
 	imfy::markdown mark{std::cout};
 	mark.add_heading(imfy::markdown::heading::level_1, imfy::build::project.name);
 	mark.add_heading(imfy::markdown::heading::level_2, "dependencies");

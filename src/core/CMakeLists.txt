@@ -24,6 +24,7 @@ configure_file(include/imfy/build.hpp.in include/imfy/build.hpp @ONLY)
 
 set(IMOGRIFY_CORE_SOURCE_FILES
 	aligned_allocation.cpp
+	encoding.cpp
 	markdown.cpp
 )
 
