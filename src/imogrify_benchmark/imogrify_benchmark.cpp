@@ -56,7 +56,7 @@ constexpr std::array definitions{
 				.libraries = png_encode_libs,
 				.channels = 4U,
 				.bit_depth = 8U,
-				.image_gen = image_gen_def::random,
+				.image_gen = image_gen_def::rnd,
 				.size = size_def::large,
 				.compression = static_cast<std::int32_t>(imfy::png::default_compression)
 		},

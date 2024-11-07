@@ -21,7 +21,7 @@ enum class image_gen_def : std::uint8_t
 	// Adjacent pixels are different, but the same colors are repeated frequently on the image.
 	mod,
 	// Pixel colors are entirely random.
-	random,
+	rnd,
 	// Total number of image generators.
 	count,
 };

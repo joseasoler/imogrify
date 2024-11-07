@@ -21,7 +21,8 @@ namespace imfy::bench
 struct library_result final
 {
 	library_flags library;
-	double file_size_relative;
+	double file_size;
+	double file_size_rel;
 	double mpix_second;
 	double speed_relative;
 	double speed_error;
@@ -38,6 +39,7 @@ struct result final
 	operation_def operation;
 	std::uint8_t channels;
 	std::uint8_t bit_depth;
+	image_gen_def image_gen;
 	image_size img_size;
 	std::int32_t compression;
 	imfy::vector<library_result> library_results;

@@ -119,7 +119,8 @@ imfy::vector<library_result> calculate_library_results(
 	for (auto& raw_lib_result : raw_library_results)
 	{
 		auto& lib_result = raw_lib_result.lib_res;
-		lib_result.file_size_relative = 100.0 * static_cast<double>(raw_lib_result.file_size) / reference_file_size;
+		lib_result.file_size = static_cast<double>(raw_lib_result.file_size) / 1024.0;
+		lib_result.file_size_rel = 100.0 * static_cast<double>(raw_lib_result.file_size) / reference_file_size;
 		lib_result.mpix_second = to_megapixels_per_second(pixels, raw_lib_result);
 		lib_result.speed_relative = 100.0 * lib_result.mpix_second / reference_mpix_second;
 		library_results.push_back(lib_result);
@@ -203,6 +204,7 @@ result benchmark_execution::run(const definition& def)
 	res.operation = def.operation;
 	res.channels = def.channels;
 	res.bit_depth = def.bit_depth;
+	res.image_gen = def.image_gen;
 	const imfy::raw_image* image = images_.get(def);
 	if (image == nullptr)
 	{
