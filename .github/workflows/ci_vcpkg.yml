@@ -3,11 +3,9 @@
 # File licensed under the MIT license (see ci_LICENSE for details).
 # Based on: https://github.com/actions/starter-workflows/blob/main/ci/cmake-multi-platform.yml
 
-name: Continuous integration (vcpkg)
+name: CI-vcpkg
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
