@@ -12,9 +12,13 @@
 
 #include "imfy/image_size.hpp"
 
+#if IMOGRIFY_USE_FMT_BASE_HEADER
+#include <fmt/base.h>
+#else
 // Older versions of fmt lack the fmt/base.h header.
-// NOLINTNEXTLINE(misc-include-cleaner)
 #include <fmt/ostream.h>
+#endif // #if IMOGRIFY_USE_FMT_BASE_HEADER
+
 #include <png.h>
 #include <tl/expected.hpp>
 
@@ -47,8 +51,6 @@ void write_data_to_buffer(png_struct* png_ptr, std::uint8_t* IMFY_RESTRICT data,
  */
 [[noreturn]] void libpng_fatal_error(png_struct* /*png_ptr*/, const char* error_msg)
 {
-	// Older versions of fmt lack the fmt/base.h header.
-	// NOLINTNEXTLINE(misc-include-cleaner)
 	fmt::print("Fatal libpng error: {:s}\n", error_msg);
 	std::terminate();
 }
