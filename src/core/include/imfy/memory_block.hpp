@@ -68,7 +68,7 @@ public:
 		memory_block new_block(block_size);
 		value_type* IMFY_RESTRICT current_pointer = block_;
 		value_type* IMFY_RESTRICT new_pointer = new_block.block_;
-		std::memcpy(current_pointer, new_pointer, size_);
+		std::memcpy(new_pointer, current_pointer, size_);
 		std::swap(new_block, *this);
 	}
 

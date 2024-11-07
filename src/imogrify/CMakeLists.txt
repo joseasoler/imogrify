@@ -4,8 +4,7 @@
 
 add_executable(imogrify
 	imogrify.cpp
-	# https://learn.microsoft.com/en-us/windows/apps/design/globalizing/use-utf8-code-page
-	imogrify.manifest
+	${PROJECT_SOURCE_DIR}/imogrify_application.manifest
 )
 
 target_compile_definitions(imogrify PRIVATE ${IMOGRIFY_CXX_COMPILE_DEFINITIONS})

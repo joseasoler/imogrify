@@ -203,7 +203,7 @@ result benchmark_execution::run(const definition& def)
 	res.operation = def.operation;
 	res.channels = def.channels;
 	res.bit_depth = def.bit_depth;
-	const imfy::raw_image* image = images_.get(def.channels, def.bit_depth, def.size);
+	const imfy::raw_image* image = images_.get(def);
 	if (image == nullptr)
 	{
 		return {};

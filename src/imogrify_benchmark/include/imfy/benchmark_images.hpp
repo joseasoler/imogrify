@@ -6,20 +6,32 @@
 #pragma once
 
 #include <imfy/benchmark_definition.hpp>
+#include <imfy/filesystem.hpp>
 #include <imfy/image_size.hpp>
 #include <imfy/raw_image.hpp>
+#include <imfy/string.hpp>
 #include <imfy/vector.hpp>
 
+#include <filesystem>
 #include <span>
-#include <string_view>
 
 namespace imfy::bench
 {
 
+class benchmark_image_data final
+{
+public:
+	explicit benchmark_image_data(const imfy::bench::definition& def, const image_size img_size);
+
+	imfy::bench::image_gen_def image_gen_;
+	imfy::raw_image image_;
+	std::string filename_;
+};
+
 class benchmark_images final
 {
 public:
-	explicit benchmark_images(std::span<const definition> definitions, std::string_view path);
+	explicit benchmark_images(std::span<const definition> definitions);
 
 	benchmark_images(const benchmark_images&) = default;
 	benchmark_images(benchmark_images&&) noexcept = default;
@@ -28,16 +40,21 @@ public:
 	~benchmark_images() = default;
 
 	/**
+	 * Save all created reference images to a specific path.
+	 * @param path Assumed to be a valid directory.
+	 * @return True if saving all images succeeded.
+	 */
+	[[nodiscard]] bool save_all(const std::filesystem::path& path) const;
+
+	/**
 	 * Obtains an input image from the set.
-	 * @param channels Channels of the image.
-	 * @param bit_depth Bit depth of the image.
-	 * @param size Width and height of the image.
+	 * @param def Test definition
 	 * @return Referenced input image, or nullptr if it does not exist (which means a bug in the benchmark code).
 	 */
-	[[nodiscard]] const raw_image* get(std::uint8_t channels, std::uint8_t bit_depth, size_def size) const noexcept;
+	[[nodiscard]] const raw_image* get(const definition def) const noexcept;
 
 private:
-	vector<raw_image> images_;
+	vector<benchmark_image_data> images_;
 };
 
 } // namespace imfy::bench

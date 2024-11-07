@@ -21,6 +21,7 @@ struct definition final
 	library_flags libraries;
 	std::uint8_t channels;
 	std::uint8_t bit_depth;
+	image_gen_def image_gen;
 	size_def size;
 	std::int32_t compression;
 	/** Benchmark definitions are executed in their sorting order. */
