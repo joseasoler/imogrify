@@ -10,6 +10,7 @@ add_executable(imogrify_benchmark
 	imogrify_benchmark.cpp
 	png_lodepng.cpp
 	png_spng.cpp
+	${PROJECT_SOURCE_DIR}/imogrify_application.manifest
 )
 
 target_include_directories(imogrify_benchmark PUBLIC

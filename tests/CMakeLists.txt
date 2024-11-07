@@ -13,8 +13,7 @@ add_executable(imogrify_unit_tests
 	image/image_size_test.cpp
 	image/png_format_test.cpp
 	image/raw_image_test.cpp
-	# https://learn.microsoft.com/en-us/windows/apps/design/globalizing/use-utf8-code-page
-	imogrify_unit_tests.manifest
+	${PROJECT_SOURCE_DIR}/imogrify_application.manifest
 )
 
 target_compile_definitions(imogrify_unit_tests PRIVATE ${IMOGRIFY_CXX_COMPILE_DEFINITIONS})

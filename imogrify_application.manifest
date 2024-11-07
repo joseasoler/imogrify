@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- Used to enable UTF-8 code pages and longer file paths on Windows platforms. -->
+<assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
+	<application>
+		<windowsSettings>
+			<!-- https://learn.microsoft.com/en-us/windows/apps/design/globalizing/use-utf8-code-page -->
+			<activeCodePage xmlns="http://schemas.microsoft.com/SMI/2019/WindowsSettings">UTF-8</activeCodePage>
+			<!-- https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation -->
+			<longPathAware xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">true</longPathAware>
+		</windowsSettings>
+	</application>
+</assembly>
