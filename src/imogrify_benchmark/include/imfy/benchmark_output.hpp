@@ -8,6 +8,7 @@
 #include <imfy/benchmark_result.hpp>
 #include <imfy/vector.hpp>
 
+#include <filesystem>
 #include <memory>
 #include <span>
 #include <string_view>
@@ -24,8 +25,7 @@ enum class renderer : std::uint8_t
 class benchmark_output final
 {
 public:
-	// ToDo filesystem implementation.
-	benchmark_output(std::string_view path, std::span<const renderer> renderers);
+	benchmark_output(std::filesystem::path path, std::span<const renderer> renderers);
 	benchmark_output(const benchmark_output&) = delete;
 	benchmark_output(benchmark_output&&) noexcept = default;
 	benchmark_output& operator=(const benchmark_output&) = delete;

@@ -15,6 +15,17 @@
 namespace imfy::bench
 {
 
+/** Determines how the reference image is generated. */
+enum class image_gen_def : std::uint8_t
+{
+	// Adjacent pixels are different, but the same colors are repeated frequently on the image.
+	mod,
+	// Pixel colors are entirely random.
+	random,
+	// Total number of image generators.
+	count,
+};
+
 enum class format_def : std::uint8_t
 {
 	png,

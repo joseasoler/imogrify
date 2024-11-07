@@ -73,8 +73,8 @@ namespace imfy::bench
 class benchmark_renderer
 {
 public:
-	explicit benchmark_renderer(std::string_view path)
-		: path_{path}
+	explicit benchmark_renderer(std::filesystem::path path)
+		: path_{std::move(path)}
 	{
 	}
 	benchmark_renderer(const benchmark_renderer&) = delete;
@@ -86,17 +86,17 @@ public:
 	virtual void render_context() = 0;
 	virtual void render(const result& res) = 0;
 
-	[[nodiscard]] std::string_view path() const noexcept { return path_; }
+	[[nodiscard]] const std::filesystem::path& path() const noexcept { return path_; }
 
 private:
-	std::string_view path_;
+	std::filesystem::path path_;
 };
 
 class markdown_renderer final : public benchmark_renderer
 {
 public:
-	explicit markdown_renderer(std::string_view path)
-		: benchmark_renderer(path)
+	explicit markdown_renderer(std::filesystem::path path)
+		: benchmark_renderer(std::move(path))
 		, current_format_{invalid_format}
 		, current_operation_{invalid_operation}
 		, mark_{std::cout}
@@ -184,10 +184,11 @@ class csv_renderer final : public benchmark_renderer
 public:
 	static constexpr char sep = ',';
 
-	explicit csv_renderer(std::string_view path)
-		: benchmark_renderer(path)
+	explicit csv_renderer(std::filesystem::path path)
+		: benchmark_renderer(std::move(path))
 	{
 	}
+
 	void render_context() override
 	{
 		std::cout << library_header << sep << channels_header << sep << bit_depth_header << sep << width_header << sep
@@ -216,7 +217,7 @@ public:
 	}
 };
 
-benchmark_output::benchmark_output(std::string_view path, std::span<const renderer> renderers)
+benchmark_output::benchmark_output(std::filesystem::path path, std::span<const renderer> renderers)
 {
 	for (const renderer renderer_def : renderers)
 	{

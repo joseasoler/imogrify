@@ -10,8 +10,11 @@
 #include <imfy/benchmark_parameters.hpp>
 #include <imfy/benchmark_result.hpp>
 #include <imfy/encoding.hpp>
+#include <imfy/filesystem.hpp>
 #include <imfy/png_format.hpp>
 #include <imfy/vector.hpp>
+
+#include <fmt/ostream.h>
 
 #include <algorithm>
 #include <array>
@@ -24,6 +27,7 @@ namespace
 
 using imfy::bench::definition;
 using imfy::bench::format_def;
+using imfy::bench::image_gen_def;
 using imfy::bench::library_flags;
 using imfy::bench::operation_def;
 using imfy::bench::size_def;
@@ -37,6 +41,17 @@ constexpr std::array definitions{
 				.libraries = png_encode_libs,
 				.channels = 4U,
 				.bit_depth = 8U,
+				.image_gen = image_gen_def::mod,
+				.size = size_def::large,
+				.compression = static_cast<std::int32_t>(imfy::png::default_compression)
+		},
+		definition{
+				.format = format_def::png,
+				.operation = operation_def::encode,
+				.libraries = png_encode_libs,
+				.channels = 4U,
+				.bit_depth = 8U,
+				.image_gen = image_gen_def::random,
 				.size = size_def::large,
 				.compression = static_cast<std::int32_t>(imfy::png::default_compression)
 		},
@@ -44,26 +59,41 @@ constexpr std::array definitions{
 
 } // namespace
 
-int main(int /*argc*/, char** /*argv*/) // NOLINT
+int main(int argc, char** argv) // NOLINT
 {
 	if (!imfy::set_terminal())
 	{
-		std::cerr << "Could not configure terminal output.\n";
+		fmt::println("Could not configure terminal output.");
 		return EXIT_FAILURE;
 	}
 
 	using namespace imfy::bench;
 
-	// ToDo CLI arguments parsing.
-	constexpr std::string_view hardcoded_output_path{"."};
+	const bool has_output_path = argc > 1;
+	const std::string_view output_path_view = has_output_path ? argv[1U] : std::string_view{};
+	const std::filesystem::path output_path{output_path_view};
+	if (has_output_path && !std::filesystem::is_directory(output_path))
+	{
+		fmt::println("{:s} must be a valid directory.", output_path_view);
+		return EXIT_FAILURE;
+	}
+
+	// ToDo CLI arguments parsing and validation.
 	constexpr std::array renderers{renderer::markdown};
+
 	imfy::vector<definition> sorted_definitions(definitions.cbegin(), definitions.cend());
 	std::sort(sorted_definitions.begin(), sorted_definitions.end());
 
-	const imfy::bench::benchmark_images images(definitions, hardcoded_output_path);
+	const imfy::bench::benchmark_images images(definitions);
 	benchmark_execution execution(images);
-	benchmark_output output(hardcoded_output_path, renderers);
+	// ToDo CLI arguments parsing and validation.
+	benchmark_output output(output_path, renderers);
 
+	if (has_output_path && !images.save_all(output_path))
+	{
+		fmt::println("Could not save reference images at {:s}.", output_path_view);
+		return EXIT_FAILURE;
+	}
 	for (const auto& def : sorted_definitions)
 	{
 		const result res = execution.run(def);
