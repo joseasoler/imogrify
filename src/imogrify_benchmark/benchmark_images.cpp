@@ -7,8 +7,10 @@
 
 #include <imfy/benchmark_definition.hpp>
 #include <imfy/benchmark_parameters.hpp>
+#include <imfy/filesystem.hpp>
 #include <imfy/image_size.hpp>
 #include <imfy/png_encoder.hpp>
+#include <imfy/png_format.hpp>
 #include <imfy/raw_image.hpp>
 #include <imfy/vector.hpp>
 
@@ -18,6 +20,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <filesystem>
 #include <limits>
 #include <random>
 #include <span>
@@ -61,7 +64,7 @@ raw_image get_random_image(const std::uint8_t channels, const std::uint8_t bit_d
 
 	// Generate the same image for each combination of input parameters. Since <random> is not deterministic across
 	// implementations, different standard libraries will generate different images.
-	std::uint32_t seed =
+	const std::uint32_t seed =
 			((static_cast<std::uint32_t>(channels) << 16U) | static_cast<std::uint32_t>(bit_depth)) ^
 			((static_cast<std::uint32_t>(img_size.width) << 16U) | static_cast<std::uint32_t>(img_size.height));
 	std::mt19937 prng{seed};

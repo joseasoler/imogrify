@@ -11,11 +11,13 @@
 #include <magic_enum.hpp>
 
 #include <cstdint>
+#include <filesystem>
 #include <iostream>
 #include <limits>
 #include <memory>
 #include <span>
 #include <string_view>
+#include <utility>
 
 #include "imfy/markdown.hpp"
 
@@ -217,7 +219,7 @@ public:
 	}
 };
 
-benchmark_output::benchmark_output(std::filesystem::path path, std::span<const renderer> renderers)
+benchmark_output::benchmark_output(const std::filesystem::path& path, std::span<const renderer> renderers)
 {
 	for (const renderer renderer_def : renderers)
 	{

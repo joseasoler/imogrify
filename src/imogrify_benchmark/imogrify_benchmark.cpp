@@ -10,16 +10,17 @@
 #include <imfy/benchmark_parameters.hpp>
 #include <imfy/benchmark_result.hpp>
 #include <imfy/encoding.hpp>
-#include <imfy/filesystem.hpp>
 #include <imfy/png_format.hpp>
 #include <imfy/vector.hpp>
 
+// NOLINTNEXTLINE(misc-include-cleaner)
 #include <fmt/ostream.h>
 
 #include <algorithm>
 #include <array>
 #include <cstdint>
 #include <cstdlib>
+#include <filesystem>
 #include <string_view>
 
 namespace
@@ -63,6 +64,7 @@ int main(int argc, char** argv) // NOLINT
 {
 	if (!imfy::set_terminal())
 	{
+		// NOLINTNEXTLINE(misc-include-cleaner)
 		fmt::println("Could not configure terminal output.");
 		return EXIT_FAILURE;
 	}
@@ -74,6 +76,7 @@ int main(int argc, char** argv) // NOLINT
 	const std::filesystem::path output_path{output_path_view};
 	if (has_output_path && !std::filesystem::is_directory(output_path))
 	{
+		// NOLINTNEXTLINE(misc-include-cleaner)
 		fmt::println("{:s} must be a valid directory.", output_path_view);
 		return EXIT_FAILURE;
 	}
@@ -91,6 +94,7 @@ int main(int argc, char** argv) // NOLINT
 
 	if (has_output_path && !images.save_all(output_path))
 	{
+		// NOLINTNEXTLINE(misc-include-cleaner)
 		fmt::println("Could not save reference images at {:s}.", output_path_view);
 		return EXIT_FAILURE;
 	}

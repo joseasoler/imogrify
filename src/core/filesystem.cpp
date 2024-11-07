@@ -5,6 +5,10 @@
 
 #include "imfy/filesystem.hpp"
 
+#include <imfy/aligned_span.hpp>
+
+#include <cstddef>
+#include <cstdint>
 #include <filesystem>
 #include <fstream>
 #include <ios>

@@ -25,7 +25,7 @@ enum class renderer : std::uint8_t
 class benchmark_output final
 {
 public:
-	benchmark_output(std::filesystem::path path, std::span<const renderer> renderers);
+	benchmark_output(const std::filesystem::path& path, std::span<const renderer> renderers);
 	benchmark_output(const benchmark_output&) = delete;
 	benchmark_output(benchmark_output&&) noexcept = default;
 	benchmark_output& operator=(const benchmark_output&) = delete;

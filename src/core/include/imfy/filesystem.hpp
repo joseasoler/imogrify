@@ -5,9 +5,10 @@
 
 #pragma once
 
-#include <filesystem>
+#include <imfy/aligned_span.hpp>
 
-#include "aligned_span.hpp"
+#include <cstdint>
+#include <filesystem>
 
 namespace imfy::fs
 {
