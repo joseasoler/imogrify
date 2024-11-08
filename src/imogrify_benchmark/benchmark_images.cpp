@@ -20,6 +20,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <filesystem>
 #include <limits>
 #include <random>
@@ -42,7 +43,15 @@ imfy::image_size image_size_from_def(size_def def)
 using imfy::image_size;
 using imfy::raw_image;
 
-raw_image get_mod_image(const std::uint8_t channels, const std::uint8_t bit_depth, const image_size img_size)
+raw_image get_zero_image(const std::uint8_t channels, const std::uint8_t bit_depth, const image_size img_size)
+{
+	raw_image image(channels, bit_depth, img_size);
+	auto* data_ptr = image.data().as_writable_bytes().data();
+	std::memset(data_ptr, 0, image.data().size_bytes());
+	return image;
+}
+
+raw_image get_modulo_image(const std::uint8_t channels, const std::uint8_t bit_depth, const image_size img_size)
 {
 	raw_image image(channels, bit_depth, img_size);
 	constexpr std::array<std::uint8_t, 4U> byte_modulo{251U, 241U, 239U, 233U};
@@ -84,7 +93,7 @@ raw_image get_random_image(const std::uint8_t channels, const std::uint8_t bit_d
 using imfy::bench::image_gen_def;
 
 constexpr std::array<raw_image (*)(std::uint8_t, std::uint8_t, image_size), magic_enum::enum_count<image_gen_def>()>
-		image_generators{get_mod_image, get_random_image};
+		image_generators{get_zero_image, get_modulo_image, get_random_image};
 
 constexpr std::size_t image_not_found = std::numeric_limits<std::size_t>::max();
 
