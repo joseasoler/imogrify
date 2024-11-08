@@ -83,8 +83,7 @@ raw_image get_random_image(const std::uint8_t channels, const std::uint8_t bit_d
 
 using imfy::bench::image_gen_def;
 
-constexpr std::array<
-		raw_image (*)(std::uint8_t, std::uint8_t, image_size), static_cast<std::size_t>(image_gen_def::count)>
+constexpr std::array<raw_image (*)(std::uint8_t, std::uint8_t, image_size), magic_enum::enum_count<image_gen_def>()>
 		image_generators{get_mod_image, get_random_image};
 
 constexpr std::size_t image_not_found = std::numeric_limits<std::size_t>::max();
