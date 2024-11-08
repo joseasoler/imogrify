@@ -61,7 +61,7 @@ raw_image get_modulo_image(const std::uint8_t channels, const std::uint8_t bit_d
 	const auto* data_end = data_ptr + image.data().size_bytes();
 	for (; data_ptr != data_end; ++data_ptr, ++value_index)
 	{
-		*data_ptr = static_cast<std::uint8_t>(value_index % byte_modulo[value_index % 4U]);
+		*data_ptr = static_cast<std::uint8_t>(value_index % byte_modulo[value_index % channels]);
 	}
 
 	return image;
