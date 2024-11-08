@@ -26,6 +26,7 @@
 #include <cstdlib>
 #include <filesystem>
 #include <string_view>
+#include <type_traits>
 
 namespace
 {
@@ -37,7 +38,13 @@ using imfy::bench::library_flags;
 using imfy::bench::operation_def;
 using imfy::bench::size_def;
 
-constexpr auto png_encode_libs = library_flags::libspng | library_flags::libpng | library_flags::lodepng;
+constexpr library_flags operator|(library_flags lhs, library_flags rhs)
+{
+	using underlying_t = std::underlying_type_t<library_flags>;
+	return static_cast<library_flags>(static_cast<underlying_t>(lhs) | static_cast<underlying_t>(rhs));
+}
+
+constexpr auto png_encode_libs = library_flags::spng | library_flags::libpng | library_flags::lodepng;
 
 constexpr std::array definitions{
 		definition{
@@ -46,7 +53,7 @@ constexpr std::array definitions{
 				.libraries = png_encode_libs,
 				.channels = 4U,
 				.bit_depth = 8U,
-				.image_gen = image_gen_def::mod,
+				.image_gen = image_gen_def::modulo,
 				.size = size_def::large,
 				.compression = static_cast<std::int32_t>(imfy::png::default_compression)
 		},
@@ -56,7 +63,7 @@ constexpr std::array definitions{
 				.libraries = png_encode_libs,
 				.channels = 4U,
 				.bit_depth = 8U,
-				.image_gen = image_gen_def::rnd,
+				.image_gen = image_gen_def::random,
 				.size = size_def::large,
 				.compression = static_cast<std::int32_t>(imfy::png::default_compression)
 		},

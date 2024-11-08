@@ -146,6 +146,12 @@ imfy::png::color_type color_type_from_channels(std::uint8_t channels)
 	}
 }
 
+constexpr bool has_flag(library_flags value, library_flags flag)
+{
+	using underlying_t = std::underlying_type_t<library_flags>;
+	return (static_cast<underlying_t>(value) & static_cast<underlying_t>(flag)) != 0U;
+}
+
 imfy::vector<raw_library_result> run_png_encode_benchmark(
 		Bench& bench, const imfy::raw_image& image, const library_flags libraries, const std::int32_t compression
 )
@@ -173,10 +179,10 @@ imfy::vector<raw_library_result> run_png_encode_benchmark(
 				{ return encode_lodepng(color, image.bit_depth(), image.size(), image.data(), compression_level); }
 		));
 	}
-	if (has_flag(libraries, library_flags::libspng))
+	if (has_flag(libraries, library_flags::spng))
 	{
 		results.push_back(run_benchmark_impl(
-				bench, library_flags::libspng, [&color, &image, &compression_level]() -> std::size_t
+				bench, library_flags::spng, [&color, &image, &compression_level]() -> std::size_t
 				{ return encode_spng(color, image.bit_depth(), image.size(), image.data(), compression_level); }
 		));
 	}

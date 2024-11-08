@@ -8,27 +8,24 @@
 #include <imfy/image_size.hpp>
 #include <imfy/vector.hpp>
 
-#include <compare>
 #include <cstdint>
-#include <type_traits>
 
 namespace imfy::bench
 {
+
+/** Image format being benchmarked. */
+enum class format_def : std::uint8_t
+{
+	png,
+};
 
 /** Determines how the reference image is generated. */
 enum class image_gen_def : std::uint8_t
 {
 	// Adjacent pixels are different, but the same colors are repeated frequently on the image.
-	mod,
+	modulo,
 	// Pixel colors are entirely random.
-	rnd,
-	// Total number of image generators.
-	count,
-};
-
-enum class format_def : std::uint8_t
-{
-	png,
+	random,
 };
 
 enum class operation_def : std::uint8_t
@@ -40,21 +37,9 @@ enum class operation_def : std::uint8_t
 enum class library_flags : std::uint8_t
 {
 	libpng = 1U << 0U,
-	libspng = 1U << 1U,
-	lodepng = 1U << 2U,
+	lodepng = 1U << 1U,
+	spng = 1U << 2U,
 };
-
-constexpr library_flags operator|(library_flags lhs, library_flags rhs)
-{
-	using underlying_t = std::underlying_type_t<library_flags>;
-	return static_cast<library_flags>(static_cast<underlying_t>(lhs) | static_cast<underlying_t>(rhs));
-}
-
-constexpr bool has_flag(library_flags value, library_flags flag)
-{
-	using underlying_t = std::underlying_type_t<library_flags>;
-	return (static_cast<underlying_t>(value) & static_cast<underlying_t>(flag)) != 0U;
-}
 
 enum class size_def : std::uint8_t
 {
