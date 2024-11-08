@@ -22,6 +22,8 @@ enum class format_def : std::uint8_t
 /** Determines how the reference image is generated. */
 enum class image_gen_def : std::uint8_t
 {
+	// All pixels are set to zero.
+	zero,
 	// Adjacent pixels are different, but the same colors are repeated frequently on the image.
 	modulo,
 	// Pixel colors are entirely random.

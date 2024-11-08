@@ -53,6 +53,16 @@ constexpr std::array definitions{
 				.libraries = png_encode_libs,
 				.channels = 4U,
 				.bit_depth = 8U,
+				.image_gen = image_gen_def::zero,
+				.size = size_def::large,
+				.compression = static_cast<std::int32_t>(imfy::png::default_compression)
+		},
+		definition{
+				.format = format_def::png,
+				.operation = operation_def::encode,
+				.libraries = png_encode_libs,
+				.channels = 4U,
+				.bit_depth = 8U,
 				.image_gen = image_gen_def::modulo,
 				.size = size_def::large,
 				.compression = static_cast<std::int32_t>(imfy::png::default_compression)
