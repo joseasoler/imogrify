@@ -106,23 +106,6 @@ std::size_t position_of_image(
 	return image_not_found;
 }
 
-imfy::png::color_type color_type_from_channels(std::uint8_t channels)
-{
-	using imfy::png::color_type;
-	switch (channels)
-	{
-		case 1U:
-			return color_type::gray;
-		case 2U:
-			return color_type::ga;
-		case 3U:
-			return color_type::rgb;
-		default:
-		case 4U:
-			return color_type::rgba;
-	}
-}
-
 } // namespace
 
 namespace imfy::bench
@@ -157,8 +140,8 @@ bool benchmark_images::save_all(const std::filesystem::path& path) const
 	{
 		const auto& image_data = images_[img_index];
 		const auto encoded = imfy::png::encode(
-				color_type_from_channels(image_data.image_.channels()), image_data.image_.bit_depth(), image_data.image_.size(),
-				image_data.image_.data(), 6
+				png::color_type_from_channels(image_data.image_.channels()), image_data.image_.bit_depth(),
+				image_data.image_.size(), image_data.image_.data(), 6
 		);
 		if (!encoded.has_value())
 		{

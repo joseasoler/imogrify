@@ -26,4 +26,11 @@ constexpr auto speed_compression = 1;
 constexpr auto default_compression = 6;
 constexpr auto best_compression = 9;
 
+/**
+ * Maps the channel counts supported by imogrify to PNG color types. Ignores palette.
+ * @param channels Channel count.
+ * @return Color type.
+ */
+color_type color_type_from_channels(std::uint8_t channels);
+
 } // namespace imfy::png

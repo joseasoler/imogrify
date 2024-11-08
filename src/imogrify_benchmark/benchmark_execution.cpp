@@ -129,23 +129,6 @@ imfy::vector<library_result> calculate_library_results(
 	return library_results;
 }
 
-imfy::png::color_type color_type_from_channels(std::uint8_t channels)
-{
-	using imfy::png::color_type;
-	switch (channels)
-	{
-		case 1U:
-			return color_type::gray;
-		case 2U:
-			return color_type::ga;
-		case 3U:
-			return color_type::rgb;
-		default:
-		case 4U:
-			return color_type::rgba;
-	}
-}
-
 constexpr bool has_flag(library_flags value, library_flags flag)
 {
 	using underlying_t = std::underlying_type_t<library_flags>;
@@ -157,7 +140,7 @@ imfy::vector<raw_library_result> run_png_encode_benchmark(
 )
 {
 	imfy::vector<raw_library_result> results;
-	const auto color = color_type_from_channels(image.channels());
+	const auto color = imfy::png::color_type_from_channels(image.channels());
 	const auto compression_level = static_cast<std::uint8_t>(compression);
 
 	if (has_flag(libraries, library_flags::libpng))
