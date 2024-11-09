@@ -19,8 +19,6 @@
 #include <string_view>
 #include <utility>
 
-using namespace std::string_view_literals;
-
 namespace
 {
 
@@ -56,12 +54,12 @@ void markdown_table::add_cell_str(std::string_view value)
 
 void markdown_table::add_cell_uint(std::uint64_t value)
 {
-	add_cell_str(fmt::format("{:d}"sv, value));
+	add_cell_str(fmt::format("{:d}", value));
 }
 
 void markdown_table::add_cell_double(double value, std::string_view postfix)
 {
-	add_cell_str(fmt::format("{:.1Lf}{:s}"sv, value, postfix));
+	add_cell_str(fmt::format("{:.1Lf}{:s}", value, postfix));
 }
 
 void markdown_table::end_row()
@@ -87,7 +85,7 @@ markdown::markdown(std::ostream& output)
 
 void markdown::add_heading(const heading level, const std::string_view text)
 {
-	output_ << fmt::format("{0:#>{1}} {2}\n\n"sv, "", static_cast<int>(level), text);
+	output_ << fmt::format("{0:#>{1}} {2}\n\n", "", static_cast<int>(level), text);
 }
 
 void markdown::add_build_information(heading level)
@@ -167,18 +165,18 @@ void markdown::add_table(const markdown_table& table)
 
 		for (std::size_t cell_index{0U}; cell_index < width.size(); ++cell_index)
 		{
-			output_ << fmt::format("|{0: ^{1}}"sv, row[cell_index], width[cell_index] + padding);
+			output_ << fmt::format("|{0: ^{1}}", row[cell_index], width[cell_index] + padding);
 		}
-		output_ << "|\n"sv;
+		output_ << "|\n";
 
 		if (row_index == 0U)
 		{
 			// Header separator line.
 			for (const std::size_t current_width : width)
 			{
-				output_ << fmt::format("|{0:->{1}}"sv, ""sv, current_width + padding);
+				output_ << fmt::format("|{0:->{1}}", "", current_width + padding);
 			}
-			output_ << "|\n"sv;
+			output_ << "|\n";
 		}
 	}
 

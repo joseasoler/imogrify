@@ -7,6 +7,8 @@
 
 #if IMOGRIFY_OS_WINDOWS
 #include <cstdio>
+
+// NOLINTNEXTLINE(misc-include-cleaner)
 #include <Windows.h>
 #endif // IMOGRIFY_OS_WINDOWS
 
@@ -16,6 +18,7 @@ namespace imfy
 bool set_terminal()
 {
 #if IMOGRIFY_OS_WINDOWS
+	// NOLINTNEXTLINE(misc-include-cleaner)
 	SetConsoleOutputCP(CP_UTF8);
 	return std::setvbuf(stdout, nullptr, _IOFBF, 1024U) == 0 && std::setvbuf(stderr, nullptr, _IOFBF, 1024U) == 0;
 #else
