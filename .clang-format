@@ -141,6 +141,8 @@ IncludeCategories:
     Priority: 1000
   - Regex: '^<nanobench.*'
     Priority: 1000
+  - Regex: '^<Windows.*'
+    Priority: 1000
   - Regex: '^<.*'
     Priority: 400
   - Regex: '.*'

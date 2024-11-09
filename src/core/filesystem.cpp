@@ -18,7 +18,7 @@ namespace imfy::fs
 
 bool save(const std::filesystem::path& path, aligned_span<const std::uint8_t> data)
 {
-	constexpr auto open_mode = std::ios::out | std::ios::binary;
+	constexpr auto open_mode = std::ios::out | std::ios::binary; // NOLINT
 	std::ofstream ofstr{path, open_mode};
 	if (!ofstr.is_open())
 	{

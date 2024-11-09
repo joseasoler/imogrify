@@ -102,7 +102,7 @@
 				"cfg-release",
 				"cfg-arm64-macos"
 			],
-			"displayName": "Arm64 MacOS Release Clang configuration"
+			"displayName": "arm64 MacOS Release Clang configuration"
 		},
 		{
 			"name": "cfg-x64-linux-debug-gcc",
@@ -169,37 +169,37 @@
 		{
 			"name": "build-arm64-macos-release-clang",
 			"configurePreset": "cfg-arm64-macos-release-clang",
-			"displayName": "Arm64 MacOS Release Clang build"
+			"displayName": "arm64 MacOS Release Clang build"
 		},
 		{
 			"name": "build-x64-linux-debug-gcc",
 			"configurePreset": "cfg-x64-linux-debug-gcc",
-			"displayName": "Linux Debug GCC build"
+			"displayName": "x64 Linux Debug GCC build"
 		},
 		{
 			"name": "build-x64-linux-release-gcc",
 			"configurePreset": "cfg-x64-linux-release-gcc",
-			"displayName": "Linux Release GCC build"
+			"displayName": "x64 Linux Release GCC build"
 		},
 		{
 			"name": "build-x64-linux-debug-clang",
 			"configurePreset": "cfg-x64-linux-debug-clang",
-			"displayName": "Linux Debug Clang build"
+			"displayName": "x64 Linux Debug Clang build"
 		},
 		{
 			"name": "build-x64-linux-release-clang",
 			"configurePreset": "cfg-x64-linux-release-clang",
-			"displayName": "Linux Release Clang build"
+			"displayName": "x64 Linux Release Clang build"
 		},
 		{
 			"name": "build-x64-windows-debug-msvc",
 			"configurePreset": "cfg-x64-windows-debug-msvc",
-			"displayName": "Windows Debug MSVC build"
+			"displayName": "x64 Windows Debug MSVC build"
 		},
 		{
 			"name": "build-x64-windows-release-msvc",
 			"configurePreset": "cfg-x64-windows-release-msvc",
-			"displayName": "Windows Release MSVC build"
+			"displayName": "x64 Windows Release MSVC build"
 		}
 	],
 	"testPresets": [
@@ -211,32 +211,32 @@
 		{
 			"name": "test-x64-linux-debug-gcc",
 			"configurePreset": "cfg-x64-linux-debug-gcc",
-			"displayName": "X64 Linux Debug GCC tests"
+			"displayName": "x64 Linux Debug GCC tests"
 		},
 		{
 			"name": "test-x64-linux-release-gcc",
 			"configurePreset": "cfg-x64-linux-release-gcc",
-			"displayName": "X64 Linux Release GCC tests"
+			"displayName": "x64 Linux Release GCC tests"
 		},
 		{
 			"name": "test-x64-linux-debug-clang",
 			"configurePreset": "cfg-x64-linux-debug-clang",
-			"displayName": "X64 Linux Debug Clang tests"
+			"displayName": "x64 Linux Debug Clang tests"
 		},
 		{
 			"name": "test-x64-linux-release-clang",
 			"configurePreset": "cfg-x64-linux-release-clang",
-			"displayName": "X64 Linux Release Clang tests"
+			"displayName": "x64 Linux Release Clang tests"
 		},
 		{
 			"name": "test-x64-windows-debug-msvc",
 			"configurePreset": "cfg-x64-windows-debug-msvc",
-			"displayName": "X64 Windows Debug MSVC tests"
+			"displayName": "x64 Windows Debug MSVC tests"
 		},
 		{
 			"name": "test-x64-windows-release-msvc",
 			"configurePreset": "cfg-x64-windows-release-msvc",
-			"displayName": "X64 Windows Release MSVC tests"
+			"displayName": "x64 Windows Release MSVC tests"
 		}
 	]
 }
