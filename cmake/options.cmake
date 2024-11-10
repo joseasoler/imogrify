@@ -15,3 +15,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	option(IMOGRIFY_CLANG_ALL_WARNINGS
 		"Include most Clang warnings. This may trigger unexpected positives when using newer Clang versions" OFF)
 endif ()
+
+if (VCPKG_TARGET_TRIPLET)
+	option(IMOGRIFY_VCPKG_USE_ZLIB_NG "Use the zlib-ng library instead of zlib." ON)
+endif ()

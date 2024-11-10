@@ -6,7 +6,7 @@ include_guard(GLOBAL)
 
 find_package(ZLIB REQUIRED)
 
-if (VCPKG_TARGET_TRIPLET)
+if (VCPKG_TARGET_TRIPLET AND IMOGRIFY_VCPKG_USE_ZLIB_NG)
 	# vcpkg uses zlib-ng compiled with -DZLIB_COMPAT=on by default.
 	# zlib-ng exposes a zlib compatible API, and a valid zlib header version.
 	# For metadata we are interested on the real zlib-ng version, which only seems to be exposed through the

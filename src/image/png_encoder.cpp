@@ -148,7 +148,7 @@ tl::expected<encoded_png, std::string_view> encode(
 			PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT
 	);
 
-	// The memory buffer is pre-allocated with an estimated size to avoid repeated resize/copy operations.
+	// The memory buffer is pre-allocated with an estimated size to reduce repeated resize/copy operations.
 	encoded_png buffer(input_image.size_bytes());
 	png_set_write_fn(png_ptr, &buffer, write_data_to_buffer, nullptr);
 
