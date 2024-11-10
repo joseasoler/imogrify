@@ -8,6 +8,7 @@
 #include <imfy/benchmark_definition.hpp>
 #include <imfy/benchmark_parameters.hpp>
 #include <imfy/filesystem.hpp>
+#include <imfy/image_format.hpp>
 #include <imfy/image_size.hpp>
 #include <imfy/png_encoder.hpp>
 #include <imfy/png_format.hpp>
@@ -29,21 +30,20 @@
 namespace
 {
 
-using imfy::bench::size_def;
-imfy::image_size image_size_from_def(size_def def)
+using namespace imfy::bench;
+using namespace imfy::image;
+
+image_size image_size_from_def(size_def def)
 {
 	constexpr std::uint16_t small_side{64U};
 	constexpr std::uint16_t large_side{2048U};
-	return imfy::image_size(
+	return image_size(
 			(def == size_def::small || def == size_def::tall) ? small_side : large_side,
 			(def == size_def::small || def == size_def::wide) ? small_side : large_side
 	);
 }
 
-using imfy::image_size;
-using imfy::raw_image;
-
-raw_image get_zero_image(const std::uint8_t channels, const std::uint8_t bit_depth, const image_size img_size)
+raw_image get_zero_image(const channel_t channels, const bit_depth_t bit_depth, const image_size img_size)
 {
 	raw_image image(channels, bit_depth, img_size);
 	auto* data_ptr = image.data().as_writable_bytes().data();
@@ -51,7 +51,7 @@ raw_image get_zero_image(const std::uint8_t channels, const std::uint8_t bit_dep
 	return image;
 }
 
-raw_image get_modulo_image(const std::uint8_t channels, const std::uint8_t bit_depth, const image_size img_size)
+raw_image get_modulo_image(const channel_t channels, const bit_depth_t bit_depth, const image_size img_size)
 {
 	raw_image image(channels, bit_depth, img_size);
 	constexpr std::array<std::uint8_t, 4U> byte_modulo{251U, 241U, 239U, 233U};
@@ -59,15 +59,16 @@ raw_image get_modulo_image(const std::uint8_t channels, const std::uint8_t bit_d
 	std::size_t value_index{0U};
 	auto* data_ptr = image.data().as_writable_bytes().data();
 	const auto* data_end = data_ptr + image.data().size_bytes();
+	const auto channels_value = static_cast<std::size_t>(channels);
 	for (; data_ptr != data_end; ++data_ptr, ++value_index)
 	{
-		*data_ptr = static_cast<std::uint8_t>(value_index % byte_modulo[value_index % channels]);
+		*data_ptr = static_cast<std::uint8_t>(value_index % byte_modulo[value_index % channels_value]);
 	}
 
 	return image;
 }
 
-raw_image get_random_image(const std::uint8_t channels, const std::uint8_t bit_depth, const image_size img_size)
+raw_image get_random_image(const channel_t channels, const bit_depth_t bit_depth, const image_size img_size)
 {
 	raw_image image(channels, bit_depth, img_size);
 
@@ -92,7 +93,7 @@ raw_image get_random_image(const std::uint8_t channels, const std::uint8_t bit_d
 
 using imfy::bench::image_gen_def;
 
-constexpr std::array<raw_image (*)(std::uint8_t, std::uint8_t, image_size), magic_enum::enum_count<image_gen_def>()>
+constexpr std::array<raw_image (*)(channel_t, bit_depth_t, image_size), magic_enum::enum_count<image_gen_def>()>
 		image_generators{get_zero_image, get_modulo_image, get_random_image};
 
 constexpr std::size_t image_not_found = std::numeric_limits<std::size_t>::max();
@@ -100,7 +101,7 @@ constexpr std::size_t image_not_found = std::numeric_limits<std::size_t>::max();
 // Simple linear search, as the total number of input images should remain small.
 std::size_t position_of_image(
 		const imfy::vector<imfy::bench::benchmark_image_data>& images, const imfy::bench::definition& def,
-		imfy::image_size img_size
+		image_size img_size
 )
 {
 	for (std::size_t position{0U}; position < images.size(); ++position)
@@ -124,8 +125,8 @@ benchmark_image_data::benchmark_image_data(const imfy::bench::definition& def, c
 	: image_gen_{def.image_gen}
 	, image_{image_generators[static_cast<std::size_t>(def.image_gen)](def.channels, def.bit_depth, img_size)}
 	, filename_{fmt::format(
-				"imfy_{:d}_{:d}_{:s}_{:d}_{:d}.png", def.channels, def.bit_depth, magic_enum::enum_name(def.image_gen),
-				img_size.width, img_size.height
+				"imfy_{:d}_{:d}_{:s}_{:d}_{:d}.png", static_cast<int>(def.channels), static_cast<int>(def.bit_depth),
+				magic_enum::enum_name(def.image_gen), img_size.width, img_size.height
 		)}
 {
 }
@@ -149,8 +150,8 @@ bool benchmark_images::save_all(const std::filesystem::path& path) const
 	{
 		const auto& image_data = images_[img_index];
 		const auto encoded = imfy::png::encode(
-				png::color_type_from_channels(image_data.image_.channels()), image_data.image_.bit_depth(),
-				image_data.image_.size(), image_data.image_.data(), 6
+				png::to_color_type(image_data.image_.channels()), image_data.image_.bit_depth(), image_data.image_.size(),
+				image_data.image_.data(), compression_t::standard
 		);
 		if (!encoded.has_value())
 		{

@@ -5,28 +5,38 @@
 
 #include "imfy/png_format.hpp"
 
+#include <imfy/image_format.hpp>
+
 #include <png.h>
 
 #include <zlib.h>
 
 #include <doctest/doctest.h>
 
-TEST_CASE("color_type")
+using namespace imfy::png;
+using namespace imfy::image;
+
+TEST_CASE("Definition of color_t")
 {
-	using imfy::png::color_type;
-	static_assert(static_cast<int>(color_type::gray) == PNG_COLOR_TYPE_GRAY);
-	static_assert(static_cast<int>(color_type::rgb) == PNG_COLOR_TYPE_RGB);
-	static_assert(static_cast<int>(color_type::palette) == PNG_COLOR_TYPE_PALETTE);
-	static_assert(static_cast<int>(color_type::ga) == PNG_COLOR_TYPE_GA);
-	static_assert(static_cast<int>(color_type::rgba) == PNG_COLOR_TYPE_RGBA);
+	static_assert(static_cast<int>(color_t::gray) == PNG_COLOR_TYPE_GRAY);
+	static_assert(static_cast<int>(color_t::rgb) == PNG_COLOR_TYPE_RGB);
+	static_assert(static_cast<int>(color_t::palette) == PNG_COLOR_TYPE_PALETTE);
+	static_assert(static_cast<int>(color_t::ga) == PNG_COLOR_TYPE_GA);
+	static_assert(static_cast<int>(color_t::rgba) == PNG_COLOR_TYPE_RGBA);
 }
 
-TEST_CASE("compression level")
+TEST_CASE("Conversion of imogrify's compression_t to zlib compression levels.")
 {
-	using namespace imfy::png;
+	static_assert(to_png_compression(compression_t::none) == Z_NO_COMPRESSION);
+	static_assert(to_png_compression(compression_t::speed) == Z_BEST_SPEED);
+	static_assert(to_png_compression(compression_t::standard) == 6);
+	static_assert(to_png_compression(compression_t::best) == Z_BEST_COMPRESSION);
+}
 
-	static_assert(no_compression == Z_NO_COMPRESSION);
-	static_assert(speed_compression == Z_BEST_SPEED);
-	static_assert(default_compression == 6); // Check the zlib documentation for details.
-	static_assert(best_compression == Z_BEST_COMPRESSION);
+TEST_CASE("Conversion of imogrify's channels_t to PNG color types.")
+{
+	static_assert(to_color_type(channel_t::one) == color_t::gray);
+	static_assert(to_color_type(channel_t::two) == color_t::ga);
+	static_assert(to_color_type(channel_t::three) == color_t::rgb);
+	static_assert(to_color_type(channel_t::four) == color_t::rgba);
 }

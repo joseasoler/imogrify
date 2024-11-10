@@ -6,6 +6,7 @@
 #include "imfy/png_spng.hpp"
 
 #include <imfy/aligned_span.hpp>
+#include <imfy/image_format.hpp>
 #include <imfy/image_size.hpp>
 #include <imfy/png_format.hpp>
 
@@ -15,15 +16,15 @@
 #include <cstdint>
 #include <cstdlib>
 
-using imfy::png::color_type;
+using imfy::png::color_t;
 
 namespace
 {
-static_assert(static_cast<int>(color_type::gray) == SPNG_COLOR_TYPE_GRAYSCALE);
-static_assert(static_cast<int>(color_type::ga) == SPNG_COLOR_TYPE_GRAYSCALE_ALPHA);
-static_assert(static_cast<int>(color_type::palette) == SPNG_COLOR_TYPE_INDEXED);
-static_assert(static_cast<int>(color_type::rgb) == SPNG_COLOR_TYPE_TRUECOLOR);
-static_assert(static_cast<int>(color_type::rgba) == SPNG_COLOR_TYPE_TRUECOLOR_ALPHA);
+static_assert(static_cast<int>(color_t::gray) == SPNG_COLOR_TYPE_GRAYSCALE);
+static_assert(static_cast<int>(color_t::ga) == SPNG_COLOR_TYPE_GRAYSCALE_ALPHA);
+static_assert(static_cast<int>(color_t::palette) == SPNG_COLOR_TYPE_INDEXED);
+static_assert(static_cast<int>(color_t::rgb) == SPNG_COLOR_TYPE_TRUECOLOR);
+static_assert(static_cast<int>(color_t::rgba) == SPNG_COLOR_TYPE_TRUECOLOR_ALPHA);
 
 class spng_context final
 {
@@ -51,19 +52,19 @@ namespace imfy
 {
 
 std::size_t encode_spng(
-		const color_type color, const std::uint8_t bit_depth, const imfy::image_size img_size,
-		aligned_span<const std::uint8_t> input_image, const std::uint8_t compression_level
+		const color_t color, const image::bit_depth_t bit_depth, const image::image_size img_size,
+		aligned_span<const std::uint8_t> input_image, const image::compression_t compression
 )
 {
 	spng_context context{SPNG_CTX_ENCODER};
 	spng_set_option(context.get(), SPNG_ENCODE_TO_BUFFER, 1);
-	spng_set_option(context.get(), SPNG_IMG_COMPRESSION_LEVEL, compression_level);
+	spng_set_option(context.get(), SPNG_IMG_COMPRESSION_LEVEL, static_cast<int>(compression));
 
 	spng_ihdr ihdr{};
 	ihdr.width = img_size.width;
 	ihdr.height = img_size.height;
 	ihdr.color_type = static_cast<std::uint8_t>(color);
-	ihdr.bit_depth = bit_depth;
+	ihdr.bit_depth = static_cast<std::uint8_t>(bit_depth);
 	spng_set_ihdr(context.get(), &ihdr);
 	if (const int ret =
 					spng_encode_image(context.get(), input_image.data(), input_image.size(), SPNG_FMT_PNG, SPNG_ENCODE_FINALIZE);

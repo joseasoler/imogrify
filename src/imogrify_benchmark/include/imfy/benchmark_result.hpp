@@ -6,6 +6,7 @@
 #pragma once
 
 #include <imfy/benchmark_parameters.hpp>
+#include <imfy/image_format.hpp>
 #include <imfy/image_size.hpp>
 #include <imfy/raw_image.hpp>
 #include <imfy/vector.hpp>
@@ -37,11 +38,11 @@ struct result final
 {
 	format_def format;
 	operation_def operation;
-	std::uint8_t channels;
-	std::uint8_t bit_depth;
+	image::channel_t channels;
+	image::bit_depth_t bit_depth;
 	image_gen_def image_gen;
-	image_size img_size;
-	std::int32_t compression;
+	image::image_size img_size;
+	image::compression_t compression;
 	imfy::vector<library_result> library_results;
 };
 

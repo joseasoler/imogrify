@@ -8,7 +8,7 @@
 #include <compare>
 #include <cstdint>
 
-namespace imfy
+namespace imfy::image
 {
 
 struct image_size final
@@ -46,4 +46,4 @@ struct image_size final
 	constexpr bool operator!=(const image_size& rhs) const noexcept { return width != rhs.width || height != rhs.height; }
 };
 
-} // namespace imfy
+} // namespace imfy::image

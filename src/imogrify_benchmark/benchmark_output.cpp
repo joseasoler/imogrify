@@ -7,6 +7,7 @@
 
 #include <imfy/benchmark_parameters.hpp>
 #include <imfy/benchmark_result.hpp>
+#include <imfy/image_format.hpp>
 
 #include <magic_enum.hpp>
 
@@ -26,6 +27,7 @@
 namespace
 {
 using namespace imfy::bench;
+using namespace imfy::image;
 
 using namespace std::string_view_literals;
 
@@ -49,20 +51,20 @@ constexpr auto branches_header = "Branches"sv;
 constexpr auto branch_misses_header = "B. misses"sv;
 #endif // ANKERL_NANOBENCH(PERF_COUNTERS)
 
-std::string_view channel_string(format_def format, std::uint8_t channels)
+std::string_view channel_string(format_def format, channel_t channels)
 {
 	if (format == format_def::png)
 	{
 		switch (channels)
 		{
-			case 1U:
+			case channel_t::one:
 				return "g";
-			case 2U:
+			case channel_t::two:
 				return "ga";
-			case 3U:
+			case channel_t::three:
 				return "rgb";
 			default:
-			case 4U:
+			case channel_t::four:
 				return "rgba";
 		}
 	}
@@ -157,7 +159,7 @@ public:
 		{
 			table.add_cell_str(magic_enum::enum_name(lib_res.library));
 			table.add_cell_str(channel_string(res.format, res.channels));
-			table.add_cell_uint(res.bit_depth);
+			table.add_cell_uint(static_cast<std::uint64_t>(res.bit_depth));
 			table.add_cell_str(magic_enum::enum_name(res.image_gen));
 			table.add_cell_uint(res.img_size.width);
 			table.add_cell_uint(res.img_size.height);

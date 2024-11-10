@@ -4,7 +4,6 @@
 
 add_library(imogrify_image STATIC
 	png_encoder.cpp
-	png_format.cpp
 	raw_image.cpp
 )
 

@@ -5,13 +5,15 @@
 
 #pragma once
 
+#include <imfy/image_format.hpp>
+
 #include <cstdint>
 
 namespace imfy::png
 {
 
 /** See http://www.libpng.org/pub/png/spec/1.2/PNG-Chunks.html#C.IHDR */
-enum class color_type : std::uint8_t
+enum class color_t : std::uint8_t
 {
 	gray = 0U,
 	rgb = 2U,
@@ -20,17 +22,47 @@ enum class color_type : std::uint8_t
 	rgba = 6U,
 };
 
-/** See https://www.zlib.net/manual.html */
-constexpr auto no_compression = 0;
-constexpr auto speed_compression = 1;
-constexpr auto default_compression = 6;
-constexpr auto best_compression = 9;
+/**
+ * Maps the imogrify representation of compressions to the levels used by libpng.
+ * See https://www.zlib.net/manual.html
+ * @param compression imogrify compression_t level.
+ * @return zlib compression_t level.
+ */
+constexpr int to_png_compression(image::compression_t compression)
+{
+	switch (compression)
+	{
+		case image::compression_t::none:
+			return 0;
+		case image::compression_t::speed:
+			return 1;
+		case image::compression_t::standard:
+		default:
+			return 6;
+		case image::compression_t::best:
+			return 9;
+	}
+}
 
 /**
  * Maps the channel counts supported by imogrify to PNG color types. Ignores palette.
  * @param channels Channel count.
  * @return Color type.
  */
-color_type color_type_from_channels(std::uint8_t channels);
+constexpr color_t to_color_type(image::channel_t channels)
+{
+	switch (channels)
+	{
+		case image::channel_t::one:
+			return color_t::gray;
+		case image::channel_t::two:
+			return color_t::ga;
+		case image::channel_t::three:
+			return color_t::rgb;
+		default:
+		case image::channel_t::four:
+			return color_t::rgba;
+	}
+}
 
 } // namespace imfy::png

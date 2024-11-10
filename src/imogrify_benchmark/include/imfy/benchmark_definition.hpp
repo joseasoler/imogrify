@@ -6,6 +6,7 @@
 #pragma once
 
 #include <imfy/benchmark_parameters.hpp>
+#include <imfy/image_format.hpp>
 
 #include <compare>
 #include <cstdint>
@@ -19,11 +20,11 @@ struct definition final
 	format_def format;
 	operation_def operation;
 	library_flags libraries;
-	std::uint8_t channels;
-	std::uint8_t bit_depth;
+	image::channel_t channels;
+	image::bit_depth_t bit_depth;
 	image_gen_def image_gen;
 	size_def size;
-	std::int32_t compression;
+	image::compression_t compression;
 	/** Benchmark definitions are executed in their sorting order. */
 	constexpr auto operator<=>(const definition&) const noexcept = default;
 };

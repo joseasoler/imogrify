@@ -6,6 +6,7 @@
 #include "imfy/png_lodepng.hpp"
 
 #include <imfy/aligned_span.hpp>
+#include <imfy/image_format.hpp>
 #include <imfy/image_size.hpp>
 #include <imfy/png_format.hpp>
 
@@ -16,20 +17,20 @@
 
 namespace
 {
-using imfy::png::color_type;
-static_assert(static_cast<int>(color_type::gray) == LodePNGColorType::LCT_GREY);
-static_assert(static_cast<int>(color_type::ga) == LodePNGColorType::LCT_GREY_ALPHA);
-static_assert(static_cast<int>(color_type::palette) == LodePNGColorType::LCT_PALETTE);
-static_assert(static_cast<int>(color_type::rgb) == LodePNGColorType::LCT_RGB);
-static_assert(static_cast<int>(color_type::rgba) == LodePNGColorType::LCT_RGBA);
+using imfy::png::color_t;
+static_assert(static_cast<int>(color_t::gray) == LodePNGColorType::LCT_GREY);
+static_assert(static_cast<int>(color_t::ga) == LodePNGColorType::LCT_GREY_ALPHA);
+static_assert(static_cast<int>(color_t::palette) == LodePNGColorType::LCT_PALETTE);
+static_assert(static_cast<int>(color_t::rgb) == LodePNGColorType::LCT_RGB);
+static_assert(static_cast<int>(color_t::rgba) == LodePNGColorType::LCT_RGBA);
 } // namespace
 
 namespace imfy
 {
 
 std::size_t encode_lodepng(
-		const imfy::png::color_type color, const std::uint8_t bit_depth, const imfy::image_size img_size,
-		aligned_span<const std::uint8_t> input_image, const std::uint8_t /*compression_level*/
+		const png::color_t color, const image::bit_depth_t bit_depth, const image::image_size img_size,
+		aligned_span<const std::uint8_t> input_image, const image::compression_t /*compression*/
 )
 {
 	unsigned char* png{};
@@ -38,9 +39,9 @@ std::size_t encode_lodepng(
 
 	lodepng_state_init(&state);
 	state.info_raw.colortype = static_cast<LodePNGColorType>(color);
-	state.info_raw.bitdepth = bit_depth;
+	state.info_raw.bitdepth = static_cast<unsigned int>(bit_depth);
 	state.info_png.color.colortype = static_cast<LodePNGColorType>(color);
-	state.info_png.color.bitdepth = bit_depth;
+	state.info_png.color.bitdepth = static_cast<unsigned int>(bit_depth);
 
 	auto error = lodepng_encode(&png, &png_size, input_image.data(), img_size.width, img_size.height, &state);
 	if (error != 0U) [[unlikely]]
