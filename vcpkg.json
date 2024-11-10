@@ -2,8 +2,6 @@
 	"name": "imogrify",
 	"version": "0.1.0",
 	"dependencies": [
-		"imfy-libpng-ng",
-		"imfy-zlib-ng",
 		"fmt",
 		"highway",
 		"magic-enum",
@@ -13,9 +11,20 @@
 		"imogrify-benchmark": {
 			"description": "Build benchmarks",
 			"dependencies": [
-				"imfy-libspng-ng",
 				"nanobench",
 				"lodepng"
+			]
+		},
+		"imogrify-benchmark-use-zlib": {
+			"description": "Build benchmarks with zlib",
+			"dependencies": [
+				"libspng"
+			]
+		},
+		"imogrify-benchmark-use-zlib-ng": {
+			"description": "Build benchmarks with zlib-ng",
+			"dependencies": [
+				"imfy-libspng-ng"
 			]
 		},
 		"imogrify-cpu-information": {
@@ -28,6 +37,20 @@
 			"description": "Build unit tests",
 			"dependencies": [
 				"doctest"
+			]
+		},
+		"imogrify-use-zlib": {
+			"description": "Build with zlib-ng",
+			"dependencies": [
+				"libpng",
+				"zlib"
+			]
+		},
+		"imogrify-use-zlib-ng": {
+			"description": "Build with zlib-ng",
+			"dependencies": [
+				"imfy-libpng-ng",
+				"imfy-zlib-ng"
 			]
 		}
 	}
