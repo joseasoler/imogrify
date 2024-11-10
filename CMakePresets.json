@@ -22,21 +22,7 @@
 			}
 		},
 		{
-			"name": "cfg-debug",
-			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "Debug"
-			},
-			"hidden": true
-		},
-		{
-			"name": "cfg-release",
-			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "Release"
-			},
-			"hidden": true
-		},
-		{
-			"name": "cfg-arm64-macos",
+			"name": "ci-arm64-macos",
 			"condition": {
 				"type": "equals",
 				"lhs": "${hostSystemName}",
@@ -45,198 +31,132 @@
 			"cacheVariables": {
 				"VCPKG_TARGET_TRIPLET": "arm64-osx"
 			},
-			"hidden": true
+			"inherits": [
+				"cfg-base"
+			],
+			"displayName": "CI - arm64 MacOS"
 		},
 		{
-			"name": "cfg-x64-linux",
+			"name": "ci-x64-linux-clang",
 			"condition": {
 				"type": "equals",
 				"lhs": "${hostSystemName}",
 				"rhs": "Linux"
 			},
 			"cacheVariables": {
-				"IMOGRIFY_CLANG_TIDY": "ON",
-				"CMAKE_CXX_FLAGS": "-march=x86-64-v3 -mavx2"
-			},
-			"hidden": true
-		},
-		{
-			"name": "cfg-x64-linux-gcc",
-			"cacheVariables": {
-				"VCPKG_TARGET_TRIPLET": "imfy-x64-linux-gcc"
-			},
-			"inherits": [
-				"cfg-x64-linux"
-			],
-			"hidden": true
-		},
-		{
-			"name": "cfg-x64-linux-clang",
-			"cacheVariables": {
 				"CMAKE_C_COMPILER": "clang",
 				"CMAKE_CXX_COMPILER": "clang++",
+				"IMOGRIFY_CLANG_TIDY": "ON",
 				"VCPKG_TARGET_TRIPLET": "imfy-x64-linux-clang"
 			},
 			"inherits": [
-				"cfg-x64-linux"
+				"cfg-base"
 			],
-			"hidden": true
+			"displayName": "CI - x64 Linux Clang"
 		},
 		{
-			"name": "cfg-x64-windows",
+			"name": "ci-x64-linux-gcc",
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Linux"
+			},
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug",
+				"VCPKG_TARGET_TRIPLET": "imfy-x64-linux-gcc"
+			},
+			"inherits": [
+				"cfg-base"
+			],
+			"displayName": "CI - x64 Linux GCC"
+		},
+		{
+			"name": "ci-x64-windows",
 			"condition": {
 				"type": "equals",
 				"lhs": "${hostSystemName}",
 				"rhs": "Windows"
 			},
 			"cacheVariables": {
-				"VCPKG_TARGET_TRIPLET": "imfy-x64-windows-msvc",
-				"CMAKE_CXX_FLAGS_INIT": "/arch:AVX2"
+				"CMAKE_BUILD_TYPE": "Release",
+				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded",
+				"VCPKG_TARGET_TRIPLET": "imfy-x64-windows-msvc"
 			},
-			"hidden": true
+			"inherits": [
+				"cfg-base"
+			],
+			"displayName": "CI - x64 Windows MSVC"
 		},
 		{
-			"name": "cfg-arm64-macos-release-clang",
-			"inherits": [
-				"cfg-base",
-				"cfg-release",
-				"cfg-arm64-macos"
-			],
-			"displayName": "arm64 MacOS Release Clang configuration"
-		},
-		{
-			"name": "cfg-x64-linux-debug-gcc",
-			"inherits": [
-				"cfg-base",
-				"cfg-debug",
-				"cfg-x64-linux-gcc"
-			],
-			"displayName": "x64 Linux Debug GCC configuration"
-		},
-		{
-			"name": "cfg-x64-linux-release-gcc",
-			"inherits": [
-				"cfg-base",
-				"cfg-release",
-				"cfg-x64-linux-gcc"
-			],
-			"displayName": "x64 Linux Release GCC configuration"
-		},
-		{
-			"name": "cfg-x64-linux-debug-clang",
-			"inherits": [
-				"cfg-base",
-				"cfg-debug",
-				"cfg-x64-linux-clang"
-			],
-			"displayName": "x64 Linux Debug Clang configuration"
-		},
-		{
-			"name": "cfg-x64-linux-release-clang",
-			"inherits": [
-				"cfg-base",
-				"cfg-release",
-				"cfg-x64-linux-clang"
-			],
-			"displayName": "x64 Linux Release Clang configuration"
-		},
-		{
-			"name": "cfg-x64-windows-debug-msvc",
-			"inherits": [
-				"cfg-base",
-				"cfg-debug",
-				"cfg-x64-windows"
-			],
-			"displayName": "x64 Windows MSVC debug configuration",
+			"name": "dev-x64-linux-clang-debug",
 			"cacheVariables": {
-				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreadedDebug"
-			}
-		},
-		{
-			"name": "cfg-x64-windows-release-msvc",
+				"CMAKE_BUILD_TYPE": "Debug"
+			},
 			"inherits": [
-				"cfg-base",
-				"cfg-release",
-				"cfg-x64-windows"
+				"ci-x64-linux-clang"
 			],
-			"displayName": "x64 Windows MSVC release config",
+			"displayName": "Dev - x64 Linux Clang debug"
+		},
+		{
+			"name": "dev-x64-linux-clang-release",
 			"cacheVariables": {
-				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded"
-			}
-		}
-	],
-	"buildPresets": [
-		{
-			"name": "build-arm64-macos-release-clang",
-			"configurePreset": "cfg-arm64-macos-release-clang",
-			"displayName": "arm64 MacOS Release Clang build"
+				"CMAKE_BUILD_TYPE": "Release"
+			},
+			"inherits": [
+				"ci-x64-linux-clang"
+			],
+			"displayName": "Dev - x64 Linux Clang release"
 		},
 		{
-			"name": "build-x64-linux-debug-gcc",
-			"configurePreset": "cfg-x64-linux-debug-gcc",
-			"displayName": "x64 Linux Debug GCC build"
+			"name": "dev-x64-linux-gcc-debug",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug",
+				"IMOGRIFY_CLANG_TIDY": "ON"
+			},
+			"inherits": [
+				"ci-x64-linux-gcc"
+			],
+			"displayName": "Dev - x64 Linux GCC debug"
 		},
 		{
-			"name": "build-x64-linux-release-gcc",
-			"configurePreset": "cfg-x64-linux-release-gcc",
-			"displayName": "x64 Linux Release GCC build"
+			"name": "dev-x64-linux-gcc-release",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Release",
+				"IMOGRIFY_CLANG_TIDY": "ON"
+			},
+			"inherits": [
+				"ci-x64-linux-gcc"
+			],
+			"displayName": "Dev - x64 Linux GCC release"
 		},
 		{
-			"name": "build-x64-linux-debug-clang",
-			"configurePreset": "cfg-x64-linux-debug-clang",
-			"displayName": "x64 Linux Debug Clang build"
+			"name": "dev-x64-windows-msvc-debug",
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Windows"
+			},
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug",
+				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreadedDebug",
+				"VCPKG_TARGET_TRIPLET": "imfy-x64-windows-msvc",
+				"IMOGRIFY_CLANG_TIDY": "ON"
+
+			},
+			"inherits": [
+				"cfg-base"
+			],
+			"displayName": "Dev - x64 Windows MSVC release"
 		},
 		{
-			"name": "build-x64-linux-release-clang",
-			"configurePreset": "cfg-x64-linux-release-clang",
-			"displayName": "x64 Linux Release Clang build"
-		},
-		{
-			"name": "build-x64-windows-debug-msvc",
-			"configurePreset": "cfg-x64-windows-debug-msvc",
-			"displayName": "x64 Windows Debug MSVC build"
-		},
-		{
-			"name": "build-x64-windows-release-msvc",
-			"configurePreset": "cfg-x64-windows-release-msvc",
-			"displayName": "x64 Windows Release MSVC build"
-		}
-	],
-	"testPresets": [
-		{
-			"name": "test-arm64-macos-release-clang",
-			"configurePreset": "cfg-arm64-macos-release-clang",
-			"displayName": "Arm64 MacOS Release Clang tests"
-		},
-		{
-			"name": "test-x64-linux-debug-gcc",
-			"configurePreset": "cfg-x64-linux-debug-gcc",
-			"displayName": "x64 Linux Debug GCC tests"
-		},
-		{
-			"name": "test-x64-linux-release-gcc",
-			"configurePreset": "cfg-x64-linux-release-gcc",
-			"displayName": "x64 Linux Release GCC tests"
-		},
-		{
-			"name": "test-x64-linux-debug-clang",
-			"configurePreset": "cfg-x64-linux-debug-clang",
-			"displayName": "x64 Linux Debug Clang tests"
-		},
-		{
-			"name": "test-x64-linux-release-clang",
-			"configurePreset": "cfg-x64-linux-release-clang",
-			"displayName": "x64 Linux Release Clang tests"
-		},
-		{
-			"name": "test-x64-windows-debug-msvc",
-			"configurePreset": "cfg-x64-windows-debug-msvc",
-			"displayName": "x64 Windows Debug MSVC tests"
-		},
-		{
-			"name": "test-x64-windows-release-msvc",
-			"configurePreset": "cfg-x64-windows-release-msvc",
-			"displayName": "x64 Windows Release MSVC tests"
+			"name": "dev-x64-windows-msvc-release",
+			"cacheVariables": {
+				"IMOGRIFY_CLANG_TIDY": "ON"
+			},
+			"inherits": [
+				"ci-x64-windows"
+			],
+			"displayName": "Dev - x64 Windows MSVC release"
 		}
 	]
 }

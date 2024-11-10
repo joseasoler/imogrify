@@ -27,7 +27,7 @@ struct is_case_insensitive_less final
 	{
 		return std::lexicographical_compare(
 				lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend(),
-				[](const char left, const char right) { return to_lower(left) < to_lower(right); }
+				[](const char lhs_char, const char rhs_char) { return to_lower(lhs_char) < to_lower(rhs_char); }
 		);
 	}
 

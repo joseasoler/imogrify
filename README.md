@@ -70,13 +70,17 @@ The following dependencies are included in the thirdparty subfolder of the imogr
 
 ### vcpkg support
 
-imogrify can be built using [vcpkg](https://github.com/microsoft/vcpkg) to retrieve dependencies. The CMake presets found in the `CMakePresets.json` file are meant for continuous integration, but they can also be used for development.
-
-To use these presets locally, you will need to [install vcpkg](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started) and set the environment variable `VCPKG_ROOT` to its path. It is recommended to install vcpkg in a short path to avoid building issues with some dependencies. imogrify's vcpkg support uses custom triplets and ports found in the `cmake/custom_vcpkg` subfolder.
+imogrify can be built using [vcpkg](https://github.com/microsoft/vcpkg) to retrieve dependencies.
 
 When using vcpkg, the following CMake options are also available:
 
 * `IMOGRIFY_VCPKG_USE_ZLIB_NG`: Replaces [zlib](https://www.zlib.net) with **[zlib-ng](https://github.com/zlib-ng/zlib-ng)**. zlib-ng is a zlib data compression library for the next generation systems. [libpng](http://www.libpng.org)** and [libspng](https://libspng.org) will also use zlib-ng. On by default.
+
+### CMake presets
+
+imogrify includes a set of CMake presets. For development it is recommended to use the dev- presets, as the ci- presets are intended for continuous integration.
+
+To use these presets locally, you will need to [install vcpkg](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started) and set the environment variable `VCPKG_ROOT` to its path. It is recommended to install vcpkg in a short path to avoid building issues with some dependencies. imogrify's vcpkg support uses custom triplets and ports found in the `cmake/custom_vcpkg` subfolder.
 
 ## Acknowledgements
 
