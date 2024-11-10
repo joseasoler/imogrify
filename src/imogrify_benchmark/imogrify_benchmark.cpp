@@ -10,7 +10,7 @@
 #include <imfy/benchmark_parameters.hpp>
 #include <imfy/benchmark_result.hpp>
 #include <imfy/encoding.hpp>
-#include <imfy/png_format.hpp>
+#include <imfy/image_format.hpp>
 #include <imfy/vector.hpp>
 
 #if IMOGRIFY_USE_FMT_BASE_HEADER
@@ -22,7 +22,6 @@
 
 #include <algorithm>
 #include <array>
-#include <cstdint>
 #include <cstdlib>
 #include <filesystem>
 #include <string_view>
@@ -37,6 +36,9 @@ using imfy::bench::image_gen_def;
 using imfy::bench::library_flags;
 using imfy::bench::operation_def;
 using imfy::bench::size_def;
+using imfy::image::bit_depth_t;
+using imfy::image::channel_t;
+using imfy::image::compression_t;
 
 constexpr library_flags operator|(library_flags lhs, library_flags rhs)
 {
@@ -51,31 +53,31 @@ constexpr std::array definitions{
 				.format = format_def::png,
 				.operation = operation_def::encode,
 				.libraries = png_encode_libs,
-				.channels = 4U,
-				.bit_depth = 8U,
+				.channels = channel_t::four,
+				.bit_depth = bit_depth_t::eight,
 				.image_gen = image_gen_def::zero,
 				.size = size_def::large,
-				.compression = static_cast<std::int32_t>(imfy::png::default_compression)
+				.compression = compression_t::standard
 		},
 		definition{
 				.format = format_def::png,
 				.operation = operation_def::encode,
 				.libraries = png_encode_libs,
-				.channels = 4U,
-				.bit_depth = 8U,
+				.channels = channel_t::four,
+				.bit_depth = bit_depth_t::eight,
 				.image_gen = image_gen_def::modulo,
 				.size = size_def::large,
-				.compression = static_cast<std::int32_t>(imfy::png::default_compression)
+				.compression = compression_t::standard
 		},
 		definition{
 				.format = format_def::png,
 				.operation = operation_def::encode,
 				.libraries = png_encode_libs,
-				.channels = 4U,
-				.bit_depth = 8U,
+				.channels = channel_t::four,
+				.bit_depth = bit_depth_t::eight,
 				.image_gen = image_gen_def::random,
 				.size = size_def::large,
-				.compression = static_cast<std::int32_t>(imfy::png::default_compression)
+				.compression = compression_t::standard
 		},
 };
 

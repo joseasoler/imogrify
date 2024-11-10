@@ -35,8 +35,8 @@ struct encoded_png final
 };
 
 tl::expected<encoded_png, std::string_view> encode(
-		imfy::png::color_type color, std::uint8_t bit_depth, image_size img_size,
-		aligned_span<const std::uint8_t> input_image, std::uint8_t compression_level
+		color_t color, image::bit_depth_t bit_depth, image::image_size img_size,
+		aligned_span<const std::uint8_t> input_image, image::compression_t compression_level
 );
 
 } // namespace imfy::png

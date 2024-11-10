@@ -9,6 +9,7 @@
 #include <imfy/benchmark_images.hpp>
 #include <imfy/benchmark_parameters.hpp>
 #include <imfy/benchmark_result.hpp>
+#include <imfy/image_format.hpp>
 #include <imfy/png_format.hpp>
 #include <imfy/png_lodepng.hpp>
 #include <imfy/png_spng.hpp>
@@ -136,21 +137,20 @@ constexpr bool has_flag(library_flags value, library_flags flag)
 }
 
 imfy::vector<raw_library_result> run_png_encode_benchmark(
-		Bench& bench, const imfy::raw_image& image, const library_flags libraries, const std::int32_t compression
+		Bench& bench, const imfy::image::raw_image& image, const library_flags libraries,
+		const imfy::image::compression_t compression
 )
 {
 	imfy::vector<raw_library_result> results;
-	const auto color = imfy::png::color_type_from_channels(image.channels());
-	const auto compression_level = static_cast<std::uint8_t>(compression);
+	const auto color = imfy::png::to_color_type(image.channels());
 
 	if (has_flag(libraries, library_flags::libpng))
 	{
 		results.push_back(run_benchmark_impl(
 				bench, library_flags::libpng,
-				[&color, &image, &compression_level]() -> std::size_t
+				[&color, &image, &compression]() -> std::size_t
 				{
-					const auto result =
-							imfy::png::encode(color, image.bit_depth(), image.size(), image.data(), compression_level);
+					const auto result = imfy::png::encode(color, image.bit_depth(), image.size(), image.data(), compression);
 					return result.has_value() ? result.value().size : 0U;
 				}
 		));
@@ -158,15 +158,15 @@ imfy::vector<raw_library_result> run_png_encode_benchmark(
 	if (has_flag(libraries, library_flags::lodepng))
 	{
 		results.push_back(run_benchmark_impl(
-				bench, library_flags::lodepng, [&color, &image, &compression_level]() -> std::size_t
-				{ return encode_lodepng(color, image.bit_depth(), image.size(), image.data(), compression_level); }
+				bench, library_flags::lodepng, [&color, &image, &compression]() -> std::size_t
+				{ return encode_lodepng(color, image.bit_depth(), image.size(), image.data(), compression); }
 		));
 	}
 	if (has_flag(libraries, library_flags::spng))
 	{
 		results.push_back(run_benchmark_impl(
-				bench, library_flags::spng, [&color, &image, &compression_level]() -> std::size_t
-				{ return encode_spng(color, image.bit_depth(), image.size(), image.data(), compression_level); }
+				bench, library_flags::spng, [&color, &image, &compression]() -> std::size_t
+				{ return encode_spng(color, image.bit_depth(), image.size(), image.data(), compression); }
 		));
 	}
 
@@ -194,7 +194,7 @@ result benchmark_execution::run(const definition& def)
 	res.channels = def.channels;
 	res.bit_depth = def.bit_depth;
 	res.image_gen = def.image_gen;
-	const imfy::raw_image* image = images_.get(def);
+	const imfy::image::raw_image* image = images_.get(def);
 	if (image == nullptr)
 	{
 		return {};

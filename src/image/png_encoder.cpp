@@ -8,9 +8,9 @@
 #include <imfy/aligned_allocation.hpp>
 #include <imfy/aligned_span.hpp>
 #include <imfy/attributes.hpp>
+#include <imfy/image_format.hpp>
+#include <imfy/image_size.hpp>
 #include <imfy/png_format.hpp>
-
-#include "imfy/image_size.hpp"
 
 #if IMOGRIFY_USE_FMT_BASE_HEADER
 #include <fmt/base.h>
@@ -102,20 +102,20 @@ private:
 	png_info_def* info_ptr_;
 };
 
-using imfy::png::color_type;
+using imfy::png::color_t;
 
-std::uint8_t channels_of_color_type(color_type color)
+std::uint8_t channels_of_color_type(color_t color)
 {
 	switch (color)
 	{
-		case color_type::palette:
-		case color_type::gray:
+		case color_t::palette:
+		case color_t::gray:
 			return 1U;
-		case color_type::ga:
+		case color_t::ga:
 			return 2U;
-		case color_type::rgb:
+		case color_t::rgb:
 			return 3U;
-		case color_type::rgba:
+		case color_t::rgba:
 			return 4U;
 		[[unlikely]] default:
 			return 0U;
@@ -128,8 +128,8 @@ namespace imfy::png
 {
 
 tl::expected<encoded_png, std::string_view> encode(
-		const imfy::png::color_type color, const std::uint8_t bit_depth, const image_size img_size,
-		aligned_span<const std::uint8_t> input_image, const std::uint8_t compression_level
+		const color_t color, const image::bit_depth_t bit_depth, const image::image_size img_size,
+		aligned_span<const std::uint8_t> input_image, const image::compression_t compression
 )
 {
 	const char* warning_message = nullptr;
@@ -141,11 +141,11 @@ tl::expected<encoded_png, std::string_view> encode(
 		return tl::unexpected("Fatal error during PNG encoding initialization.");
 	}
 
-	png_set_compression_level(png_ptr, compression_level);
+	png_set_compression_level(png_ptr, png::to_png_compression(compression));
 
 	png_set_IHDR(
-			png_ptr, info_ptr, img_size.width, img_size.height, bit_depth, static_cast<int>(color), PNG_INTERLACE_NONE,
-			PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT
+			png_ptr, info_ptr, img_size.width, img_size.height, static_cast<int>(bit_depth), static_cast<int>(color),
+			PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT
 	);
 
 	// The memory buffer is pre-allocated with an estimated size to reduce repeated resize/copy operations.
@@ -156,7 +156,7 @@ tl::expected<encoded_png, std::string_view> encode(
 	// Write PNG file row by row to avoid arrays of row pointers and const casting.
 	const std::uint8_t* IMFY_RESTRICT row_pointer = input_image.data();
 	constexpr std::uint8_t bits_in_byte = 8U;
-	const std::uint8_t byte_depth = bit_depth / bits_in_byte;
+	const std::uint8_t byte_depth = static_cast<std::uint8_t>(bit_depth) / bits_in_byte;
 	const std::uint8_t channels = channels_of_color_type(color);
 
 	for (std::size_t row_index = 0U; row_index < img_size.height; ++row_index)

@@ -6,6 +6,7 @@
 #pragma once
 
 #include <imfy/aligned_span.hpp>
+#include <imfy/image_format.hpp>
 #include <imfy/image_size.hpp>
 #include <imfy/png_format.hpp>
 
@@ -13,8 +14,8 @@ namespace imfy
 {
 
 std::size_t encode_lodepng(
-		imfy::png::color_type color, std::uint8_t bit_depth, imfy::image_size img_size,
-		aligned_span<const std::uint8_t> input_image, std::uint8_t compression_level
+		png::color_t color, image::bit_depth_t bit_depth, image::image_size img_size,
+		aligned_span<const std::uint8_t> input_image, image::compression_t compression
 );
 
 } // namespace imfy

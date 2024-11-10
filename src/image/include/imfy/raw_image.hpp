@@ -7,6 +7,7 @@
 
 #include <imfy/aligned_span.hpp>
 #include <imfy/concepts.hpp>
+#include <imfy/image_format.hpp>
 #include <imfy/image_size.hpp>
 #include <imfy/memory_block.hpp>
 
@@ -14,14 +15,14 @@
 #include <cstddef>
 #include <limits>
 
-namespace imfy
+namespace imfy::image
 {
 class raw_image final
 {
 public:
 	using value_type = std::uint8_t;
 
-	raw_image(std::uint8_t channels, std::uint8_t bit_depth, image_size img_size);
+	raw_image(channel_t channels, bit_depth_t bit_depth, image_size img_size);
 
 	raw_image() = delete;
 	raw_image(const raw_image&) = delete;
@@ -30,8 +31,8 @@ public:
 	raw_image& operator=(raw_image&&) noexcept = default;
 	~raw_image() = default;
 
-	[[nodiscard]] std::uint8_t channels() const noexcept;
-	[[nodiscard]] std::uint8_t bit_depth() const noexcept;
+	[[nodiscard]] channel_t channels() const noexcept;
+	[[nodiscard]] bit_depth_t bit_depth() const noexcept;
 	[[nodiscard]] image_size size() const noexcept;
 	[[nodiscard]] aligned_span<raw_image::value_type> data() noexcept;
 	[[nodiscard]] aligned_span<const raw_image::value_type> data() const noexcept;
@@ -39,8 +40,8 @@ public:
 private:
 	imfy::memory_block<value_type> data_;
 	image_size image_size_;
-	std::uint8_t channels_;
-	std::uint8_t bit_depth_;
+	channel_t channels_;
+	bit_depth_t bit_depth_;
 };
 
-} // namespace imfy
+} // namespace imfy::image

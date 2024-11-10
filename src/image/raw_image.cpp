@@ -6,28 +6,31 @@
 #include "imfy/raw_image.hpp"
 
 #include <imfy/aligned_span.hpp>
+#include <imfy/image_format.hpp>
 #include <imfy/image_size.hpp>
 
 #include <cstddef>
-#include <cstdint>
 
-namespace imfy
+namespace imfy::image
 {
 
-raw_image::raw_image(std::uint8_t channels, std::uint8_t bit_depth, image_size img_size)
-	: data_(static_cast<std::size_t>(img_size.width * img_size.height) * channels * (bit_depth / 8U))
+raw_image::raw_image(const channel_t channels, const bit_depth_t bit_depth, image_size img_size)
+	: data_(
+				static_cast<std::size_t>(img_size.width * img_size.height) * static_cast<std::size_t>(channels) *
+				(static_cast<std::size_t>(bit_depth) / 8U)
+		)
 	, image_size_{img_size}
 	, channels_{channels}
 	, bit_depth_{bit_depth}
 {
 }
 
-std::uint8_t raw_image::channels() const noexcept
+channel_t raw_image::channels() const noexcept
 {
 	return channels_;
 }
 
-std::uint8_t raw_image::bit_depth() const noexcept
+bit_depth_t raw_image::bit_depth() const noexcept
 {
 	return bit_depth_;
 }
@@ -47,4 +50,4 @@ aligned_span<const raw_image::value_type> raw_image::data() const noexcept
 	return data_.span();
 }
 
-} // namespace imfy
+} // namespace imfy::image
