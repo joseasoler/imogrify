@@ -1,0 +1,60 @@
+# Copyright (c) 2020 GitHub
+# Copyright (c) 2024 Imogrify contributors
+# File licensed under the MIT license (see ci_LICENSE for details).
+# Based on: https://github.com/actions/starter-workflows/blob/main/ci/cmake-multi-platform.yml
+
+name: build-vcpkg
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.runner }}
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        cmake_preset: [  ci-arm64-macos, ci-x64-linux-clang, ci-x64-linux-gcc, ci-x64-windows ]
+        include:
+          - cmake_preset: ci-arm64-macos
+            runner: macos-15
+          - cmake_preset: ci-x64-linux-clang
+            runner: ubuntu-24.04
+          - cmake_preset: ci-x64-linux-gcc
+            runner: ubuntu-24.04
+          - cmake_preset: ci-x64-windows
+            runner: windows-latest
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Setup MSVC
+        if: matrix.runner == 'windows-latest'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          # Must be updated along with cmake/dependencies/vcpkg.cmake.
+          vcpkgGitCommitId: 'c82f74667287d3dc386bce81e44964370c91a289' # 2024.09.30
+
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install build dependencies
+        run: pip install ninja
+
+      - name: Configure project
+        run: cmake --preset ${{ matrix.cmake_preset }}
+
+      - name: Build project
+        run: cmake --build build/${{ matrix.cmake_preset }} --target all
+
+      - name: Run tests
+        run: cd build/${{ matrix.cmake_preset }} && ctest --extra-verbose .
