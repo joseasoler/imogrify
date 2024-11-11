@@ -25,6 +25,7 @@ struct library_result final
 	double file_size;
 	double file_size_rel;
 	double mpix_second;
+	double milliseconds;
 	double speed_relative;
 	double speed_error;
 	std::uint64_t instructions;
