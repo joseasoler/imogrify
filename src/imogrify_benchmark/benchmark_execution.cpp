@@ -81,6 +81,8 @@ raw_library_result run_benchmark_impl(Bench& bench, const library_flags library,
 	using measure = ankerl::nanobench::Result::Measure;
 	const ankerl::nanobench::Result& data = bench.results().back();
 
+	run_result.lib_res.milliseconds =
+			static_cast<double>(to_nanoseconds(data.median(measure::elapsed)).count()) / 1000000.0;
 	run_result.lib_res.speed_error = data.medianAbsolutePercentError(measure::elapsed) * 100.0;
 #if ANKERL_NANOBENCH(PERF_COUNTERS)
 	run_result.lib_res.instructions = round_to_uint64_t(data.median(measure::instructions));

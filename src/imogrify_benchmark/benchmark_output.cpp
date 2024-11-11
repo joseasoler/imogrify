@@ -38,10 +38,12 @@ constexpr auto image_gen_header = "Gen"sv;
 
 constexpr auto width_header = "Width"sv;
 constexpr auto height_header = "Height"sv;
+constexpr auto compression_header = "Compr."sv;
 
 constexpr auto file_size_header = "Size (KiB)"sv;
 constexpr auto file_size_rel_header = "Size(%)"sv;
-constexpr auto speed_header = "Mpix/s"sv;
+constexpr auto mpix_header = "Mpix/s"sv;
+constexpr auto time_header = "Time"sv;
 constexpr auto relative_speed_header = "Spd(%)"sv;
 constexpr auto error_speed_header = "Err(%)"sv;
 #if ANKERL_NANOBENCH(PERF_COUNTERS)
@@ -142,9 +144,11 @@ public:
 		table.add_cell_str(image_gen_header);
 		table.add_cell_str(width_header);
 		table.add_cell_str(height_header);
+		table.add_cell_str(compression_header);
 		table.add_cell_str(file_size_header);
 		table.add_cell_str(file_size_rel_header);
-		table.add_cell_str(speed_header);
+		table.add_cell_str(mpix_header);
+		table.add_cell_str(time_header);
 		table.add_cell_str(relative_speed_header);
 		table.add_cell_str(error_speed_header);
 #if ANKERL_NANOBENCH(PERF_COUNTERS)
@@ -163,9 +167,11 @@ public:
 			table.add_cell_str(magic_enum::enum_name(res.image_gen));
 			table.add_cell_uint(res.img_size.width);
 			table.add_cell_uint(res.img_size.height);
+			table.add_cell_str(magic_enum::enum_name(res.compression));
 			table.add_cell_double(lib_res.file_size, " KiB");
 			table.add_cell_double(lib_res.file_size_rel, "%");
 			table.add_cell_double(lib_res.mpix_second, " Mpix/s");
+			table.add_cell_double(lib_res.milliseconds, "ms");
 			table.add_cell_double(lib_res.speed_relative, "%");
 			table.add_cell_double(lib_res.speed_error, "%");
 #if ANKERL_NANOBENCH(PERF_COUNTERS)
@@ -202,8 +208,8 @@ public:
 	void render_context() override
 	{
 		std::cout << library_header << sep << channels_header << sep << bit_depth_header << sep << width_header << sep
-							<< height_header << sep << file_size_rel_header << sep << speed_header << sep << relative_speed_header
-							<< sep << error_speed_header;
+							<< height_header << sep << compression_header << sep << file_size_rel_header << sep << mpix_header << sep
+							<< time_header << sep << relative_speed_header << sep << error_speed_header;
 #if ANKERL_NANOBENCH(PERF_COUNTERS)
 		std::cout << sep << instructions_header << sep << cycles_header << sep << branches_header << sep
 							<< branch_misses_header;
@@ -216,10 +222,10 @@ public:
 		{
 			std::cout << magic_enum::enum_name(lib_res.library) << sep << channel_string(res.format, res.channels) << sep
 								<< static_cast<int>(res.bit_depth) << sep << res.img_size.width << sep << res.img_size.height << sep
-								<< lib_res.file_size_rel << sep << lib_res.mpix_second << sep << lib_res.speed_relative << sep
-								<< lib_res.speed_error;
+								<< magic_enum::enum_name(res.compression) << sep << lib_res.file_size_rel << sep << lib_res.mpix_second
+								<< sep << lib_res.milliseconds << sep << lib_res.speed_relative << sep << lib_res.speed_error;
 #if ANKERL_NANOBENCH(PERF_COUNTERS)
-			std::cout << lib_res.instructions << sep << lib_res.cycles << sep << lib_res.branch_instructions << sep
+			std::cout << sep << lib_res.instructions << sep << lib_res.cycles << sep << lib_res.branch_instructions << sep
 								<< lib_res.branch_misses;
 #endif // ANKERL_NANOBENCH(PERF_COUNTERS)
 			std::cout << '\n';
