@@ -36,7 +36,7 @@ using namespace imfy::image;
 image_size image_size_from_def(size_def def)
 {
 	constexpr std::uint16_t small_side{64U};
-	constexpr std::uint16_t large_side{2048U};
+	constexpr std::uint16_t large_side{1024U};
 	return image_size(
 			(def == size_def::small || def == size_def::tall) ? small_side : large_side,
 			(def == size_def::small || def == size_def::wide) ? small_side : large_side
