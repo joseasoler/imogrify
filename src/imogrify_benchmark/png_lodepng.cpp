@@ -17,12 +17,51 @@
 
 namespace
 {
-using imfy::png::color_t;
+using namespace imfy::image;
+using namespace imfy::png;
+
 static_assert(static_cast<int>(color_t::gray) == LodePNGColorType::LCT_GREY);
 static_assert(static_cast<int>(color_t::ga) == LodePNGColorType::LCT_GREY_ALPHA);
 static_assert(static_cast<int>(color_t::palette) == LodePNGColorType::LCT_PALETTE);
 static_assert(static_cast<int>(color_t::rgb) == LodePNGColorType::LCT_RGB);
 static_assert(static_cast<int>(color_t::rgba) == LodePNGColorType::LCT_RGBA);
+
+constexpr LodePNGCompressSettings get_compression_settings(const compression_t compression)
+{
+	// Default compression settings for lodepng.
+	LodePNGCompressSettings settings{
+			.btype = 2U,
+			.use_lz77 = 1U,
+			.windowsize = 1U << 11U, // 2048U
+			.minmatch = 3U,
+			.nicematch = 128U,
+			.lazymatching = 1,
+			.custom_zlib = nullptr,
+			.custom_deflate = nullptr,
+			.custom_context = nullptr
+	};
+
+	switch (compression)
+	{
+		case compression_t::none:
+			settings.btype = 0U;
+			settings.use_lz77 = 0U;
+			[[fallthrough]];
+		case compression_t::speed:
+			settings.minmatch = 0U;
+			settings.nicematch = 0U;
+			settings.lazymatching = 0U;
+			break;
+		case compression_t::standard:
+			break;
+		case compression_t::best:
+			settings.nicematch = 258U;
+			settings.windowsize = 1U << 15U;
+			break;
+	}
+	return settings;
+}
+
 } // namespace
 
 namespace imfy
@@ -30,7 +69,7 @@ namespace imfy
 
 std::size_t encode_lodepng(
 		const png::color_t color, const image::bit_depth_t bit_depth, const image::image_size img_size,
-		aligned_span<const std::uint8_t> input_image, const image::compression_t /*compression*/
+		aligned_span<const std::uint8_t> input_image, const image::compression_t compression
 )
 {
 	unsigned char* png{};
@@ -42,6 +81,7 @@ std::size_t encode_lodepng(
 	state.info_raw.bitdepth = static_cast<unsigned int>(bit_depth);
 	state.info_png.color.colortype = static_cast<LodePNGColorType>(color);
 	state.info_png.color.bitdepth = static_cast<unsigned int>(bit_depth);
+	state.encoder.zlibsettings = get_compression_settings(compression);
 
 	auto error = lodepng_encode(&png, &png_size, input_image.data(), img_size.width, img_size.height, &state);
 	if (error != 0U) [[unlikely]]
