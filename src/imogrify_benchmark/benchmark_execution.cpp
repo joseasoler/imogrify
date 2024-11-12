@@ -71,7 +71,7 @@ struct raw_library_result final
 };
 
 template <benchmark_operation Operation>
-raw_library_result run_benchmark_impl(Bench& bench, const library_def library, const Operation& operation)
+raw_library_result run_benchmark_impl(Bench& bench, const library_t library, const Operation& operation)
 {
 	raw_library_result run_result{};
 	run_result.lib_res.library = library;
@@ -133,16 +133,16 @@ imfy::vector<library_result> calculate_library_results(
 }
 
 imfy::vector<raw_library_result> run_png_encode_benchmark(
-		Bench& bench, const imfy::image::raw_image& image, const imfy::vector<library_def>& libraries,
+		Bench& bench, const imfy::image::raw_image& image, const imfy::vector<library_t>& libraries,
 		const imfy::image::compression_t compression
 )
 {
 	imfy::vector<raw_library_result> results;
 	const auto color = imfy::png::to_color_type(image.channels());
 
-	for (const library_def library : libraries)
+	for (const library_t library : libraries)
 	{
-		if (library == library_def::libpng)
+		if (library == library_t::libpng)
 		{
 			results.push_back(run_benchmark_impl(
 					bench, library,
@@ -153,14 +153,14 @@ imfy::vector<raw_library_result> run_png_encode_benchmark(
 					}
 			));
 		}
-		else if (library == library_def::lodepng)
+		else if (library == library_t::lodepng)
 		{
 			results.push_back(run_benchmark_impl(
 					bench, library, [&color, &image, &compression]() -> std::size_t
 					{ return encode_lodepng(color, image.bit_depth(), image.size(), image.data(), compression); }
 			));
 		}
-		else if (library == library_def::spng)
+		else if (library == library_t::spng)
 		{
 			results.push_back(run_benchmark_impl(
 					bench, library, [&color, &image, &compression]() -> std::size_t
@@ -202,7 +202,7 @@ result benchmark_execution::run(const definition& def)
 	res.compression = def.compression;
 
 	imfy::vector<raw_library_result> raw_library_results;
-	if (def.format == format_def::png && def.operation == operation_def::encode)
+	if (def.format == format_t::png && def.operation == operation_t::encode)
 	{
 		raw_library_results = run_png_encode_benchmark(*bench_, *image, def.libraries, res.compression);
 	}
