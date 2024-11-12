@@ -33,13 +33,13 @@ namespace
 using namespace imfy::bench;
 using namespace imfy::image;
 
-image_size image_size_from_def(size_def def)
+image_size image_size_from_def(size_gen_t def)
 {
 	constexpr std::uint16_t small_side{64U};
 	constexpr std::uint16_t large_side{1024U};
 	return image_size(
-			(def == size_def::small || def == size_def::tall) ? small_side : large_side,
-			(def == size_def::small || def == size_def::wide) ? small_side : large_side
+			(def == size_gen_t::small || def == size_gen_t::tall) ? small_side : large_side,
+			(def == size_gen_t::small || def == size_gen_t::wide) ? small_side : large_side
 	);
 }
 
@@ -91,9 +91,9 @@ raw_image get_random_image(const channel_t channels, const bit_depth_t bit_depth
 	return image;
 }
 
-using imfy::bench::image_gen_def;
+using imfy::bench::image_gen_t;
 
-constexpr std::array<raw_image (*)(channel_t, bit_depth_t, image_size), magic_enum::enum_count<image_gen_def>()>
+constexpr std::array<raw_image (*)(channel_t, bit_depth_t, image_size), magic_enum::enum_count<image_gen_t>()>
 		image_generators{get_zero_image, get_modulo_image, get_random_image};
 
 constexpr std::size_t image_not_found = std::numeric_limits<std::size_t>::max();

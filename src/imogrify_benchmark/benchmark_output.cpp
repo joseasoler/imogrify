@@ -53,9 +53,9 @@ constexpr auto branches_header = "Branches"sv;
 constexpr auto branch_misses_header = "B. misses"sv;
 #endif // ANKERL_NANOBENCH(PERF_COUNTERS)
 
-std::string_view channel_string(format_def format, channel_t channels)
+std::string_view channel_string(format_t format, channel_t channels)
 {
-	if (format == format_def::png)
+	if (format == format_t::png)
 	{
 		switch (channels)
 		{
@@ -187,11 +187,11 @@ public:
 	}
 
 private:
-	static constexpr auto invalid_format = static_cast<format_def>(std::numeric_limits<std::uint8_t>::max());
-	static constexpr auto invalid_operation = static_cast<operation_def>(std::numeric_limits<std::uint8_t>::max());
+	static constexpr auto invalid_format = static_cast<format_t>(std::numeric_limits<std::uint8_t>::max());
+	static constexpr auto invalid_operation = static_cast<operation_t>(std::numeric_limits<std::uint8_t>::max());
 
-	format_def current_format_;
-	operation_def current_operation_;
+	format_t current_format_;
+	operation_t current_operation_;
 	markdown mark_;
 };
 

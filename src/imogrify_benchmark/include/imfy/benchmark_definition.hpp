@@ -9,6 +9,8 @@
 #include <imfy/image_format.hpp>
 #include <imfy/vector.hpp>
 
+#include <tl/expected.hpp>
+
 #include <compare>
 #include <cstdint>
 
@@ -18,13 +20,13 @@ namespace imfy::bench
 /** Defines all of the input values to use for a specific benchmark run. */
 struct definition final
 {
-	format_def format;
-	operation_def operation;
-	vector<library_def> libraries;
+	format_t format;
+	operation_t operation;
+	vector<library_t> libraries;
 	image::channel_t channels;
 	image::bit_depth_t bit_depth;
-	image_gen_def image_gen;
-	size_def size;
+	image_gen_t image_gen;
+	size_gen_t size;
 	image::compression_t compression;
 	/** Benchmark definitions are executed in their sorting order. */
 	constexpr auto operator<=>(const definition&) const noexcept = default;

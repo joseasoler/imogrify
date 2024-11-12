@@ -23,7 +23,7 @@ class benchmark_image_data final
 public:
 	explicit benchmark_image_data(const imfy::bench::definition& def, image::image_size img_size);
 
-	bench::image_gen_def image_gen_;
+	bench::image_gen_t image_gen_;
 	image::raw_image image_;
 	imfy::string filename_;
 };
