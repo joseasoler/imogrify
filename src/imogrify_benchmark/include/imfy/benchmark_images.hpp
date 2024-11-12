@@ -51,7 +51,7 @@ public:
 	 * @param def Test definition.
 	 * @return Referenced input image, or nullptr if it does not exist (which means a bug in the benchmark code).
 	 */
-	[[nodiscard]] const image::raw_image* get(definition def) const noexcept;
+	[[nodiscard]] const image::raw_image* get(const definition& def) const noexcept;
 
 private:
 	vector<benchmark_image_data> images_;

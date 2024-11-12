@@ -21,7 +21,7 @@ namespace imfy::bench
 /** The benchmark definition is executed once for each library. */
 struct library_result final
 {
-	library_flags library;
+	library_def library;
 	double file_size;
 	double file_size_rel;
 	double mpix_second;

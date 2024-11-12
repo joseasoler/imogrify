@@ -167,7 +167,7 @@ bool benchmark_images::save_all(const std::filesystem::path& path) const
 	return true;
 }
 
-const raw_image* benchmark_images::get(const definition def) const noexcept
+const raw_image* benchmark_images::get(const definition& def) const noexcept
 {
 	const image_size img_size = image_size_from_def(def.size);
 	const auto position = position_of_image(images_, def, img_size);

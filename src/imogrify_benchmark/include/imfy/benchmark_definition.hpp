@@ -7,6 +7,7 @@
 
 #include <imfy/benchmark_parameters.hpp>
 #include <imfy/image_format.hpp>
+#include <imfy/vector.hpp>
 
 #include <compare>
 #include <cstdint>
@@ -19,7 +20,7 @@ struct definition final
 {
 	format_def format;
 	operation_def operation;
-	library_flags libraries;
+	vector<library_def> libraries;
 	image::channel_t channels;
 	image::bit_depth_t bit_depth;
 	image_gen_def image_gen;
