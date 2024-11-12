@@ -36,11 +36,11 @@ enum class operation_def : std::uint8_t
 	decode
 };
 
-enum class library_flags : std::uint8_t
+enum class library_def : std::uint8_t
 {
-	libpng = 1U << 0U,
-	lodepng = 1U << 1U,
-	spng = 1U << 2U,
+	libpng,
+	lodepng,
+	spng,
 };
 
 enum class size_def : std::uint8_t
