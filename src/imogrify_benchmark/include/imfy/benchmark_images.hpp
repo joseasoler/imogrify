@@ -23,7 +23,7 @@ class benchmark_image_data final
 public:
 	explicit benchmark_image_data(const imfy::bench::definition& def, image::image_size img_size);
 
-	bench::image_gen_def image_gen_;
+	bench::image_gen_t image_gen_;
 	image::raw_image image_;
 	imfy::string filename_;
 };
@@ -51,7 +51,7 @@ public:
 	 * @param def Test definition.
 	 * @return Referenced input image, or nullptr if it does not exist (which means a bug in the benchmark code).
 	 */
-	[[nodiscard]] const image::raw_image* get(definition def) const noexcept;
+	[[nodiscard]] const image::raw_image* get(const definition& def) const noexcept;
 
 private:
 	vector<benchmark_image_data> images_;

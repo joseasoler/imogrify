@@ -7,10 +7,8 @@
 #include <imfy/benchmark_execution.hpp>
 #include <imfy/benchmark_images.hpp>
 #include <imfy/benchmark_output.hpp>
-#include <imfy/benchmark_parameters.hpp>
 #include <imfy/benchmark_result.hpp>
 #include <imfy/encoding.hpp>
-#include <imfy/image_format.hpp>
 #include <imfy/vector.hpp>
 
 #if IMOGRIFY_USE_FMT_BASE_HEADER
@@ -20,68 +18,10 @@
 #include <fmt/ostream.h>
 #endif // #if IMOGRIFY_USE_FMT_BASE_HEADER
 
-#include <algorithm>
 #include <array>
 #include <cstdlib>
 #include <filesystem>
 #include <string_view>
-#include <type_traits>
-
-namespace
-{
-
-using imfy::bench::definition;
-using imfy::bench::format_def;
-using imfy::bench::image_gen_def;
-using imfy::bench::library_flags;
-using imfy::bench::operation_def;
-using imfy::bench::size_def;
-using imfy::image::bit_depth_t;
-using imfy::image::channel_t;
-using imfy::image::compression_t;
-
-constexpr library_flags operator|(library_flags lhs, library_flags rhs)
-{
-	using underlying_t = std::underlying_type_t<library_flags>;
-	return static_cast<library_flags>(static_cast<underlying_t>(lhs) | static_cast<underlying_t>(rhs));
-}
-
-constexpr auto png_encode_libs = library_flags::spng | library_flags::libpng | library_flags::lodepng;
-
-constexpr std::array definitions{
-		definition{
-				.format = format_def::png,
-				.operation = operation_def::encode,
-				.libraries = png_encode_libs,
-				.channels = channel_t::four,
-				.bit_depth = bit_depth_t::eight,
-				.image_gen = image_gen_def::zero,
-				.size = size_def::large,
-				.compression = compression_t::standard
-		},
-		definition{
-				.format = format_def::png,
-				.operation = operation_def::encode,
-				.libraries = png_encode_libs,
-				.channels = channel_t::four,
-				.bit_depth = bit_depth_t::eight,
-				.image_gen = image_gen_def::modulo,
-				.size = size_def::large,
-				.compression = compression_t::standard
-		},
-		definition{
-				.format = format_def::png,
-				.operation = operation_def::encode,
-				.libraries = png_encode_libs,
-				.channels = channel_t::four,
-				.bit_depth = bit_depth_t::eight,
-				.image_gen = image_gen_def::random,
-				.size = size_def::large,
-				.compression = compression_t::standard
-		},
-};
-
-} // namespace
 
 int main(int argc, char** argv) // NOLINT
 {
@@ -105,9 +45,7 @@ int main(int argc, char** argv) // NOLINT
 	// ToDo CLI arguments parsing and validation.
 	constexpr std::array renderers{renderer::markdown};
 
-	imfy::vector<definition> sorted_definitions(definitions.cbegin(), definitions.cend());
-	std::sort(sorted_definitions.begin(), sorted_definitions.end());
-
+	imfy::vector<definition> definitions{};
 	const imfy::bench::benchmark_images images(definitions);
 	benchmark_execution execution(images);
 	// ToDo CLI arguments parsing and validation.
@@ -118,7 +56,7 @@ int main(int argc, char** argv) // NOLINT
 		fmt::println("Could not save reference images at {:s}.", output_path_view);
 		return EXIT_FAILURE;
 	}
-	for (const auto& def : sorted_definitions)
+	for (const auto& def : definitions)
 	{
 		const result res = execution.run(def);
 		output.output(res);

@@ -71,7 +71,7 @@ struct raw_library_result final
 };
 
 template <benchmark_operation Operation>
-raw_library_result run_benchmark_impl(Bench& bench, const library_flags library, const Operation& operation)
+raw_library_result run_benchmark_impl(Bench& bench, const library_t library, const Operation& operation)
 {
 	raw_library_result run_result{};
 	run_result.lib_res.library = library;
@@ -132,44 +132,41 @@ imfy::vector<library_result> calculate_library_results(
 	return library_results;
 }
 
-constexpr bool has_flag(library_flags value, library_flags flag)
-{
-	using underlying_t = std::underlying_type_t<library_flags>;
-	return (static_cast<underlying_t>(value) & static_cast<underlying_t>(flag)) != 0U;
-}
-
 imfy::vector<raw_library_result> run_png_encode_benchmark(
-		Bench& bench, const imfy::image::raw_image& image, const library_flags libraries,
+		Bench& bench, const imfy::image::raw_image& image, const imfy::vector<library_t>& libraries,
 		const imfy::image::compression_t compression
 )
 {
 	imfy::vector<raw_library_result> results;
 	const auto color = imfy::png::to_color_type(image.channels());
 
-	if (has_flag(libraries, library_flags::libpng))
+	for (const library_t library : libraries)
 	{
-		results.push_back(run_benchmark_impl(
-				bench, library_flags::libpng,
-				[&color, &image, &compression]() -> std::size_t
-				{
-					const auto result = imfy::png::encode(color, image.bit_depth(), image.size(), image.data(), compression);
-					return result.has_value() ? result.value().size : 0U;
-				}
-		));
-	}
-	if (has_flag(libraries, library_flags::lodepng))
-	{
-		results.push_back(run_benchmark_impl(
-				bench, library_flags::lodepng, [&color, &image, &compression]() -> std::size_t
-				{ return encode_lodepng(color, image.bit_depth(), image.size(), image.data(), compression); }
-		));
-	}
-	if (has_flag(libraries, library_flags::spng))
-	{
-		results.push_back(run_benchmark_impl(
-				bench, library_flags::spng, [&color, &image, &compression]() -> std::size_t
-				{ return encode_spng(color, image.bit_depth(), image.size(), image.data(), compression); }
-		));
+		if (library == library_t::libpng)
+		{
+			results.push_back(run_benchmark_impl(
+					bench, library,
+					[&color, &image, &compression]() -> std::size_t
+					{
+						const auto result = imfy::png::encode(color, image.bit_depth(), image.size(), image.data(), compression);
+						return result.has_value() ? result.value().size : 0U;
+					}
+			));
+		}
+		else if (library == library_t::lodepng)
+		{
+			results.push_back(run_benchmark_impl(
+					bench, library, [&color, &image, &compression]() -> std::size_t
+					{ return encode_lodepng(color, image.bit_depth(), image.size(), image.data(), compression); }
+			));
+		}
+		else if (library == library_t::spng)
+		{
+			results.push_back(run_benchmark_impl(
+					bench, library, [&color, &image, &compression]() -> std::size_t
+					{ return encode_spng(color, image.bit_depth(), image.size(), image.data(), compression); }
+			));
+		}
 	}
 
 	return results;
@@ -205,7 +202,7 @@ result benchmark_execution::run(const definition& def)
 	res.compression = def.compression;
 
 	imfy::vector<raw_library_result> raw_library_results;
-	if (def.format == format_def::png && def.operation == operation_def::encode)
+	if (def.format == format_t::png && def.operation == operation_t::encode)
 	{
 		raw_library_results = run_png_encode_benchmark(*bench_, *image, def.libraries, res.compression);
 	}

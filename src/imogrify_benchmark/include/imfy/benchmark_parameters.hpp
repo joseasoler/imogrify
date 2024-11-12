@@ -13,14 +13,13 @@
 namespace imfy::bench
 {
 
-/** Image format being benchmarked. */
-enum class format_def : std::uint8_t
+enum class format_t : std::uint8_t
 {
 	png,
 };
 
 /** Determines how the reference image is generated. */
-enum class image_gen_def : std::uint8_t
+enum class image_gen_t : std::uint8_t
 {
 	// All pixels are set to zero.
 	zero,
@@ -30,20 +29,20 @@ enum class image_gen_def : std::uint8_t
 	random,
 };
 
-enum class operation_def : std::uint8_t
+enum class operation_t : std::uint8_t
 {
 	encode,
 	decode
 };
 
-enum class library_flags : std::uint8_t
+enum class library_t : std::uint8_t
 {
-	libpng = 1U << 0U,
-	lodepng = 1U << 1U,
-	spng = 1U << 2U,
+	libpng,
+	lodepng,
+	spng,
 };
 
-enum class size_def : std::uint8_t
+enum class size_gen_t : std::uint8_t
 {
 	small,
 	large,
