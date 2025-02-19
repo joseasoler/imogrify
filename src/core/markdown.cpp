@@ -11,7 +11,6 @@
 #include <imfy/vector.hpp>
 
 #include <fmt/format.h>
-#include <magic_enum/magic_enum.hpp>
 
 #include <cstddef>
 #include <cstdint>
@@ -96,14 +95,13 @@ void markdown::add_build_information(heading level)
 
 	using namespace imfy::build;
 	output_ << fmt::format(
-			bullet_version_description, imfy::build::project.name, imfy::build::project.version.major, project.version.minor,
-			imfy::build::project.version.patch
+			bullet_version_description, project.name, project.version.major, project.version.minor, project.version.patch
 	);
 
 	output_ << fmt::format(bullet_text_description, "Build type", build_type);
 	output_ << fmt::format(
-			" * **Compiler:** {:s} {:d}.{:d}.{:d}\n\n", magic_enum::enum_name(compiler), compiler_version.major,
-			compiler_version.minor, compiler_version.patch
+			" * **Compiler:** {:s} {:d}.{:d}.{:d}\n\n", compiler_name(), compiler_version.major, compiler_version.minor,
+			compiler_version.patch
 	);
 
 	const auto next_level = static_cast<heading>(static_cast<std::uint8_t>(level) + 1);

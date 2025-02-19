@@ -23,7 +23,6 @@ target_compile_options(imogrify_benchmark PRIVATE ${IMOGRIFY_CXX_COMPILE_OPTIONS
 target_link_libraries(imogrify_benchmark PRIVATE
 	fmt::fmt
 	lodepng
-	magic_enum::magic_enum
 	nanobench::nanobench
 	$<IF:$<TARGET_EXISTS:spng::spng_static>,spng::spng_static,spng::spng>
 	imogrify_core

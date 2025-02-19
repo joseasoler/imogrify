@@ -127,8 +127,6 @@ IncludeCategories:
     Priority: 300
   - Regex: '^<lodepng.*'
     Priority: 300
-  - Regex: '^<magic_enum.*'
-    Priority: 300
   - Regex: '^<nowide.*'
     Priority: 300
   - Regex: '^<png.*'

@@ -16,7 +16,6 @@
 #include <imfy/vector.hpp>
 
 #include <fmt/format.h>
-#include <magic_enum/magic_enum.hpp>
 
 #include <array>
 #include <cstddef>
@@ -91,17 +90,15 @@ raw_image get_random_image(const channel_t channels, const bit_depth_t bit_depth
 	return image;
 }
 
-using imfy::bench::image_gen_t;
-
-constexpr std::array<raw_image (*)(channel_t, bit_depth_t, image_size), magic_enum::enum_count<image_gen_t>()>
-		image_generators{get_zero_image, get_modulo_image, get_random_image};
+constexpr std::array<raw_image (*)(channel_t, bit_depth_t, image_size), 3U> image_generators{
+		get_zero_image, get_modulo_image, get_random_image
+};
 
 constexpr std::size_t image_not_found = std::numeric_limits<std::size_t>::max();
 
 // Simple linear search, as the total number of input images should remain small.
 std::size_t position_of_image(
-		const imfy::vector<imfy::bench::benchmark_image_data>& images, const imfy::bench::definition& def,
-		image_size img_size
+		const imfy::vector<benchmark_image_data>& images, const definition& def, image_size img_size
 )
 {
 	for (std::size_t position{0U}; position < images.size(); ++position)
@@ -121,17 +118,17 @@ std::size_t position_of_image(
 namespace imfy::bench
 {
 
-benchmark_image_data::benchmark_image_data(const imfy::bench::definition& def, const image_size img_size)
+benchmark_image_data::benchmark_image_data(const definition& def, const image_size img_size)
 	: image_gen_{def.image_gen}
 	, image_{image_generators[static_cast<std::size_t>(def.image_gen)](def.channels, def.bit_depth, img_size)}
 	, filename_{fmt::format(
 				"imfy_{:d}_{:d}_{:s}_{:d}_{:d}.png", static_cast<int>(def.channels), static_cast<int>(def.bit_depth),
-				magic_enum::enum_name(def.image_gen), img_size.width, img_size.height
+				image_gen_string(def.image_gen), img_size.width, img_size.height
 		)}
 {
 }
 
-benchmark_images::benchmark_images(std::span<const definition> definitions)
+benchmark_images::benchmark_images(const std::span<const definition> definitions)
 {
 	for (const definition& def : definitions)
 	{

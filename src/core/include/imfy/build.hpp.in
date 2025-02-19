@@ -62,42 +62,31 @@ constexpr dependency_t project{
 
 inline constexpr std::string_view build_type{"@IMOGRIFY_BUILD_TYPE@"};
 
-enum class compiler_id : std::uint8_t
-{
-	apple_clang,
-	clang,
-	gcc,
-	intel_llvm,
-	msvc,
-	unknown
-};
-
-consteval compiler_id get_compiler_id()
+consteval std::string_view compiler_name()
 {
 	if (IMOGRIFY_COMPILER_APPLE_CLANG)
 	{
-		return compiler_id::apple_clang;
+		return "Apple Clang";
 	}
-	else if (IMOGRIFY_COMPILER_CLANG)
+	if (IMOGRIFY_COMPILER_CLANG)
 	{
-		return compiler_id::clang;
+		return "Clang";
 	}
-	else if (IMOGRIFY_COMPILER_GCC)
+	if (IMOGRIFY_COMPILER_GCC)
 	{
-		return compiler_id::gcc;
+		return "GCC";
 	}
-	else if (IMOGRIFY_COMPILER_INTEL_LLVM)
+	if (IMOGRIFY_COMPILER_INTEL_LLVM)
 	{
-		return compiler_id::intel_llvm;
+		return "Intel LLVM";
 	}
-	else if (IMOGRIFY_COMPILER_MSVC)
+	if (IMOGRIFY_COMPILER_MSVC)
 	{
-		return compiler_id::msvc;
+		return "Intel MSVC";
 	}
-	return compiler_id::unknown;
+	return {};
 }
 
-inline constexpr compiler_id compiler{get_compiler_id()};
 inline constexpr version_t compiler_version{
 	// clang-format off
 	@IMOGRIFY_CXX_COMPILER_VERSION@

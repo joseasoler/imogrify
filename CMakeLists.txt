@@ -47,7 +47,6 @@ include(cmake/dependencies/libpng.cmake)
 include(cmake/dependencies/libspng.cmake)
 include(cmake/dependencies/lodepng.cmake)
 include(cmake/dependencies/highway.cmake)
-include(cmake/dependencies/magic_enum.cmake)
 include(cmake/dependencies/nanobench.cmake)
 include(cmake/dependencies/tl-expected.cmake)
 
