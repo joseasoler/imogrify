@@ -45,6 +45,7 @@ Checks: '
 *,
 -altera-*,
 -android-*,
+-boost-*,
 -fuchsia-*,
 -google-*,
 -llvmlibc-*,

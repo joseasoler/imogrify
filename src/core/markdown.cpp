@@ -11,7 +11,7 @@
 #include <imfy/vector.hpp>
 
 #include <fmt/format.h>
-#include <magic_enum.hpp>
+#include <magic_enum/magic_enum.hpp>
 
 #include <cstddef>
 #include <cstdint>
@@ -35,7 +35,7 @@ markdown_table::markdown_table()
 {
 }
 
-void markdown_table::add_cell_str(imfy::string value)
+void markdown_table::add_cell_str(string value)
 {
 	const std::size_t index = data_.back().size();
 	if (width_.size() < (index + 1U))

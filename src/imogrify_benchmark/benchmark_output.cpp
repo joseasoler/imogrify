@@ -8,8 +8,9 @@
 #include <imfy/benchmark_parameters.hpp>
 #include <imfy/benchmark_result.hpp>
 #include <imfy/image_format.hpp>
+#include <imfy/markdown.hpp>
 
-#include <magic_enum.hpp>
+#include <magic_enum/magic_enum.hpp>
 
 #include <cstdint>
 #include <filesystem>
@@ -19,8 +20,6 @@
 #include <span>
 #include <string_view>
 #include <utility>
-
-#include "imfy/markdown.hpp"
 
 #include <nanobench.h>
 

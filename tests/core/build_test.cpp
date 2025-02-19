@@ -25,9 +25,8 @@ struct is_case_insensitive_less final
 {
 	constexpr bool operator()(const std::string_view lhs, const std::string_view rhs) const
 	{
-		return std::lexicographical_compare(
-				lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend(),
-				[](const char lhs_char, const char rhs_char) { return to_lower(lhs_char) < to_lower(rhs_char); }
+		return std::ranges::lexicographical_compare(
+				lhs, rhs, [](const char lhs_char, const char rhs_char) { return to_lower(lhs_char) < to_lower(rhs_char); }
 		);
 	}
 
@@ -51,7 +50,7 @@ constexpr std::array compatible_licenses{"Apache-2.0"sv, "BSD-2-Clause"sv, "BSL-
 
 TEST_CASE("Test data")
 {
-	static_assert(std::is_sorted(compatible_licenses.cbegin(), compatible_licenses.cend(), is_case_insensitive_less{}));
+	static_assert(std::ranges::is_sorted(compatible_licenses, is_case_insensitive_less{}));
 }
 
 TEST_CASE("Project information")
@@ -79,20 +78,20 @@ TEST_CASE("Dependency metadata")
 	using namespace imfy::build;
 
 	static_assert(std::size(dependencies) > 0U);
-	static_assert(std::is_sorted(dependencies.cbegin(), dependencies.cend(), is_case_insensitive_less{}));
+	static_assert(std::ranges::is_sorted(dependencies, is_case_insensitive_less{}));
 
-	static_assert(std::all_of(
-			dependencies.cbegin(), dependencies.cend(), [](const dependency_t& dependency) -> bool
+	static_assert(std::ranges::all_of(
+			dependencies, [](const dependency_t& dependency) -> bool
 			{ return !dependency.name.empty() && !dependency.description.empty() && !dependency.license.empty(); }
 	));
 
-	static_assert(std::all_of(
-			dependencies.cbegin(), dependencies.cend(), [](const dependency_t& dependency) -> bool
+	static_assert(std::ranges::all_of(
+			dependencies, [](const dependency_t& dependency) -> bool
 			{ return dependency.version.major != 0U || dependency.version.minor != 0U || dependency.version.patch != 0U; }
 	));
 
-	static_assert(std::all_of(
-			dependencies.cbegin(), dependencies.cend(),
+	static_assert(std::ranges::all_of(
+			dependencies,
 			[](const dependency_t& dependency) -> bool { return is_in_array(compatible_licenses, dependency.license); }
 	));
 }
