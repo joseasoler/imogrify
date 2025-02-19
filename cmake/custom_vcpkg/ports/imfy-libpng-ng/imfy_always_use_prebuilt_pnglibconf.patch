@@ -1,22 +1,23 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 281819a10..9b790c1a2 100644
+index 281819a10..d0d25c4c1 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -358,7 +358,8 @@ else()
    message(STATUS "Could not find an AWK-compatible program")
  endif()
-
+ 
 -if(NOT AWK OR (ANDROID OR IOS))
 +# The imogrify vcpkg port provides its own prebuilt libpng configuration which should always be used.
 +if(TRUE)
    # No awk available to generate sources; use pre-built pnglibconf.h
    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/pnglibconf.h.prebuilt
                   ${CMAKE_CURRENT_BINARY_DIR}/pnglibconf.h)
-@@ -516,7 +517,8 @@ set(libpng_private_hdrs
+@@ -516,7 +517,9 @@ set(libpng_private_hdrs
      pnginfo.h
      pngstruct.h
  )
 -if(AWK AND NOT (ANDROID OR IOS))
++
 +# The imogrify vcpkg port provides its own prebuilt libpng configuration which should always be used.
 +if(FALSE)
    list(APPEND libpng_private_hdrs "${CMAKE_CURRENT_BINARY_DIR}/pngprefix.h")
