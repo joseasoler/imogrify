@@ -6,7 +6,6 @@
 	"dependencies": [
 		"fmt",
 		"highway",
-		"magic-enum",
 		"tl-expected"
 	],
 	"features": {

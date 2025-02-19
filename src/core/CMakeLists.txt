@@ -48,7 +48,6 @@ target_compile_options(imogrify_core PRIVATE ${IMOGRIFY_CXX_COMPILE_OPTIONS})
 set(IMOGRIFY_CORE_LINK_LIBRARIES
 	fmt::fmt
 	hwy::hwy
-	magic_enum::magic_enum
 	tl::expected
 )
 

@@ -10,8 +10,6 @@
 #include <imfy/image_format.hpp>
 #include <imfy/markdown.hpp>
 
-#include <magic_enum/magic_enum.hpp>
-
 #include <cstdint>
 #include <filesystem>
 #include <iostream>
@@ -52,7 +50,7 @@ constexpr auto branches_header = "Branches"sv;
 constexpr auto branch_misses_header = "B. misses"sv;
 #endif // ANKERL_NANOBENCH(PERF_COUNTERS)
 
-std::string_view channel_string(format_t format, channel_t channels)
+std::string_view channel_string(const format_t format, const channel_t channels)
 {
 	if (format == format_t::png)
 	{
@@ -70,6 +68,22 @@ std::string_view channel_string(format_t format, channel_t channels)
 		}
 	}
 	return "";
+}
+
+constexpr std::string_view compression_string(const compression_t compression)
+{
+	switch (compression)
+	{
+		case compression_t::none:
+			return "none";
+		case compression_t::speed:
+			return "speed";
+		case compression_t::standard:
+			return "standard";
+		case compression_t::best:
+			return "best";
+	}
+	return {};
 }
 
 } // namespace
@@ -127,13 +141,13 @@ public:
 		{
 			current_format_ = res.format;
 			current_operation_ = res.operation;
-			mark_.add_heading(markdown::heading::level_3, magic_enum::enum_name(current_format_));
-			mark_.add_heading(markdown::heading::level_4, magic_enum::enum_name(current_operation_));
+			mark_.add_heading(markdown::heading::level_3, format_string(current_format_));
+			mark_.add_heading(markdown::heading::level_4, operation_string(current_operation_));
 		}
 		else if (res.operation != current_operation_)
 		{
 			current_operation_ = res.operation;
-			mark_.add_heading(markdown::heading::level_4, magic_enum::enum_name(current_operation_));
+			mark_.add_heading(markdown::heading::level_4, operation_string(current_operation_));
 		}
 
 		markdown_table table;
@@ -160,13 +174,13 @@ public:
 
 		for (const auto& lib_res : res.library_results)
 		{
-			table.add_cell_str(magic_enum::enum_name(lib_res.library));
+			table.add_cell_str(library_string(lib_res.library));
 			table.add_cell_str(channel_string(res.format, res.channels));
 			table.add_cell_uint(static_cast<std::uint64_t>(res.bit_depth));
-			table.add_cell_str(magic_enum::enum_name(res.image_gen));
+			table.add_cell_str(image_gen_string(res.image_gen));
 			table.add_cell_uint(res.img_size.width);
 			table.add_cell_uint(res.img_size.height);
-			table.add_cell_str(magic_enum::enum_name(res.compression));
+			table.add_cell_str(compression_string(res.compression));
 			table.add_cell_double(lib_res.file_size, " KiB");
 			table.add_cell_double(lib_res.file_size_rel, "%");
 			table.add_cell_double(lib_res.mpix_second, " Mpix/s");
@@ -219,9 +233,9 @@ public:
 	{
 		for (const auto& lib_res : res.library_results)
 		{
-			std::cout << magic_enum::enum_name(lib_res.library) << sep << channel_string(res.format, res.channels) << sep
+			std::cout << library_string(lib_res.library) << sep << channel_string(res.format, res.channels) << sep
 								<< static_cast<int>(res.bit_depth) << sep << res.img_size.width << sep << res.img_size.height << sep
-								<< magic_enum::enum_name(res.compression) << sep << lib_res.file_size_rel << sep << lib_res.mpix_second
+								<< compression_string(res.compression) << sep << lib_res.file_size_rel << sep << lib_res.mpix_second
 								<< sep << lib_res.milliseconds << sep << lib_res.speed_relative << sep << lib_res.speed_error;
 #if ANKERL_NANOBENCH(PERF_COUNTERS)
 			std::cout << sep << lib_res.instructions << sep << lib_res.cycles << sep << lib_res.branch_instructions << sep
