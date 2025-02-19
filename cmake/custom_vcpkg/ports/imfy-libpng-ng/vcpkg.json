@@ -1,7 +1,6 @@
 {
   "name": "imfy-libpng-ng",
-  "version": "1.6.44",
-  "port-version": 3,
+  "version": "1.6.46",
   "description": "libpng is a library implementing an interface for reading and writing PNG (Portable Network Graphics) format files",
   "homepage": "https://github.com/pnggroup/libpng",
   "license": "libpng-2.0",
@@ -20,5 +19,14 @@
       "platform": "arm & android"
     },
     "imfy-zlib-ng"
-  ]
+  ],
+  "features": {
+    "apng": {
+      "description": "This is backward compatible with the regular libpng, both in library usage and format"
+    },
+    "tools": {
+      "description": "Build the libpng tools",
+      "supports": "!android & !ios"
+    }
+  }
 }

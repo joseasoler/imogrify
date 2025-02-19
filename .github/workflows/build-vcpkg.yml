@@ -39,8 +39,8 @@ jobs:
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
         with:
-          # Must be updated along with cmake/dependencies/vcpkg.cmake.
-          vcpkgGitCommitId: 'c82f74667287d3dc386bce81e44964370c91a289' # 2024.09.30
+          # Must be updated along with cmake/dependencies/vcpkg.cmake and vcpkg.json.
+          vcpkgGitCommitId: 'd5ec528843d29e3a52d745a64b469f810b2cedbf' # 2025.02.14
 
       - name: Setup python
         uses: actions/setup-python@v5

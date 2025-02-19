@@ -26,7 +26,7 @@ public:
 	markdown_table& operator=(markdown_table&&) noexcept = default;
 	~markdown_table() = default;
 
-	void add_cell_str(imfy::string value);
+	void add_cell_str(string value);
 	void add_cell_str(std::string_view value);
 	void add_cell_uint(std::uint64_t value);
 	void add_cell_double(double value, std::string_view postfix);
