@@ -91,7 +91,7 @@ std::size_t encode_lodepng(
 
 	lodepng_state_cleanup(&state);
 
-	// NOLINTNEXTLINE(cppcoreguidelines-no-malloc, hicpp-no-malloc)
+	// NOLINTNEXTLINE(hicpp-no-malloc)
 	std::free(png);
 
 	return png_size;

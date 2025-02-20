@@ -32,7 +32,7 @@ struct inheritance_struct final : public simple_struct
 TEST_CASE("Plain old object concept.")
 {
 	static_assert(imfy::pod_type<std::uint8_t>);
-	// NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays,modernize-avoid-c-arrays)
+	// NOLINTNEXTLINE(modernize-avoid-c-arrays)
 	static_assert(imfy::pod_type<std::uint8_t[]>);
 	static_assert(imfy::pod_type<std::array<std::uint8_t, 4U>>);
 	static_assert(imfy::pod_type<simple_struct>);
