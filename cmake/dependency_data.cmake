@@ -4,18 +4,17 @@
 
 include_guard(GLOBAL)
 
-# Stores dependency metadata so it can be displayed by the application.
-
+# Gathers dependency metadata to be stored in the application binary.
 set(IMOGRIFY_DEPENDENCY_DATA_LIST)
 
 # Creates a dependency metadata entry in the IMOGRIFY_DEPENDENCY_DATA_LIST list.
 function(add_dependency_metadata)
 
 	set(ONE_VALUE_ARGS
-		NAME         # Name of the dependency.
-		VERSION      # Version of the project.
-		DESCRIPTION  # Used to set the additional target property DESCRIPTION.
-		LICENSE_SPDX # Used to set the additional target property LICENSE_SPDX.
+		NAME         # Dependency name.
+		VERSION      # Dependency version.
+		DESCRIPTION  # Dependency description.
+		LICENSE_SPDX # Dependency license in SPDX.
 		USAGE        # Determines if this is a main, benchmark, or test dependency.
 	)
 	cmake_parse_arguments(DPND "${OPTION_ARGS}" "${ONE_VALUE_ARGS}" "" ${ARGN})

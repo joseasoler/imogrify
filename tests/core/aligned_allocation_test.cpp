@@ -30,7 +30,7 @@ consteval imfy::build::dependency_t highway_dependency()
 // HWY_ALIGNMENT became 120 in Highway 1.1.0. HWY_MAJOR changed headers in 1.2.0.
 constexpr imfy::build::dependency_t highway_dep = highway_dependency();
 
-} // namespace
+}
 
 TEST_CASE("Match memory alignment size used in Google Highway and imogrify.")
 {

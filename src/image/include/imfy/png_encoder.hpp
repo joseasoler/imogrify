@@ -21,7 +21,7 @@ namespace imfy::png
 struct encoded_png final
 {
 	std::size_t size{};
-	imfy::memory_block<std::uint8_t> memory;
+	memory_block<std::uint8_t> memory;
 
 	explicit encoded_png(std::size_t buffer_size)
 		: memory(buffer_size)
@@ -39,4 +39,4 @@ tl::expected<encoded_png, std::string_view> encode(
 		aligned_span<const std::uint8_t> input_image, image::compression_t compression_level
 );
 
-} // namespace imfy::png
+}

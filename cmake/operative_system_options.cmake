@@ -28,5 +28,5 @@ else ()
 		IMOGRIFY_OS_MACOS=0
 		IMOGRIFY_OS_WINDOWS=0
 	)
-	message(WARNING "Operative system ${CMAKE_SYSTEM_NAME} is not explicitly supported by ${CMAKE_PROJECT_NAME}.")
+	message(WARNING "Operative system ${CMAKE_SYSTEM_NAME} is not supported by ${CMAKE_PROJECT_NAME}.")
 endif ()

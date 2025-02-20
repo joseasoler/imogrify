@@ -15,4 +15,4 @@ namespace imfy
 /** std::string with the allocator defined for imogrify. */
 using string = std::basic_string<char, std::char_traits<char>, allocator<char>>;
 
-} // namespace imfy
+}

@@ -43,11 +43,11 @@ TEST_CASE("as_bytes checks.")
 	constexpr std::size_t allocation_size{1U};
 	auto* allocation_input = imfy::aligned_allocation<std::uint16_t>(allocation_size);
 	*allocation_input = initial_value;
-	const imfy::aligned_span span(allocation_input, allocation_size);
-	auto bytes_span = span.as_bytes();
+	const aligned_span span(allocation_input, allocation_size);
+	const auto bytes_span = span.as_bytes();
 	CHECK(*bytes_span.data() == initial_value);
 
-	auto writable_span = span.as_writable_bytes();
+	const auto writable_span = span.as_writable_bytes();
 	constexpr std::uint8_t set_value{0xAU};
 	*writable_span.data() = set_value;
 	*(writable_span.data() + 1U) = set_value;

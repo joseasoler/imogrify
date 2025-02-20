@@ -46,7 +46,7 @@ int main(int argc, char** argv) // NOLINT
 	constexpr std::array renderers{renderer::markdown};
 
 	imfy::vector<definition> definitions{};
-	const imfy::bench::benchmark_images images(definitions);
+	const benchmark_images images(definitions);
 	benchmark_execution execution(images);
 	// ToDo CLI arguments parsing and validation.
 	benchmark_output output(output_path, renderers);

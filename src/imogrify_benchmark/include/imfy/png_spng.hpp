@@ -17,4 +17,4 @@ std::size_t encode_spng(
 		aligned_span<const std::uint8_t> input_image, image::compression_t compression
 );
 
-} // namespace imfy
+}

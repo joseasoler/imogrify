@@ -32,13 +32,13 @@ namespace
 using namespace imfy::bench;
 using namespace imfy::image;
 
-image_size image_size_from_def(size_gen_t def)
+image_size image_size_from_def(const size_gen_t def)
 {
 	constexpr std::uint16_t small_side{64U};
 	constexpr std::uint16_t large_side{1024U};
 	return image_size(
-			(def == size_gen_t::small || def == size_gen_t::tall) ? small_side : large_side,
-			(def == size_gen_t::small || def == size_gen_t::wide) ? small_side : large_side
+			def == size_gen_t::small || def == size_gen_t::tall ? small_side : large_side,
+			def == size_gen_t::small || def == size_gen_t::wide ? small_side : large_side
 	);
 }
 
@@ -74,8 +74,8 @@ raw_image get_random_image(const channel_t channels, const bit_depth_t bit_depth
 	// Generate the same image for each combination of input parameters. Since <random> is not deterministic across
 	// implementations, different standard libraries will generate different images.
 	const std::uint32_t seed =
-			((static_cast<std::uint32_t>(channels) << 16U) | static_cast<std::uint32_t>(bit_depth)) ^
-			((static_cast<std::uint32_t>(img_size.width) << 16U) | static_cast<std::uint32_t>(img_size.height));
+			(static_cast<std::uint32_t>(channels) << 16U | static_cast<std::uint32_t>(bit_depth)) ^
+			(static_cast<std::uint32_t>(img_size.width) << 16U | static_cast<std::uint32_t>(img_size.height));
 	std::mt19937 prng{seed};
 	// uint8_t is explicitly excluded by the standard, see https://eel.is/c++draft/rand.req.genl#1.6.
 	std::uniform_int_distribution<std::uint16_t> uniform_dist{0U, std::numeric_limits<std::uint8_t>::max()};
@@ -98,13 +98,13 @@ constexpr std::size_t image_not_found = std::numeric_limits<std::size_t>::max();
 
 // Simple linear search, as the total number of input images should remain small.
 std::size_t position_of_image(
-		const imfy::vector<benchmark_image_data>& images, const definition& def, image_size img_size
+		const imfy::vector<benchmark_image_data>& images, const definition& def, const image_size img_size
 )
 {
 	for (std::size_t position{0U}; position < images.size(); ++position)
 	{
-		const auto& image_data = images[position];
-		if (image_data.image_gen_ == def.image_gen && image_data.image_.channels() == def.channels &&
+		if (const auto& image_data = images[position];
+				image_data.image_gen_ == def.image_gen && image_data.image_.channels() == def.channels &&
 				image_data.image_.bit_depth() == def.bit_depth && image_data.image_.size() == img_size)
 		{
 			return position;
@@ -113,7 +113,7 @@ std::size_t position_of_image(
 	return image_not_found;
 }
 
-} // namespace
+}
 
 namespace imfy::bench
 {
@@ -133,8 +133,7 @@ benchmark_images::benchmark_images(const std::span<const definition> definitions
 	for (const definition& def : definitions)
 	{
 		const image_size img_size = image_size_from_def(def.size);
-		const auto position = position_of_image(images_, def, img_size);
-		if (position == image_not_found)
+		if (const auto position = position_of_image(images_, def, img_size); position == image_not_found)
 		{
 			images_.emplace_back(def, img_size);
 		}
@@ -155,8 +154,7 @@ bool benchmark_images::save_all(const std::filesystem::path& path) const
 			return false;
 		}
 		const aligned_span span{encoded.value().memory.span().data(), encoded.value().size};
-		const auto file_path = path / image_data.filename_;
-		if (!fs::save(file_path, span))
+		if (const auto file_path = path / image_data.filename_; !fs::save(file_path, span))
 		{
 			return false;
 		}
@@ -171,4 +169,4 @@ const raw_image* benchmark_images::get(const definition& def) const noexcept
 	return position != image_not_found ? &images_[position].image_ : nullptr;
 }
 
-} // namespace imfy::bench
+}

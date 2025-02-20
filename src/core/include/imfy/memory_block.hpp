@@ -77,4 +77,4 @@ private:
 	size_type size_;
 };
 
-} // namespace imfy
+}

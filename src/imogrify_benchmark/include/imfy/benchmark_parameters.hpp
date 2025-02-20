@@ -101,4 +101,4 @@ enum class size_gen_t : std::uint8_t
 	wide
 };
 
-} // namespace imfy::bench
+}

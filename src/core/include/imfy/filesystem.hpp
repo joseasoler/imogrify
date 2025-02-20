@@ -21,4 +21,4 @@ namespace imfy::fs
  */
 bool save(const std::filesystem::path& path, aligned_span<const std::uint8_t> data);
 
-} // namespace imfy::fs
+}

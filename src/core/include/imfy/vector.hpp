@@ -16,4 +16,4 @@ namespace imfy
 template <typename Type>
 using vector = std::vector<Type, allocator<Type>>;
 
-} // namespace imfy
+}

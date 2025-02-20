@@ -99,4 +99,4 @@ constexpr auto dependencies = std::to_array<dependency_t>({
 	// clang-format on
 });
 
-} // namespace imfy::build
+}

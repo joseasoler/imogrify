@@ -18,6 +18,7 @@ if (${fmt_VERSION} GREATER_EQUAL 11.0.0)
 		IMOGRIFY_USE_FMT_BASE_HEADER=1
 	)
 else ()
+	# Older versions of fmt lack the fmt/base.h header.
 	list(APPEND IMOGRIFY_CXX_COMPILE_DEFINITIONS
 		IMOGRIFY_USE_FMT_BASE_HEADER=0
 	)

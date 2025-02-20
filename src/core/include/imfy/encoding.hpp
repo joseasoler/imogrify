@@ -8,6 +8,10 @@
 namespace imfy
 {
 
+/**
+ * Configures terminal output for the current platform.
+ * @return True if the operation succeeded.
+ */
 [[nodiscard]] bool set_terminal();
 
-} // namespace imfy
+}

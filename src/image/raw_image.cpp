@@ -14,7 +14,7 @@
 namespace imfy::image
 {
 
-raw_image::raw_image(const channel_t channels, const bit_depth_t bit_depth, image_size img_size)
+raw_image::raw_image(const channel_t channels, const bit_depth_t bit_depth, const image_size img_size)
 	: data_(
 				static_cast<std::size_t>(img_size.width * img_size.height) * static_cast<std::size_t>(channels) *
 				(static_cast<std::size_t>(bit_depth) / 8U)
@@ -50,4 +50,4 @@ aligned_span<const raw_image::value_type> raw_image::data() const noexcept
 	return data_.span();
 }
 
-} // namespace imfy::image
+}

@@ -11,7 +11,6 @@
 #include <filesystem>
 #include <memory>
 #include <span>
-#include <string_view>
 
 namespace imfy::bench
 {
@@ -39,7 +38,7 @@ public:
 	void output(const result& result);
 
 private:
-	imfy::vector<std::unique_ptr<class benchmark_renderer>> renderers_;
+	vector<std::unique_ptr<class benchmark_renderer>> renderers_;
 };
 
-} // namespace imfy::bench
+}

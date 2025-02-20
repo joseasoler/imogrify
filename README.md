@@ -24,7 +24,6 @@ Building imogrify requires [CMake](https://cmake.org) and a [compiler with C++20
 
 Building imogrify requires the following dependencies. imogrify expects to find them through the standard `find_package` CMake feature.
 
-
 * **[fmt](https://fmt.dev/latest/index.html)**: Modern formatting and printing library.
 
 * **[Highway](https://google.github.io/highway/en/master)**: A C++ library that provides portable SIMD/vector intrinsics.
@@ -51,12 +50,6 @@ Building with the `IMOGRIFY_BUILD_MICROBENCHMARKS` CMake option enabled requires
 
 * **[lodepng](https://lodev.org/lodepng)**: LodePNG is a PNG image decoder and encoder, all in one, no dependency or linkage to zlib or libpng required.
 
-#### Included dependencies
-
-The following dependencies are included in the thirdparty subfolder of the imogrify code base. Each one of them has its own COPYING or LICENSE file.
-
-* **ToDo:**
-
 ### CMake options
 
 * `CMAKE_COMPILE_WARNING_AS_ERROR`: When this option is enabled, compilers will treat warnings as errors. If `IMOGRIFY_CLANG_TIDY` is enabled, [clang-tidy](https://clang.llvm.org/extra/clang-tidy) will also treat its warnings as errors.
@@ -76,9 +69,9 @@ When using vcpkg, the following CMake options are also available:
 
 ### CMake presets
 
-imogrify includes a set of CMake presets. For development it is recommended to use the dev- presets, as the ci- presets are intended for continuous integration.
+imogrify includes a set of CMake presets. For development, it is recommended to use the dev presets, as the ci presets are intended for continuous integration.
 
-To use these presets locally, you will need to [install vcpkg](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started) and set the environment variable `VCPKG_ROOT` to its path. It is recommended to install vcpkg in a short path to avoid building issues with some dependencies. imogrify's vcpkg support uses custom triplets and ports found in the `cmake/custom_vcpkg` subfolder.
+To use these presets locally, you will need to [install vcpkg](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started) and set the environment variable `VCPKG_ROOT` to its path. It is recommended to install vcpkg in a short path to avoid building issues with some dependencies. vcpkg support in imogrify uses custom triplets and ports found in the `cmake/custom_vcpkg` subfolder.
 
 ## Acknowledgements
 

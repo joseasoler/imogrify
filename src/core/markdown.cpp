@@ -23,7 +23,7 @@ namespace
 
 constexpr auto bullet_text_description = " * **{:s}:** {:s}\n\n";
 
-} // Anonymous namespace
+}
 
 namespace imfy
 {
@@ -128,14 +128,14 @@ void markdown::add_runtime_information([[maybe_unused]] heading level)
 		return;
 	}
 	add_heading(level, "Runtime information");
-	const auto& cpu_information = cpu_information_result.value();
+	const auto& [brand, microarchitecture, features] = cpu_information_result.value();
 
-	output_ << fmt::format(bullet_text_description, "CPU brand", cpu_information.brand);
-	output_ << fmt::format(bullet_text_description, "CPU microarchitecture", cpu_information.microarchitecture);
+	output_ << fmt::format(bullet_text_description, "CPU brand", brand);
+	output_ << fmt::format(bullet_text_description, "CPU microarchitecture", microarchitecture);
 
 	output_ << " * **CPU features:** ";
 	bool first = true;
-	for (const auto& feature : cpu_information.features)
+	for (const auto& feature : features)
 	{
 		if (!first) [[likely]]
 		{
@@ -152,7 +152,6 @@ void markdown::add_table(const markdown_table& table)
 	const auto& width = table.width();
 	const auto& data = table.data();
 
-	constexpr std::size_t padding = 2U;
 	for (std::size_t row_index{0U}; row_index < data.size(); ++row_index)
 	{
 		const auto& row = data[row_index];
@@ -161,6 +160,7 @@ void markdown::add_table(const markdown_table& table)
 			break;
 		}
 
+		constexpr std::size_t padding = 2U;
 		for (std::size_t cell_index{0U}; cell_index < width.size(); ++cell_index)
 		{
 			output_ << fmt::format("|{0: ^{1}}", row[cell_index], width[cell_index] + padding);
@@ -181,4 +181,4 @@ void markdown::add_table(const markdown_table& table)
 	output_ << "\n";
 }
 
-} // namespace imfy
+}

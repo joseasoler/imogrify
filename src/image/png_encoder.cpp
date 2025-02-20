@@ -30,7 +30,7 @@
 namespace
 {
 
-void write_data_to_buffer(png_struct* png_ptr, std::uint8_t* IMFY_RESTRICT data, std::size_t write_length)
+void write_data_to_buffer(png_struct* png_ptr, std::uint8_t* IMFY_RESTRICT data, const std::size_t write_length)
 {
 	auto& output_buffer = *static_cast<imfy::png::encoded_png*>(png_get_io_ptr(png_ptr));
 	const auto current_index = output_buffer.size;
@@ -46,7 +46,6 @@ void write_data_to_buffer(png_struct* png_ptr, std::uint8_t* IMFY_RESTRICT data,
 
 /**
  * Used by libpng to report fatal errors. libpng expects this function to never return to the caller.
- * @param png_ptr Libpng control structure.
  * @param error_msg Error message emitted by libpng.
  */
 [[noreturn]] void libpng_fatal_error(png_struct* /*png_ptr*/, const char* error_msg)
@@ -122,7 +121,7 @@ std::uint8_t channels_of_color_type(color_t color)
 	}
 }
 
-} // namespace
+}
 
 namespace imfy::png
 {
@@ -169,9 +168,9 @@ tl::expected<encoded_png, std::string_view> encode(
 		png_write_row(png_ptr, row_pointer);
 		row_pointer += static_cast<std::size_t>(img_size.width) * byte_depth * channels;
 	}
-	// Finish writing the image.
+
 	png_write_end(png_ptr, info_ptr);
 	return buffer;
 }
 
-} // namespace imfy::png
+}

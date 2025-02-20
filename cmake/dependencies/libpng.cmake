@@ -13,4 +13,3 @@ add_dependency_metadata(
 	LICENSE_SPDX "libpng-2.0"
 	USAGE "imogrify"
 )
-

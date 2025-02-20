@@ -21,11 +21,11 @@ namespace imfy::bench
 class benchmark_image_data final
 {
 public:
-	explicit benchmark_image_data(const imfy::bench::definition& def, image::image_size img_size);
+	explicit benchmark_image_data(const definition& def, image::image_size img_size);
 
-	bench::image_gen_t image_gen_;
+	image_gen_t image_gen_;
 	image::raw_image image_;
-	imfy::string filename_;
+	string filename_;
 };
 
 class benchmark_images final
@@ -57,4 +57,4 @@ private:
 	vector<benchmark_image_data> images_;
 };
 
-} // namespace imfy::bench
+}

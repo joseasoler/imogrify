@@ -18,9 +18,9 @@ namespace imfy::runtime
 
 struct cpu_info final
 {
-	imfy::string brand;
+	string brand;
 	std::string_view microarchitecture;
-	imfy::vector<std::string_view> features;
+	vector<std::string_view> features;
 };
 
 /**
@@ -29,4 +29,4 @@ struct cpu_info final
  */
 tl::expected<cpu_info, std::string_view> cpu_information();
 
-} // namespace imfy::runtime
+}

@@ -29,4 +29,4 @@ bool save(const std::filesystem::path& path, aligned_span<const std::uint8_t> da
 	return ofstr.good();
 }
 
-} // namespace imfy::fs
+}

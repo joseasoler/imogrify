@@ -32,4 +32,4 @@ enum class compression_t : std::uint8_t
 	best,
 };
 
-} // namespace imfy::image
+}

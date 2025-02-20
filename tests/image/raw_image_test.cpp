@@ -35,7 +35,7 @@ void raw_image_checks(const channel_t channels, const bit_depth_t bit_depth, ima
 	CHECK(real_byte_size == expected_byte_size);
 }
 
-} // Anonymous namespace
+}
 
 TEST_CASE("Raw image")
 {

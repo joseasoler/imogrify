@@ -14,7 +14,7 @@
 namespace ankerl::nanobench
 {
 class Bench;
-} // namespace ankerl::nanobench
+}
 
 namespace imfy::bench
 {
@@ -41,4 +41,4 @@ private:
 	const benchmark_images& images_;
 };
 
-} // namespace imfy::bench
+}

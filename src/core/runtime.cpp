@@ -68,7 +68,7 @@ tl::expected<imfy::runtime::cpu_info, std::string_view> get_cpu_information(cpu_
 	return output_cpu_info;
 }
 
-} // namespace
+}
 
 namespace imfy::runtime
 {
@@ -85,4 +85,4 @@ constexpr std::array cpu_feature_ids{X86_SSE,			X86_SSE2,	 X86_SSE3, X86_SSSE3,	
 	return get_raw_data().and_then(get_cpu_id).and_then(get_cpu_information);
 }
 
-} // namespace imfy::runtime
+}

@@ -25,7 +25,7 @@ TEST_CASE("Allocating memory blocks of specific sizes")
 TEST_CASE("Setting values in the memory block.")
 {
 	memory_block<std::uint8_t> block{257U};
-	auto span = block.span();
+	const auto span = block.span();
 	std::memset(span.data(), 0, span.size());
 	CHECK(std::all_of(span.data(), span.data() + span.size(), [](const std::uint8_t data) { return data == 0U; }));
 }

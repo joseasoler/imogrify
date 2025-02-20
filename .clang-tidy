@@ -39,6 +39,7 @@ WarningsAsErrors: '*'
 # cppcoreguidelines-pro-bounds-constant-array-index: Allow casting enum values to use them as array indexes.
 # cppcoreguidelines-pro-bounds-pointer-arithmetic: Allow using pointer arithmetic.
 # llvm-header-guard: Allow use of #pragma once
+# llvm-namespace-comment: Do not require closing comments in namespaces as they can be shown by IDEs.
 # modernize-use-trailing-return-type: Do not force use of trailing return types.
 
 Checks: '
@@ -59,5 +60,6 @@ Checks: '
 -cppcoreguidelines-pro-bounds-constant-array-index,
 -cppcoreguidelines-pro-bounds-pointer-arithmetic,
 -llvm-header-guard,
+-llvm-namespace-comment,
 -modernize-use-trailing-return-type,
 '
