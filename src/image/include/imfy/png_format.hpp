@@ -65,4 +65,4 @@ constexpr color_t to_color_type(image::channel_t channels)
 	}
 }
 
-} // namespace imfy::png
+}

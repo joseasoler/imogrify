@@ -44,7 +44,7 @@ struct result final
 	image_gen_t image_gen;
 	image::image_size img_size;
 	image::compression_t compression;
-	imfy::vector<library_result> library_results;
+	vector<library_result> library_results;
 };
 
-} // namespace imfy::bench
+}

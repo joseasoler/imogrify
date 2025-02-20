@@ -16,7 +16,7 @@ namespace imfy
 
 /**
  * Span referencing a contiguous block of aligned memory.
- * Loosely based on std::span, although it lacks most of its features.
+ * Loosely based on std::span, lacking some of its features.
  * @tparam Type
  */
 template <std::unsigned_integral Type>
@@ -36,7 +36,7 @@ public:
 	{
 	}
 
-	aligned_span(pointer data, size_type size) noexcept
+	aligned_span(const pointer data, const size_type size) noexcept
 		: data_{data}
 		, size_{size}
 	{
@@ -71,4 +71,4 @@ private:
 	size_type size_;
 };
 
-} // namespace imfy
+}

@@ -12,7 +12,7 @@
 #define IMFY_ALWAYS_INLINE inline __attribute__((always_inline))
 #endif
 
-// IMFY_ASSUME: Specifies to the compiler that the expression will always evaluate to true at a given point.
+// IMFY_ASSUME:Informs the compiler that a expression will always evaluate to true.
 #if IMOGRIFY_COMPILER_MSVC
 #define IMFY_ASSUME(expression) __assume(expression)
 #elif IMOGRIFY_COMPILER_GCC && !defined(IMOGRIFY_CLANG_TIDY)

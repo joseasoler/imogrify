@@ -172,7 +172,7 @@ imfy::vector<raw_library_result> run_png_encode_benchmark(
 	return results;
 }
 
-} // namespace
+}
 
 namespace imfy::bench
 {
@@ -193,7 +193,7 @@ result benchmark_execution::run(const definition& def)
 	res.channels = def.channels;
 	res.bit_depth = def.bit_depth;
 	res.image_gen = def.image_gen;
-	const imfy::image::raw_image* image = images_.get(def);
+	const image::raw_image* image = images_.get(def);
 	if (image == nullptr)
 	{
 		return {};
@@ -201,7 +201,7 @@ result benchmark_execution::run(const definition& def)
 	res.img_size = image->size();
 	res.compression = def.compression;
 
-	imfy::vector<raw_library_result> raw_library_results;
+	vector<raw_library_result> raw_library_results;
 	if (def.format == format_t::png && def.operation == operation_t::encode)
 	{
 		raw_library_results = run_png_encode_benchmark(*bench_, *image, def.libraries, res.compression);
@@ -212,4 +212,4 @@ result benchmark_execution::run(const definition& def)
 	return res;
 }
 
-} // namespace imfy::bench
+}

@@ -17,4 +17,4 @@ namespace imfy
 template <typename Type>
 concept pod_type = std::is_trivially_copyable_v<Type> && std::is_standard_layout_v<Type>;
 
-} // namespace imfy
+}

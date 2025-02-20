@@ -20,10 +20,12 @@ bool set_terminal()
 #if IMOGRIFY_OS_WINDOWS
 	// NOLINTNEXTLINE(misc-include-cleaner)
 	SetConsoleOutputCP(CP_UTF8);
-	return std::setvbuf(stdout, nullptr, _IOFBF, 1024U) == 0 && std::setvbuf(stderr, nullptr, _IOFBF, 1024U) == 0;
+	constexpr std::size_t buffer_size = 1024U;
+	return std::setvbuf(stdout, nullptr, _IOFBF, buffer_size) == 0 &&
+				 std::setvbuf(stderr, nullptr, _IOFBF, buffer_size) == 0;
 #else
 	return true;
 #endif // IMOGRIFY_OS_WINDOWS
 }
 
-} // namespace imfy
+}

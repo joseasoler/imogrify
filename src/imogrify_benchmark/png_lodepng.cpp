@@ -20,11 +20,11 @@ namespace
 using namespace imfy::image;
 using namespace imfy::png;
 
-static_assert(static_cast<int>(color_t::gray) == LodePNGColorType::LCT_GREY);
-static_assert(static_cast<int>(color_t::ga) == LodePNGColorType::LCT_GREY_ALPHA);
-static_assert(static_cast<int>(color_t::palette) == LodePNGColorType::LCT_PALETTE);
-static_assert(static_cast<int>(color_t::rgb) == LodePNGColorType::LCT_RGB);
-static_assert(static_cast<int>(color_t::rgba) == LodePNGColorType::LCT_RGBA);
+static_assert(static_cast<int>(color_t::gray) == LCT_GREY);
+static_assert(static_cast<int>(color_t::ga) == LCT_GREY_ALPHA);
+static_assert(static_cast<int>(color_t::palette) == LCT_PALETTE);
+static_assert(static_cast<int>(color_t::rgb) == LCT_RGB);
+static_assert(static_cast<int>(color_t::rgba) == LCT_RGBA);
 
 constexpr LodePNGCompressSettings get_compression_settings(const compression_t compression)
 {
@@ -62,14 +62,14 @@ constexpr LodePNGCompressSettings get_compression_settings(const compression_t c
 	return settings;
 }
 
-} // namespace
+}
 
 namespace imfy
 {
 
 std::size_t encode_lodepng(
-		const png::color_t color, const image::bit_depth_t bit_depth, const image::image_size img_size,
-		aligned_span<const std::uint8_t> input_image, const image::compression_t compression
+		const color_t color, const bit_depth_t bit_depth, const image_size img_size,
+		const aligned_span<const std::uint8_t> input_image, const compression_t compression
 )
 {
 	unsigned char* png{};
@@ -97,4 +97,4 @@ std::size_t encode_lodepng(
 	return png_size;
 }
 
-} // namespace imfy
+}

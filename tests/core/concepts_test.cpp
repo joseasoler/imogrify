@@ -27,7 +27,7 @@ struct inheritance_struct final : public simple_struct
 	std::int8_t third_value;
 };
 
-} // namespace
+}
 
 TEST_CASE("Plain old object concept.")
 {

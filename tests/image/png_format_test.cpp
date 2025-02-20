@@ -25,7 +25,7 @@ TEST_CASE("Definition of color_t")
 	static_assert(static_cast<int>(color_t::rgba) == PNG_COLOR_TYPE_RGBA);
 }
 
-TEST_CASE("Conversion of imogrify's compression_t to zlib compression levels.")
+TEST_CASE("Conversion of compression_t to zlib compression levels.")
 {
 	static_assert(to_png_compression(compression_t::none) == Z_NO_COMPRESSION);
 	static_assert(to_png_compression(compression_t::speed) == Z_BEST_SPEED);
@@ -33,7 +33,7 @@ TEST_CASE("Conversion of imogrify's compression_t to zlib compression levels.")
 	static_assert(to_png_compression(compression_t::best) == Z_BEST_COMPRESSION);
 }
 
-TEST_CASE("Conversion of imogrify's channels_t to PNG color types.")
+TEST_CASE("Conversion of channels_t to PNG color types.")
 {
 	static_assert(to_color_type(channel_t::one) == color_t::gray);
 	static_assert(to_color_type(channel_t::two) == color_t::ga);

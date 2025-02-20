@@ -34,14 +34,14 @@ public:
 	[[nodiscard]] channel_t channels() const noexcept;
 	[[nodiscard]] bit_depth_t bit_depth() const noexcept;
 	[[nodiscard]] image_size size() const noexcept;
-	[[nodiscard]] aligned_span<raw_image::value_type> data() noexcept;
-	[[nodiscard]] aligned_span<const raw_image::value_type> data() const noexcept;
+	[[nodiscard]] aligned_span<value_type> data() noexcept;
+	[[nodiscard]] aligned_span<const value_type> data() const noexcept;
 
 private:
-	imfy::memory_block<value_type> data_;
+	memory_block<value_type> data_;
 	image_size image_size_;
 	channel_t channels_;
 	bit_depth_t bit_depth_;
 };
 
-} // namespace imfy::image
+}

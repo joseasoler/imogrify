@@ -72,4 +72,4 @@ private:
 	std::ostream& output_;
 };
 
-} // namespace imfy
+}

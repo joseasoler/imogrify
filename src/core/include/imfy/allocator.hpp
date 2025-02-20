@@ -12,10 +12,9 @@ namespace imfy
 
 /**
  * Conformant allocator to use with C++ Standard Library types in imogrify.
- * A single definition simplifies testing different memory allocation approaches.
- * It can also be used to trace memory allocations.
+ * A singular definition point allows testing different memory allocation implementation or to trace them.
  */
 template <typename Type>
 using allocator = std::allocator<Type>;
 
-} // namespace imfy
+}

@@ -18,7 +18,7 @@ struct image_size final
 
 	/**
 	 * image_size instances are sorted by their total size, then by width, and then by height.
-	 * Sorting is required by benchmarks.
+	 * Size sorting is intended for benchmarks.
 	 * @param rhs image_size instance to compare to.
 	 * @return Ordering of the two image sizes.
 	 */
@@ -46,4 +46,4 @@ struct image_size final
 	constexpr bool operator!=(const image_size& rhs) const noexcept { return width != rhs.width || height != rhs.height; }
 };
 
-} // namespace imfy::image
+}

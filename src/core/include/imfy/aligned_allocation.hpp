@@ -47,9 +47,9 @@ void aligned_deallocation_bytes(const void* aligned_pointer);
  * @return Pointer to the newly allocated memory.
  */
 template <typename Type>
-Type* aligned_allocation(std::size_t size)
+Type* aligned_allocation(const std::size_t size)
 {
-	return imfy::assume_aligned(static_cast<Type*>(imfy::aligned_allocation_bytes(sizeof(Type) * size)));
+	return imfy::assume_aligned(static_cast<Type*>(aligned_allocation_bytes(sizeof(Type) * size)));
 }
 
 /**
@@ -60,7 +60,7 @@ Type* aligned_allocation(std::size_t size)
 template <typename Type>
 void aligned_deallocation(const Type* aligned_pointer)
 {
-	imfy::aligned_deallocation_bytes(static_cast<const void*>(aligned_pointer));
+	aligned_deallocation_bytes(static_cast<const void*>(aligned_pointer));
 }
 
-} // namespace imfy
+}

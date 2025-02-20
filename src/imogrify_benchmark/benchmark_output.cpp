@@ -86,7 +86,7 @@ constexpr std::string_view compression_string(const compression_t compression)
 	return {};
 }
 
-} // namespace
+}
 
 namespace imfy::bench
 {
@@ -273,4 +273,4 @@ void benchmark_output::output(const result& result)
 	}
 }
 
-} // namespace imfy::bench
+}

@@ -46,14 +46,14 @@ public:
 private:
 	spng_ctx* _ctx;
 };
-} // namespace
+}
 
 namespace imfy
 {
 
 std::size_t encode_spng(
 		const color_t color, const image::bit_depth_t bit_depth, const image::image_size img_size,
-		aligned_span<const std::uint8_t> input_image, const image::compression_t compression
+		const aligned_span<const std::uint8_t> input_image, const image::compression_t compression
 )
 {
 	spng_context context{SPNG_CTX_ENCODER};
@@ -90,4 +90,4 @@ std::size_t encode_spng(
 	return buffer_size;
 }
 
-} // namespace imfy
+}

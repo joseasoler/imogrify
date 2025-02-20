@@ -32,4 +32,4 @@ struct definition final
 	constexpr auto operator<=>(const definition&) const noexcept = default;
 };
 
-} // namespace imfy::bench
+}

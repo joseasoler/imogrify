@@ -16,5 +16,3 @@ if (IMOGRIFY_BUILD_MICROBENCHMARKS)
 	)
 
 endif ()
-
-

@@ -17,4 +17,4 @@ tl::expected<cpu_info, std::string_view> cpu_information()
 	return {};
 }
 
-} // namespace imfy::runtime
+}

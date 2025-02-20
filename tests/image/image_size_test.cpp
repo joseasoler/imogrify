@@ -38,7 +38,6 @@ TEST_CASE("image_size comparison checks")
 	static_assert(image_size(small_size, small_size) <= image_size(small_size, small_size));
 	static_assert(image_size(small_size, small_size) <= image_size(large_side, small_size));
 	static_assert(image_size(small_size, large_side) <= image_size(large_side, small_size));
-
 	static_assert(image_size(large_side, large_side) > image_size(small_size, small_size));
 	static_assert(image_size(large_side, small_size) > image_size(small_size, large_side));
 
