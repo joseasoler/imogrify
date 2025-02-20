@@ -84,7 +84,7 @@ std::size_t encode_spng(
 		std::abort();
 	}
 
-	// NOLINTNEXTLINE(cppcoreguidelines-no-malloc, hicpp-no-malloc)
+	// NOLINTNEXTLINE(hicpp-no-malloc)
 	std::free(buffer_data);
 
 	return buffer_size;
