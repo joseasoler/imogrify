@@ -2,7 +2,7 @@
 
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
-Image conversion tool optimized for batch processing.
+An image conversion tool optimized for batch processing.
 
 ## Contributing
 
@@ -20,9 +20,18 @@ Building imogrify requires [CMake](https://cmake.org) and a [compiler with C++20
 * **GCC:** Version 11 or newer.
 * **MSVC:** Version 19.30 or newer.
 
+### CMake options
+
+* `CMAKE_COMPILE_WARNING_AS_ERROR`: Compilers will treat warnings as errors. If `IMOGRIFY_CLANG_TIDY` is enabled, [clang-tidy](https://clang.llvm.org/extra/clang-tidy) will also treat its warnings as errors.
+* `IMOGRIFY_BUILD_CPU_INFORMATION`: Imogrify can display runtime information about the CPU in use. Off by default.
+* `IMOGRIFY_BUILD_MICROBENCHMARKS`: Builds microbenchmarks. Off by default.
+* `IMOGRIFY_BUILD_UNIT_TESTS`: Builds unit tests. Off by default.
+* `IMOGRIFY_CLANG_ALL_WARNINGS`: Only available with the [clang](https://clang.llvm.org) compiler. Enables almost every warning from this compiler, except for a few that cause issues with imogrify. This may trigger unexpected positives when using newer clang versions. Off by default.
+* `IMOGRIFY_CLANG_TIDY`: If a [clang-tidy](https://clang.llvm.org/extra/clang-tidy) binary can be found, it will be used to analyze the project. Off by default.
+
 ### Dependencies
 
-Building imogrify requires the following dependencies. imogrify expects to find them through the standard `find_package` CMake feature.
+Building imogrify requires the following dependencies to be available through the `find_package` CMake feature.
 
 * **[fmt](https://fmt.dev/latest/index.html)**: Modern formatting and printing library.
 
@@ -34,15 +43,15 @@ Building imogrify requires the following dependencies. imogrify expects to find 
 
 * **[zlib](https://www.zlib.net)**: A free, lossless data-compression library.
 
-Building with the `IMOGRIFY_BUILD_CPU_INFORMATION` CMake option requires the following additional dependency.
+With the `IMOGRIFY_BUILD_CPU_INFORMATION` CMake option:
 
 * **[libcpuid](https://github.com/anrieff/libcpuid)**: Provides CPU identification.
 
-Building with the `IMOGRIFY_BUILD_UNIT_TESTS` CMake option requires the following additional dependency. This dependency is not used by the main imogrify binary.
+With the `IMOGRIFY_BUILD_UNIT_TESTS` CMake option. This dependency is not used by the main imogrify binary.
 
 * **[doctest](https://github.com/doctest/doctest)**: Fast C++ testing framework.
 
-Building with the `IMOGRIFY_BUILD_MICROBENCHMARKS` CMake option enabled requires the following additional dependencies. These dependencies are not used by the main imogrify binary.
+With the `IMOGRIFY_BUILD_MICROBENCHMARKS` CMake option. These dependencies are not used by the main imogrify binary.
 
 * **[nanobench](https://nanobench.ankerl.com)**: A platform independent microbenchmarking library for C++.
 
@@ -50,18 +59,9 @@ Building with the `IMOGRIFY_BUILD_MICROBENCHMARKS` CMake option enabled requires
 
 * **[lodepng](https://lodev.org/lodepng)**: LodePNG is a PNG image decoder and encoder, all in one, no dependency or linkage to zlib or libpng required.
 
-### CMake options
-
-* `CMAKE_COMPILE_WARNING_AS_ERROR`: When this option is enabled, compilers will treat warnings as errors. If `IMOGRIFY_CLANG_TIDY` is enabled, [clang-tidy](https://clang.llvm.org/extra/clang-tidy) will also treat its warnings as errors.
-* `IMOGRIFY_BUILD_CPU_INFORMATION`: With this option enabled, imogrify can gather additional runtime information about the CPU in use. Requires the [libcpuid](https://github.com/anrieff/libcpuid) library. Off by default.
-* `IMOGRIFY_BUILD_MICROBENCHMARKS`: Builds microbenchmarks. Requires the [nanobench](https://nanobench.ankerl.com) library. Off by default.
-* `IMOGRIFY_BUILD_UNIT_TESTS`: Builds unit tests. Requires the [doctest](https://github.com/doctest/doctest) library. Off by default.
-* `IMOGRIFY_CLANG_ALL_WARNINGS`: This option is only available when the [clang](https://clang.llvm.org) compiler is in use. This option enables almost every warning from this compiler, except for a few that cause issues with imogrify. This may trigger unexpected positives when using newer clang versions. Off by default.
-* `IMOGRIFY_CLANG_TIDY`: If [clang-tidy](https://clang.llvm.org/extra/clang-tidy) is available, it will be used to analyze the project. Off by default.
-
 ### vcpkg support
 
-imogrify can be built using [vcpkg](https://github.com/microsoft/vcpkg) to retrieve dependencies.
+imogrify can be built using [vcpkg](https://github.com/microsoft/vcpkg) to retrieve dependencies. vcpkg support in imogrify uses custom triplets and ports found in the `cmake/custom_vcpkg` subfolder.
 
 When using vcpkg, the following CMake options are also available:
 
@@ -69,9 +69,9 @@ When using vcpkg, the following CMake options are also available:
 
 ### CMake presets
 
-imogrify includes a set of CMake presets. For development, it is recommended to use the dev presets, as the ci presets are intended for continuous integration.
+imogrify includes a set of CMake presets. ci presets are intended for continuous integration, and dev presets are for development.
 
-To use these presets locally, you will need to [install vcpkg](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started) and set the environment variable `VCPKG_ROOT` to its path. It is recommended to install vcpkg in a short path to avoid building issues with some dependencies. vcpkg support in imogrify uses custom triplets and ports found in the `cmake/custom_vcpkg` subfolder.
+These presets require [installing vcpkg](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started) and setting the environment variable `VCPKG_ROOT` to its path. It is recommended to install vcpkg in a short path to avoid building issues with some dependencies.
 
 ## Acknowledgements
 
