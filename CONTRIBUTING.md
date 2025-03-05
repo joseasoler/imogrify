@@ -20,13 +20,11 @@ Source code contributions must met the following requirements. These criteria ar
 
 * Follow the [style guide](STYLE_GUIDE.md). Most but not all of its rules are enforced by clang-format and clang-tidy.
 
-* Building should finish without warnings. Enable the `CMAKE_COMPILE_WARNING_AS_ERROR` CMake option to check this.
-
-* imogrify can gather additional CPU information during runtime. Enable the `IMOGRIFY_BUILD_CPU_INFORMATION` CMake option must be enabled.
-
-* Microbenchmarks can be built. Enable the `IMOGRIFY_BUILD_MICROBENCHMARKS` CMake option and build the microbenchmark suite to check this.
+* Compilation should not issue any warnings in supported compilers. Enable the `CMAKE_COMPILE_WARNING_AS_ERROR` CMake option to check this.
 
 * Unit tests should be passing. Enable the `IMOGRIFY_BUILD_UNIT_TESTS` CMake option and run the tests to check this.
+
+* These conditions must be met for all supported CMake options.
 
 #### Other considerations
 
