@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <cstddef>
 #include <cstdint>
 
 namespace imfy::image
@@ -23,6 +24,12 @@ enum class bit_depth_t : std::uint8_t
 	eight = 8U,
 	sixteen = 16U,
 };
+
+[[nodiscard]] inline std::size_t byte_size(const bit_depth_t bit_depth)
+{
+	constexpr std::size_t bits_per_byte = 8U;
+	return static_cast<std::size_t>(bit_depth) / bits_per_byte;
+}
 
 enum class compression_t : std::uint8_t
 {

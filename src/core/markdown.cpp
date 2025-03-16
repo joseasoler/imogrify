@@ -37,7 +37,7 @@ markdown_table::markdown_table()
 void markdown_table::add_cell_str(string value)
 {
 	const std::size_t index = data_.back().size();
-	if (width_.size() < (index + 1U))
+	if (width_.size() < index + 1U)
 	{
 		width_.emplace_back(0U);
 	}

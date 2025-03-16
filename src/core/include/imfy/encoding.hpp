@@ -12,6 +12,6 @@ namespace imfy
  * Configures terminal output for the current platform.
  * @return True if the operation succeeded.
  */
-[[nodiscard]] bool set_terminal();
+[[nodiscard]] bool initialize_encoding();
 
 }

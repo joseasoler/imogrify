@@ -9,8 +9,6 @@
 #include <imfy/vector.hpp>
 
 #include <cstdint>
-#include <ios>
-#include <span>
 #include <string_view>
 
 namespace imfy

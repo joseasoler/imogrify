@@ -11,13 +11,10 @@
 
 #include <tl/expected.hpp>
 
-#include <compare>
-#include <cstdint>
-
 namespace imfy::bench
 {
 
-/** Defines all of the input values to use for a specific benchmark run. */
+/** Defines all the input values to use for a specific benchmark run. */
 struct definition final
 {
 	format_t format;

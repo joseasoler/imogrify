@@ -9,6 +9,7 @@
 
 #include <hwy/aligned_allocator.h>
 
+#include <algorithm>
 #include <cstddef>
 
 #include <doctest/doctest.h>
@@ -17,14 +18,10 @@ namespace
 {
 consteval imfy::build::dependency_t highway_dependency()
 {
-	for (const auto dependency : imfy::build::dependencies)
-	{
-		if (dependency.name == "Highway")
-		{
-			return dependency;
-		}
-	}
-	return {};
+	using namespace imfy::build;
+	constexpr auto itr =
+			std::ranges::find_if(dependencies, [](const auto& dependency) { return dependency.name == "Highway"; });
+	return itr != dependencies.cend() ? *itr : dependency_t{};
 }
 
 // HWY_ALIGNMENT became 120 in Highway 1.1.0. HWY_MAJOR changed headers in 1.2.0.

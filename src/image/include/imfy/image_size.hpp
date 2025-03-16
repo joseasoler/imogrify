@@ -26,20 +26,18 @@ struct image_size final
 	{
 		const std::uint32_t lhs_size = width * height;
 		const std::uint32_t rhs_size = rhs.width * rhs.height;
-		if (lhs_size == rhs_size)
+
+		if (const auto size_comparison = lhs_size <=> rhs_size; size_comparison != std::strong_ordering::equal)
 		{
-			if (width == rhs.width)
-			{
-				if (height == rhs.height)
-				{
-					return std::strong_ordering::equal;
-				}
-				return height < rhs.height ? std::strong_ordering::less : std::strong_ordering::greater;
-			}
-			return width < rhs.width ? std::strong_ordering::less : std::strong_ordering::greater;
+			return size_comparison;
 		}
 
-		return lhs_size < rhs_size ? std::strong_ordering::less : std::strong_ordering::greater;
+		if (const auto width_comparison = width <=> rhs.width; width_comparison != std::strong_ordering::equal)
+		{
+			return width_comparison;
+		}
+
+		return height <=> rhs.height;
 	}
 
 	constexpr bool operator==(const image_size& rhs) const noexcept { return width == rhs.width && height == rhs.height; }

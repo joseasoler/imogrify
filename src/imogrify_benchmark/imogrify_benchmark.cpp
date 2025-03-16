@@ -25,7 +25,7 @@
 
 int main(int argc, char** argv) // NOLINT
 {
-	if (!imfy::set_terminal())
+	if (!imfy::initialize_encoding())
 	{
 		fmt::println("Could not configure terminal output.");
 		return EXIT_FAILURE;

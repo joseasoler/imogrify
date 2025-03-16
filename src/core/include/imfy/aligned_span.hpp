@@ -55,15 +55,11 @@ public:
 	[[nodiscard]] bool empty() const noexcept { return size_ == 0U; }
 	[[nodiscard]] aligned_span<const std::uint8_t> as_bytes() const noexcept
 	{
-		return aligned_span<const std::uint8_t>{
-				reinterpret_cast<const std::uint8_t*>(data_), size_ * sizeof(element_type) // NOLINT
-		};
+		return {reinterpret_cast<const std::uint8_t*>(data_), size_ * sizeof(element_type)};
 	}
 	[[nodiscard]] aligned_span<std::uint8_t> as_writable_bytes() const noexcept
 	{
-		return aligned_span<std::uint8_t>{
-				reinterpret_cast<std::uint8_t*>(data_), size_ * sizeof(element_type) // NOLINT
-		};
+		return {reinterpret_cast<std::uint8_t*>(data_), size_ * sizeof(element_type)};
 	}
 
 private:

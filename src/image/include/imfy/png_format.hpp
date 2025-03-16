@@ -25,22 +25,26 @@ enum class color_t : std::uint8_t
 /**
  * Maps the imogrify representation of compressions to the levels used by libpng.
  * See https://www.zlib.net/manual.html
- * @param compression imogrify compression_t level.
- * @return zlib compression_t level.
+ * @param compression imogrify compression level.
+ * @return zlib compression level.
  */
 constexpr int to_png_compression(image::compression_t compression)
 {
+	constexpr int zlib_no_compression = 0;
+	constexpr int zlib_speed_compression = 1;
+	constexpr int zlib_standard_compression = 6;
+	constexpr int zlib_best_compression = 9;
 	switch (compression)
 	{
 		case image::compression_t::none:
-			return 0;
+			return zlib_no_compression;
 		case image::compression_t::speed:
-			return 1;
+			return zlib_speed_compression;
 		case image::compression_t::standard:
 		default:
-			return 6;
+			return zlib_standard_compression;
 		case image::compression_t::best:
-			return 9;
+			return zlib_best_compression;
 	}
 }
 

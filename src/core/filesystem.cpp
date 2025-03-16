@@ -18,13 +18,15 @@ namespace imfy::fs
 
 bool save(const std::filesystem::path& path, aligned_span<const std::uint8_t> data)
 {
-	constexpr auto open_mode = std::ios::out | std::ios::binary; // NOLINT
+	// NOLINTNEXTLINE(hicpp-signed-bitwise)
+	constexpr auto open_mode = std::ios::out | std::ios::binary;
 	std::ofstream ofstr{path, open_mode};
 	if (!ofstr.is_open())
 	{
 		return false;
 	}
-	const auto* memory_begin = reinterpret_cast<const char*>(data.data()); // NOLINT
+	// NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+	const auto* memory_begin = reinterpret_cast<const char*>(data.data());
 	ofstr.write(memory_begin, static_cast<std::ptrdiff_t>(data.size()));
 	return ofstr.good();
 }

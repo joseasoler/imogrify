@@ -15,7 +15,7 @@
 namespace imfy
 {
 
-bool set_terminal()
+bool initialize_encoding()
 {
 #if IMOGRIFY_OS_WINDOWS
 	// NOLINTNEXTLINE(misc-include-cleaner)
