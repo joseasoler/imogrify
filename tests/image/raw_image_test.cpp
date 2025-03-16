@@ -9,6 +9,7 @@
 #include <imfy/image_size.hpp>
 
 #include <cstddef>
+#include <cstdint>
 
 #include <doctest/doctest.h>
 
@@ -39,6 +40,10 @@ void raw_image_checks(const channel_t channels, const bit_depth_t bit_depth, ima
 
 TEST_CASE("Raw image")
 {
-	raw_image_checks(channel_t::four, bit_depth_t::eight, {.width = 24U, .height = 38U});
-	raw_image_checks(channel_t::two, bit_depth_t::sixteen, {.width = 1024U, .height = 2048U});
+	constexpr uint16_t small_width = 24U;
+	constexpr uint16_t small_height = 38U;
+	raw_image_checks(channel_t::four, bit_depth_t::eight, {.width = small_width, .height = small_height});
+	constexpr uint16_t large_width = 1024U;
+	constexpr uint16_t large_height = 2048U;
+	raw_image_checks(channel_t::two, bit_depth_t::sixteen, {.width = large_width, .height = large_height});
 }

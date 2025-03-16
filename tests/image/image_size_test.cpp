@@ -21,7 +21,7 @@ TEST_CASE("Basic image_size checks")
 	constexpr std::uint16_t height = 17U;
 	constexpr image_size size_test(width, height);
 	static_assert(size_test.width == width);
-	static_assert(size_test.height == 17U);
+	static_assert(size_test.height == height);
 }
 
 TEST_CASE("image_size comparison checks")

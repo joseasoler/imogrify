@@ -29,7 +29,8 @@ TEST_CASE("Conversion of compression_t to zlib compression levels.")
 {
 	static_assert(to_png_compression(compression_t::none) == Z_NO_COMPRESSION);
 	static_assert(to_png_compression(compression_t::speed) == Z_BEST_SPEED);
-	static_assert(to_png_compression(compression_t::standard) == 6);
+	constexpr int zlib_standard_compression = 6;
+	static_assert(to_png_compression(compression_t::standard) == zlib_standard_compression);
 	static_assert(to_png_compression(compression_t::best) == Z_BEST_COMPRESSION);
 }
 
