@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <cstdint>
 
 #include <doctest/doctest.h>
 
@@ -44,8 +45,9 @@ TEST_CASE("Alignment of allocated memory")
 		for (std::size_t block_size = 8U; block_size < 128U; block_size += 8U)
 		{
 			void* data = imfy::aligned_allocation_bytes(block_size);
-			const auto intptr = reinterpret_cast<std::uintptr_t>(data); // NOLINT
-			CHECK((intptr % imfy::memory_alignment_size) == 0U);
+			// NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+			const auto intptr = reinterpret_cast<std::uintptr_t>(data);
+			CHECK(intptr % imfy::memory_alignment_size == 0U);
 			imfy::aligned_deallocation(data);
 		}
 	}

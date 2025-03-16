@@ -23,7 +23,7 @@
 #include <filesystem>
 #include <string_view>
 
-int main(int argc, char** argv) // NOLINT
+int main(int argc, char** argv)
 {
 	if (!imfy::initialize_encoding())
 	{
