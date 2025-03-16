@@ -65,7 +65,7 @@ void libpng_capture_warning(png_struct* png_ptr, const char* warning_msg)
 	*error_ptr = warning_msg;
 }
 
-void* libpng_malloc(png_struct* /*png_ptr*/, std::size_t size)
+void* libpng_malloc(png_struct* /*png_ptr*/, const std::size_t size)
 {
 	return imfy::aligned_allocation_bytes(size);
 }
@@ -81,8 +81,8 @@ public:
 	explicit png_info_raii(const char** error)
 		: struct_ptr_{png_create_write_struct_2(
 					PNG_LIBPNG_VER_STRING,
-					error, // NOLINT
-					libpng_fatal_error, libpng_capture_warning, nullptr, libpng_malloc, libpng_free
+					// NOLINTNEXTLINE(bugprone-multi-level-implicit-pointer-conversion)
+					static_cast<void*>(error), libpng_fatal_error, libpng_capture_warning, nullptr, libpng_malloc, libpng_free
 			)}
 		, info_ptr_{struct_ptr_ != nullptr ? png_create_info_struct(struct_ptr_) : nullptr}
 	{
@@ -93,8 +93,8 @@ public:
 	png_info_raii& operator=(png_info_raii&&) = delete;
 	~png_info_raii() { png_destroy_write_struct(&struct_ptr_, &info_ptr_); }
 
-	png_struct_def* get_struct() { return struct_ptr_; }
-	png_info_def* get_info() { return info_ptr_; }
+	[[nodiscard]] png_struct_def* get_struct() const { return struct_ptr_; }
+	[[nodiscard]] png_info_def* get_info() const { return info_ptr_; }
 
 private:
 	png_struct_def* struct_ptr_;
@@ -132,7 +132,7 @@ tl::expected<encoded_png, std::string_view> encode(
 )
 {
 	const char* warning_message = nullptr;
-	png_info_raii png_info{&warning_message};
+	const png_info_raii png_info{&warning_message};
 	auto* png_ptr = png_info.get_struct();
 	auto* info_ptr = png_info.get_info();
 	if (info_ptr == nullptr) [[unlikely]]

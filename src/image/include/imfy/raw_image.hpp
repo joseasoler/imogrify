@@ -6,14 +6,9 @@
 #pragma once
 
 #include <imfy/aligned_span.hpp>
-#include <imfy/concepts.hpp>
 #include <imfy/image_format.hpp>
 #include <imfy/image_size.hpp>
 #include <imfy/memory_block.hpp>
-
-#include <array>
-#include <cstddef>
-#include <limits>
 
 namespace imfy::image
 {

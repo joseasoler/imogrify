@@ -5,7 +5,6 @@
 
 #pragma once
 
-#include <imfy/image_size.hpp>
 #include <imfy/vector.hpp>
 
 #include <cstdint>

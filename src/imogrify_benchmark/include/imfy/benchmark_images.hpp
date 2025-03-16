@@ -6,7 +6,6 @@
 #pragma once
 
 #include <imfy/benchmark_definition.hpp>
-#include <imfy/filesystem.hpp>
 #include <imfy/image_size.hpp>
 #include <imfy/raw_image.hpp>
 #include <imfy/string.hpp>

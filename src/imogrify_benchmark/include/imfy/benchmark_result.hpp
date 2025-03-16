@@ -8,11 +8,8 @@
 #include <imfy/benchmark_parameters.hpp>
 #include <imfy/image_format.hpp>
 #include <imfy/image_size.hpp>
-#include <imfy/raw_image.hpp>
 #include <imfy/vector.hpp>
 
-#include <chrono>
-#include <compare>
 #include <cstdint>
 
 namespace imfy::bench

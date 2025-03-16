@@ -33,6 +33,8 @@ namespace
 using namespace imfy::bench;
 using ankerl::nanobench::Bench;
 
+constexpr auto percent_factor = 100.0;
+
 std::unique_ptr<Bench> initialize_nanobench()
 {
 	auto bench = std::make_unique<Bench>();
@@ -81,9 +83,10 @@ raw_library_result run_benchmark_impl(Bench& bench, const library_t library, con
 	using measure = ankerl::nanobench::Result::Measure;
 	const ankerl::nanobench::Result& data = bench.results().back();
 
+	constexpr auto to_milliseconds_factor = 1000000.0;
 	run_result.lib_res.milliseconds =
-			static_cast<double>(to_nanoseconds(data.median(measure::elapsed)).count()) / 1000000.0;
-	run_result.lib_res.speed_error = data.medianAbsolutePercentError(measure::elapsed) * 100.0;
+			static_cast<double>(to_nanoseconds(data.median(measure::elapsed)).count()) / to_milliseconds_factor;
+	run_result.lib_res.speed_error = data.medianAbsolutePercentError(measure::elapsed) * percent_factor;
 #if ANKERL_NANOBENCH(PERF_COUNTERS)
 	run_result.lib_res.instructions = round_to_uint64_t(data.median(measure::instructions));
 	run_result.lib_res.cycles = round_to_uint64_t(data.median(measure::cpucycles));
@@ -94,7 +97,7 @@ raw_library_result run_benchmark_impl(Bench& bench, const library_t library, con
 	run_result.total_iterations = round_to_uint64_t(data.sum(measure::iterations));
 	run_result.total_time = to_nanoseconds(data.sumProduct(measure::iterations, measure::elapsed));
 
-	// Force clear of internal nanobench results.
+	// Setting a new title forces a clear of internal nanobench results.
 	bench.title("");
 	return run_result;
 }
@@ -122,10 +125,11 @@ imfy::vector<library_result> calculate_library_results(
 	for (auto& raw_lib_result : raw_library_results)
 	{
 		auto& lib_result = raw_lib_result.lib_res;
-		lib_result.file_size = static_cast<double>(raw_lib_result.file_size) / 1024.0;
-		lib_result.file_size_rel = 100.0 * static_cast<double>(raw_lib_result.file_size) / reference_file_size;
+		constexpr auto to_kib_factor = 1024.0;
+		lib_result.file_size = static_cast<double>(raw_lib_result.file_size) / to_kib_factor;
+		lib_result.file_size_rel = percent_factor * static_cast<double>(raw_lib_result.file_size) / reference_file_size;
 		lib_result.mpix_second = to_megapixels_per_second(pixels, raw_lib_result);
-		lib_result.speed_relative = 100.0 * lib_result.mpix_second / reference_mpix_second;
+		lib_result.speed_relative = percent_factor * lib_result.mpix_second / reference_mpix_second;
 		library_results.push_back(lib_result);
 	}
 
@@ -148,7 +152,7 @@ imfy::vector<raw_library_result> run_png_encode_benchmark(
 					bench, library,
 					[&color, &image, &compression]() -> std::size_t
 					{
-						const auto result = imfy::png::encode(color, image.bit_depth(), image.size(), image.data(), compression);
+						const auto result = encode(color, image.bit_depth(), image.size(), image.data(), compression);
 						return result.has_value() ? result.value().size : 0U;
 					}
 			));

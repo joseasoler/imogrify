@@ -23,7 +23,7 @@ tl::expected<cpu_raw_data_t, std::string_view> get_raw_data()
 	cpu_raw_data_t raw_data{};
 	if (cpuid_get_raw_data(&raw_data) != 0)
 	{
-		return tl::unexpected(cpuid_error());
+		return tl::unexpected{cpuid_error()};
 	}
 
 	return raw_data;
@@ -34,7 +34,7 @@ tl::expected<cpu_id_t, std::string_view> get_cpu_id(cpu_raw_data_t raw_data)
 	cpu_id_t cpu_id{};
 	if (cpu_identify(&raw_data, &cpu_id) != 0)
 	{
-		return tl::unexpected(cpuid_error());
+		return tl::unexpected{cpuid_error()};
 	}
 
 	return cpu_id;
@@ -44,7 +44,8 @@ imfy::vector<std::string_view> simd_target_names()
 {
 	// See hwy::SupportedAndGeneratedTargets.
 	imfy::vector<std::string_view> result;
-	auto targets = static_cast<std::uint64_t>(hwy::SupportedTargets()) & HWY_TARGETS;
+	constexpr auto highway_targets = static_cast<std::uint64_t>(HWY_TARGETS);
+	auto targets = static_cast<std::uint64_t>(hwy::SupportedTargets()) & highway_targets;
 	for (; targets != 0U; targets = targets & (targets - 1U))
 	{
 		const std::uint64_t current_target = targets & ~(targets - 1U);
@@ -75,13 +76,6 @@ namespace imfy::runtime
 
 tl::expected<cpu_info, std::string_view> cpu_information()
 {
-	/*
-
-constexpr std::array cpu_feature_ids{X86_SSE,			X86_SSE2,	 X86_SSE3, X86_SSSE3,		 X86_SSE4_1,
-																		 -X86_SSE4_2, X86_SSE4A, X86_AVX,	 X86_AVX_VNNI, X86_AVX2};
-
-	 */
-
 	return get_raw_data().and_then(get_cpu_id).and_then(get_cpu_information);
 }
 

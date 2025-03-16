@@ -12,7 +12,7 @@
 
 int main(int /*argc*/, char** /*argv*/)
 {
-	if (!imfy::set_terminal())
+	if (!imfy::initialize_encoding())
 	{
 		std::cerr << "Could not configure terminal output.\n";
 		return EXIT_FAILURE;

@@ -24,7 +24,7 @@ struct cpu_info final
 };
 
 /**
- * Gathers all required information about the CPU. Intended for writing reports.
+ * Gathers CPU information for writing reports.
  * @return CPU information structure or an error description.
  */
 tl::expected<cpu_info, std::string_view> cpu_information();

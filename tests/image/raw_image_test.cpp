@@ -29,7 +29,7 @@ void raw_image_checks(const channel_t channels, const bit_depth_t bit_depth, ima
 	const raw_image test_image(channels, bit_depth, img_size);
 	CHECK(parameter_checks(channels, bit_depth, img_size, test_image));
 	const auto area = static_cast<std::size_t>(img_size.width) * img_size.height;
-	const auto byte_depth = static_cast<std::size_t>(bit_depth) / 8U;
+	const auto byte_depth = byte_size(bit_depth);
 	const auto real_byte_size = test_image.data().size();
 	const auto expected_byte_size = area * static_cast<std::size_t>(channels) * byte_depth;
 	CHECK(real_byte_size == expected_byte_size);
