@@ -26,15 +26,20 @@ static_assert(static_cast<int>(color_t::palette) == LCT_PALETTE);
 static_assert(static_cast<int>(color_t::rgb) == LCT_RGB);
 static_assert(static_cast<int>(color_t::rgba) == LCT_RGBA);
 
+constexpr unsigned int default_window_size = 1U << 11U;
+constexpr unsigned int best_window_size = 1U << 15U;
+constexpr unsigned int default_nice_match = 128U;
+constexpr unsigned int best_nice_match = 258U;
+
 constexpr LodePNGCompressSettings get_compression_settings(const compression_t compression)
 {
 	// Default compression settings for lodepng.
 	LodePNGCompressSettings settings{
 			.btype = 2U,
 			.use_lz77 = 1U,
-			.windowsize = 1U << 11U, // 2048U
+			.windowsize = default_window_size,
 			.minmatch = 3U,
-			.nicematch = 128U,
+			.nicematch = default_nice_match,
 			.lazymatching = 1,
 			.custom_zlib = nullptr,
 			.custom_deflate = nullptr,
@@ -55,8 +60,8 @@ constexpr LodePNGCompressSettings get_compression_settings(const compression_t c
 		case compression_t::standard:
 			break;
 		case compression_t::best:
-			settings.nicematch = 258U;
-			settings.windowsize = 1U << 15U;
+			settings.windowsize = best_window_size;
+			settings.nicematch = best_nice_match;
 			break;
 	}
 	return settings;

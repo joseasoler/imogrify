@@ -42,7 +42,9 @@ TEST_CASE("Alignment of allocated memory")
 {
 	if constexpr (highway_dep.version.major >= 1U && highway_dep.version.minor >= 1U)
 	{
-		for (std::size_t block_size = 8U; block_size < 128U; block_size += 8U)
+		constexpr std::size_t block_size_increment = sizeof(std::uint8_t);
+		constexpr std::size_t block_size_max = 128U;
+		for (std::size_t block_size = block_size_increment; block_size < block_size_max; block_size += block_size_increment)
 		{
 			void* data = imfy::aligned_allocation_bytes(block_size);
 			// NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)

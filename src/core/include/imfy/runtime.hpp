@@ -10,7 +10,6 @@
 
 #include <tl/expected.hpp>
 
-#include <cstdint>
 #include <string_view>
 
 namespace imfy::runtime
