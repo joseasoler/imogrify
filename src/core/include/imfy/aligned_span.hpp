@@ -36,7 +36,7 @@ public:
 	{
 	}
 
-	aligned_span(const pointer data, const size_type size) noexcept
+	aligned_span(pointer data, const size_type size) noexcept
 		: data_{data}
 		, size_{size}
 	{
@@ -55,10 +55,12 @@ public:
 	[[nodiscard]] bool empty() const noexcept { return size_ == 0U; }
 	[[nodiscard]] aligned_span<const std::uint8_t> as_bytes() const noexcept
 	{
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
 		return {reinterpret_cast<const std::uint8_t*>(data_), size_ * sizeof(element_type)};
 	}
 	[[nodiscard]] aligned_span<std::uint8_t> as_writable_bytes() const noexcept
 	{
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
 		return {reinterpret_cast<std::uint8_t*>(data_), size_ * sizeof(element_type)};
 	}
 

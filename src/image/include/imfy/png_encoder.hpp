@@ -23,7 +23,7 @@ struct encoded_png final
 	std::size_t size{};
 	memory_block<std::uint8_t> memory;
 
-	explicit encoded_png(std::size_t buffer_size)
+	explicit encoded_png(const std::size_t buffer_size)
 		: memory(buffer_size)
 	{
 	}

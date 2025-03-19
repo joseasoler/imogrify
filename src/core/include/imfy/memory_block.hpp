@@ -21,7 +21,6 @@ namespace imfy
 /**
  * Memory block with managed allocation and de-allocation.
  * Data is uninitialized by default.
- * Aborts on memory allocation failures.
  * @tparam Type Standard layout type stored by the memory block.
  */
 template <pod_type Type>
@@ -31,10 +30,12 @@ public:
 	using value_type = Type;
 	using size_type = std::size_t;
 
-	explicit memory_block(size_type block_size)
+	explicit memory_block(const size_type block_size)
 	{
 		IMFY_ASSUME(block_size > 0);
+		// NOLINTNEXTLINE(cppcoreguidelines-prefer-member-initializer)
 		block_ = aligned_allocation<value_type>(block_size);
+		// NOLINTNEXTLINE(cppcoreguidelines-prefer-member-initializer)
 		size_ = block_size;
 	}
 

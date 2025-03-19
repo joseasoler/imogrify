@@ -20,8 +20,10 @@ TEST_CASE("Definition of color_t")
 {
 	static_assert(static_cast<int>(color_t::gray) == PNG_COLOR_TYPE_GRAY);
 	static_assert(static_cast<int>(color_t::rgb) == PNG_COLOR_TYPE_RGB);
+	// NOLINTNEXTLINE(hicpp-signed-bitwise)
 	static_assert(static_cast<int>(color_t::palette) == PNG_COLOR_TYPE_PALETTE);
 	static_assert(static_cast<int>(color_t::ga) == PNG_COLOR_TYPE_GA);
+	// NOLINTNEXTLINE(hicpp-signed-bitwise)
 	static_assert(static_cast<int>(color_t::rgba) == PNG_COLOR_TYPE_RGBA);
 }
 

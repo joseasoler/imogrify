@@ -44,6 +44,7 @@ imfy::vector<std::string_view> simd_target_names()
 {
 	// See hwy::SupportedAndGeneratedTargets.
 	imfy::vector<std::string_view> result;
+	// NOLINTNEXTLINE(hicpp-signed-bitwise)
 	constexpr auto highway_targets = static_cast<std::uint64_t>(HWY_TARGETS);
 	auto targets = static_cast<std::uint64_t>(hwy::SupportedTargets()) & highway_targets;
 	for (; targets != 0U; targets = targets & (targets - 1U))
