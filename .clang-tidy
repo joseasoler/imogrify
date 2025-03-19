@@ -21,9 +21,9 @@ CheckOptions:
   - { key: readability-identifier-naming.TypeAliasCase,          value: lower_case }
   - { key: readability-identifier-naming.UnionCase,              value: lower_case }
   - { key: readability-identifier-naming.VariableCase,           value: lower_case }
-# Ignore public members in structs.
+  # Ignore public members in structs.
   - { key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic, value: true }
-# String view literals using MSVC
+  # String view literals using MSVC
   - { key: misc-include-cleaner.IgnoreHeaders, value: "__msvc_string_view.hpp" }
 
 WarningsAsErrors: '*'
@@ -42,6 +42,7 @@ WarningsAsErrors: '*'
 # hicpp-use-nullptr, modernize-use-nullptr: Workaround for https://github.com/llvm/llvm-project/issues/53778
 # llvm-header-guard: Allow use of #pragma once
 # llvm-namespace-comment: Do not require closing comments in namespaces as they can be shown by IDEs.
+# portability-template-virtual-member-function: Errors with basic_ostream::operator<<.
 # modernize-use-trailing-return-type: Do not force use of trailing return types.
 
 Checks: '
@@ -65,5 +66,6 @@ Checks: '
 -llvm-header-guard,
 -llvm-namespace-comment,
 -hicpp-use-nullptr, -modernize-use-nullptr,
+-portability-template-virtual-member-function,
 -modernize-use-trailing-return-type,
 '
