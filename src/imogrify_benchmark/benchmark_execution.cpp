@@ -5,6 +5,7 @@
 
 #include "imfy/benchmark_execution.hpp"
 
+#include <imfy/assert.hpp>
 #include <imfy/benchmark_definition.hpp>
 #include <imfy/benchmark_images.hpp>
 #include <imfy/benchmark_parameters.hpp>
@@ -198,10 +199,7 @@ result benchmark_execution::run(const definition& def)
 	res.bit_depth = def.bit_depth;
 	res.image_gen = def.image_gen;
 	const image::raw_image* image = images_.get(def);
-	if (image == nullptr)
-	{
-		return {};
-	}
+	IMFY_ASSUME(image != nullptr);
 	res.img_size = image->size();
 	res.compression = def.compression;
 

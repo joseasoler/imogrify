@@ -6,6 +6,7 @@
 #include "imfy/png_spng.hpp"
 
 #include <imfy/aligned_span.hpp>
+#include <imfy/attributes.hpp>
 #include <imfy/image_format.hpp>
 #include <imfy/image_size.hpp>
 #include <imfy/png_format.hpp>
@@ -78,7 +79,7 @@ std::size_t encode_spng(
 	}
 	std::size_t buffer_size{};
 	int ret{};
-	void* buffer_data = spng_get_png_buffer(context.get(), &buffer_size, &ret);
+	void* IMFY_RESTRICT buffer_data = spng_get_png_buffer(context.get(), &buffer_size, &ret);
 	if (ret != 0 || buffer_data == nullptr) [[unlikely]]
 	{
 		std::abort();

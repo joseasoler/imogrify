@@ -5,10 +5,10 @@
 include_guard(GLOBAL)
 
 # See README.md for details.
-option(IMOGRIFY_BUILD_UNIT_TESTS "Build unit tests" OFF)
-option(IMOGRIFY_BUILD_MICROBENCHMARKS "Build benchmarks" OFF)
-option(IMOGRIFY_CLANG_TIDY "Analyze the project with clang-tidy" OFF)
 option(IMOGRIFY_BUILD_CPU_INFORMATION "Show CPU information on benchmarks" OFF)
+option(IMOGRIFY_BUILD_MICROBENCHMARKS "Build benchmarks" OFF)
+option(IMOGRIFY_BUILD_UNIT_TESTS "Build unit tests" OFF)
+option(IMOGRIFY_CLANG_TIDY "Analyze the project with clang-tidy" OFF)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	option(IMOGRIFY_CLANG_ALL_WARNINGS

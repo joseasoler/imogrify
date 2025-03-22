@@ -35,7 +35,7 @@ Building imogrify requires the following dependencies to be available through th
 
 * **[fmt](https://fmt.dev/latest/index.html)**: Modern formatting and printing library.
 
-* **[Highway](https://google.github.io/highway/en/master)**: A C++ library that provides portable SIMD/vector intrinsics.
+* **[Highway](https://google.github.io/highway/en/master)**: Provides portable SIMD/vector intrinsics.
 
 * **[libpng](http://www.libpng.org)**: A library implementing an interface for reading and writing PNG (Portable Network Graphics) format files.
 
@@ -66,6 +66,8 @@ imogrify can be built using [vcpkg](https://github.com/microsoft/vcpkg) to retri
 When using vcpkg, the following CMake options are also available:
 
 * `IMOGRIFY_VCPKG_USE_ZLIB_NG`: Replaces [zlib](https://www.zlib.net) with **[zlib-ng](https://github.com/zlib-ng/zlib-ng)**. zlib-ng is a zlib data compression library for the next generation systems. [libpng](http://www.libpng.org)** and [libspng](https://libspng.org) will also use zlib-ng. On by default.
+
+vcpkg will enable the following CMake options: `IMOGRIFY_BUILD_CPU_INFORMATION`, `IMOGRIFY_BUILD_MICROBENCHMARKS`, `IMOGRIFY_BUILD_UNIT_TESTS`, `IMOGRIFY_VCPKG_USE_ZLIB_NG`.
 
 ### CMake presets
 
