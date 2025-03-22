@@ -9,7 +9,7 @@
 #include <imfy/benchmark_output.hpp>
 #include <imfy/benchmark_parameters.hpp>
 #include <imfy/benchmark_result.hpp>
-#include <imfy/encoding.hpp>
+#include <imfy/character_encoding.hpp>
 #include <imfy/image_format.hpp>
 #include <imfy/vector.hpp>
 
@@ -27,9 +27,9 @@
 
 int main(int argc, char** argv)
 {
-	if (!imfy::initialize_encoding())
+	if (const auto encoding_result = imfy::character_encoding::initialize(); !encoding_result)
 	{
-		fmt::println("Could not configure terminal output.");
+		fmt::print("{}", encoding_result.error());
 		return EXIT_FAILURE;
 	}
 
