@@ -10,6 +10,8 @@
 #include <imfy/image_size.hpp>
 #include <imfy/memory_block.hpp>
 
+#include <cstdint>
+
 namespace imfy::image
 {
 class raw_image final

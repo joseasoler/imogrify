@@ -42,7 +42,7 @@ public:
 
 	~spng_context() { spng_ctx_free(_ctx); }
 
-	spng_ctx* get() { return _ctx; }
+	[[nodiscard]] spng_ctx* get() const { return _ctx; }
 
 private:
 	spng_ctx* _ctx;
@@ -57,7 +57,7 @@ std::size_t encode_spng(
 		const aligned_span<const std::uint8_t> input_image, const image::compression_t compression
 )
 {
-	spng_context context{SPNG_CTX_ENCODER};
+	const spng_context context{SPNG_CTX_ENCODER};
 	spng_set_option(context.get(), SPNG_ENCODE_TO_BUFFER, 1);
 	spng_set_option(context.get(), SPNG_IMG_COMPRESSION_LEVEL, static_cast<int>(compression));
 

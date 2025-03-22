@@ -7,6 +7,7 @@
 
 #include <imfy/attributes.hpp>
 
+#include <cstddef>
 #include <memory>
 
 namespace imfy

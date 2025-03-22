@@ -12,6 +12,7 @@
 #if defined(IMOGRIFY_CLANG_TIDY)
 #define IMFY_IMPL_ATTR_ASSUME(expression)
 #elif IMOGRIFY_COMPILER_MSVC
+// NOLINTNEXTLINE(*-macro-usage)
 #define IMFY_IMPL_ATTR_ASSUME(expression) __assume(expression)
 #elif IMOGRIFY_COMPILER_GCC
 #define IMFY_IMPL_ATTR_ASSUME(expression) __attribute__((assume(expression)))
@@ -24,10 +25,12 @@
 #if defined(IMOGRIFY_CLANG_TIDY) || defined(NDEBUG)
 #define IMFY_ASSERT(expression) ((void)0)
 #else
+// NOLINTNEXTLINE(*-macro-usage)
 #define IMFY_ASSERT(expression) assert(expression)
 #endif
 
 // IMFY_ASSUME. Informs the compiler that an expression will always evaluate to true. Assert on debug builds.
+// NOLINTNEXTLINE(*-macro-usage)
 #define IMFY_ASSUME(expression) \
 	IMFY_ASSERT(expression);      \
 	IMFY_IMPL_ATTR_ASSUME(expression)
