@@ -29,7 +29,7 @@ if (VCPKG_TARGET_TRIPLET)
 
 	add_dependency_metadata(
 		NAME vcpkg
-		VERSION "2025.02.14" # Must be updated along with .github/workflows/build-vcpkg.yml and vcpkg.json.
+		VERSION "2025.03.19" # Must be updated along with .github/workflows/build-vcpkg.yml and vcpkg.json.
 		DESCRIPTION "A free and open-source C/C++ package manager."
 		LICENSE_SPDX "MIT"
 		USAGE "imogrify"
