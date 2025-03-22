@@ -10,7 +10,7 @@ if (IMOGRIFY_BUILD_MICROBENCHMARKS)
 	add_dependency_metadata(
 		NAME libspng
 		VERSION ${SPNG_VERSION}
-		DESCRIPTION "C library for reading and writing Portable Network Graphics (PNG) format files with a focus on security and ease of use."
+		DESCRIPTION "Library for reading and writing Portable Network Graphics (PNG) format files."
 		LICENSE_SPDX "BSD-2-Clause"
 		USAGE "benchmark"
 	)

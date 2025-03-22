@@ -55,9 +55,9 @@ With the `IMOGRIFY_BUILD_MICROBENCHMARKS` CMake option. These dependencies are n
 
 * **[nanobench](https://nanobench.ankerl.com)**: A platform independent microbenchmarking library for C++.
 
-* **[libspng](https://libspng.org)**: libspng (simple png) is a C library for reading and writing Portable Network Graphics (PNG) format files with a focus on security and ease of use.
+* **[libspng](https://libspng.org)**: Library for reading and writing Portable Network Graphics (PNG) format files.
 
-* **[lodepng](https://lodev.org/lodepng)**: LodePNG is a PNG image decoder and encoder, all in one, no dependency or linkage to zlib or libpng required.
+* **[lodepng](https://lodev.org/lodepng)**: PNG image decoder and encoder, all in one.
 
 ### vcpkg support
 
