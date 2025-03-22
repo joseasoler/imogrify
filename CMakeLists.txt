@@ -42,6 +42,7 @@ include(cmake/dependencies/zlib.cmake)
 # ---
 include(cmake/dependencies/doctest.cmake)
 include(cmake/dependencies/fmt.cmake)
+include(cmake/dependencies/libassert.cmake)
 include(cmake/dependencies/libcpuid.cmake)
 include(cmake/dependencies/libpng.cmake)
 include(cmake/dependencies/libspng.cmake)

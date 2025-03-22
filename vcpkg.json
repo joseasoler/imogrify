@@ -6,6 +6,7 @@
 	"dependencies": [
 		"fmt",
 		"highway",
+		"libassert",
 		"tl-expected"
 	],
 	"features": {

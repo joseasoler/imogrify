@@ -55,4 +55,8 @@ if (IMOGRIFY_BUILD_CPU_INFORMATION)
 	list(APPEND IMOGRIFY_CORE_LINK_LIBRARIES cpuid::cpuid)
 endif ()
 
+if (IMOGRIFY_USE_LIBASSERT)
+	list(APPEND IMOGRIFY_CORE_LINK_LIBRARIES libassert::assert)
+endif ()
+
 target_link_libraries(imogrify_core PRIVATE ${IMOGRIFY_CORE_LINK_LIBRARIES})

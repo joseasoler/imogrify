@@ -17,4 +17,25 @@ TEST_CASE("Compiler preprocessor defines.")
 					IMOGRIFY_COMPILER_MSVC <=
 			1U
 	);
+
+#if IMOGRIFY_COMPILER_MSVC
+#if !defined(UNICODE) || !defined(_UNICODE)
+	static_assert(false, "Unicode and UTF-8 support must be enabled when using MSVC.");
+#endif
+#if defined(_MSVC_TRADITIONAL) && _MSVC_TRADITIONAL != 0
+	static_assert(false, "Preprocessor conformance mode must be enabled when using MSVC.");
+#endif
+
+#endif
+}
+
+TEST_CASE("Other defines.")
+{
+#if !defined(IMOGRIFY_USE_FMT_BASE_HEADER)
+	static_assert(false, "IMOGRIFY_USE_FMT_BASE_HEADER is not configured correctly..");
+#endif
+
+#if !defined(IMOGRIFY_USE_LIBASSERT)
+	static_assert(false, "IMOGRIFY_USE_LIBASSERT is not configured correctly.");
+#endif
 }

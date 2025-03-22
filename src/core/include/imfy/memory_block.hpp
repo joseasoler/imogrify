@@ -7,7 +7,7 @@
 
 #include <imfy/aligned_allocation.hpp>
 #include <imfy/aligned_span.hpp>
-#include <imfy/attributes.hpp>
+#include <imfy/assert.hpp>
 #include <imfy/concepts.hpp>
 
 #include <cstddef>

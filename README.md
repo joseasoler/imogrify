@@ -28,6 +28,7 @@ Building imogrify requires [CMake](https://cmake.org) and a [compiler with C++20
 * `IMOGRIFY_BUILD_UNIT_TESTS`: Builds unit tests. Off by default.
 * `IMOGRIFY_CLANG_ALL_WARNINGS`: Only available with the [clang](https://clang.llvm.org) compiler. Enables almost every warning from this compiler, except for a few that cause issues with imogrify. This may trigger unexpected positives when using newer clang versions. Off by default.
 * `IMOGRIFY_CLANG_TIDY`: If a [clang-tidy](https://clang.llvm.org/extra/clang-tidy) binary can be found, it will be used to analyze the project. Off by default.
+* `IMOGRIFY_USE_LIBASSERT`: When enabled, imogrify will use [libassert](https://github.com/jeremy-rifkin/libassert) for improved assertions. Off by default.
 
 ### Dependencies
 
@@ -35,7 +36,7 @@ Building imogrify requires the following dependencies to be available through th
 
 * **[fmt](https://fmt.dev/latest/index.html)**: Modern formatting and printing library.
 
-* **[Highway](https://google.github.io/highway/en/master)**: A C++ library that provides portable SIMD/vector intrinsics.
+* **[Highway](https://google.github.io/highway/en/master)**: Provides portable SIMD/vector intrinsics and aligned memory allocation utilities.
 
 * **[libpng](http://www.libpng.org)**: A library implementing an interface for reading and writing PNG (Portable Network Graphics) format files.
 
@@ -59,6 +60,10 @@ With the `IMOGRIFY_BUILD_MICROBENCHMARKS` CMake option. These dependencies are n
 
 * **[lodepng](https://lodev.org/lodepng)**: LodePNG is a PNG image decoder and encoder, all in one, no dependency or linkage to zlib or libpng required.
 
+With the `IMOGRIFY_USE_LIBASSERT` CMake option:
+
+* **[libassert](https://github.com/jeremy-rifkin/libassert)**: The most over-engineered C++ assertion library.
+
 ### vcpkg support
 
 imogrify can be built using [vcpkg](https://github.com/microsoft/vcpkg) to retrieve dependencies. vcpkg support in imogrify uses custom triplets and ports found in the `cmake/custom_vcpkg` subfolder.
@@ -66,6 +71,8 @@ imogrify can be built using [vcpkg](https://github.com/microsoft/vcpkg) to retri
 When using vcpkg, the following CMake options are also available:
 
 * `IMOGRIFY_VCPKG_USE_ZLIB_NG`: Replaces [zlib](https://www.zlib.net) with **[zlib-ng](https://github.com/zlib-ng/zlib-ng)**. zlib-ng is a zlib data compression library for the next generation systems. [libpng](http://www.libpng.org)** and [libspng](https://libspng.org) will also use zlib-ng. On by default.
+
+vcpkg will enable the following CMake options: `IMOGRIFY_BUILD_CPU_INFORMATION`, `IMOGRIFY_BUILD_MICROBENCHMARKS`, `IMOGRIFY_BUILD_UNIT_TESTS`, `IMOGRIFY_USE_LIBASSERT`.
 
 ### CMake presets
 

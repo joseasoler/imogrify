@@ -7,8 +7,10 @@
 #include <imfy/benchmark_execution.hpp>
 #include <imfy/benchmark_images.hpp>
 #include <imfy/benchmark_output.hpp>
+#include <imfy/benchmark_parameters.hpp>
 #include <imfy/benchmark_result.hpp>
 #include <imfy/character_encoding.hpp>
+#include <imfy/image_format.hpp>
 #include <imfy/vector.hpp>
 
 #if IMOGRIFY_USE_FMT_BASE_HEADER
@@ -45,7 +47,16 @@ int main(int argc, char** argv)
 	// ToDo CLI arguments parsing and validation.
 	constexpr std::array renderers{renderer::markdown};
 
-	imfy::vector<definition> definitions{};
+	imfy::vector<definition> definitions{
+			{.format = format_t::png,
+			 .operation = operation_t::encode,
+			 .libraries = {library_t::libpng, library_t::lodepng},
+			 .channels = imfy::image::channel_t::four,
+			 .bit_depth = imfy::image::bit_depth_t::eight,
+			 .image_gen = image_gen_t::modulo,
+			 .size = size_gen_t::small,
+			 .compression = imfy::image::compression_t::best},
+	};
 	const benchmark_images images(definitions);
 	benchmark_execution execution(images);
 	// ToDo CLI arguments parsing and validation.
