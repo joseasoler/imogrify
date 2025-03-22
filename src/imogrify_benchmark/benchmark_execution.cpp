@@ -154,7 +154,7 @@ imfy::vector<raw_library_result> run_png_encode_benchmark(
 					[&color, &image, &compression]() -> std::size_t
 					{
 						const auto result = encode(color, image.bit_depth(), image.size(), image.data(), compression);
-						return result.has_value() ? result.value().size : 0U;
+						return result.has_value() ? result.value().size() : 0U;
 					}
 			));
 		}

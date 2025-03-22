@@ -12,6 +12,7 @@
 #include <imfy/image_format.hpp>
 #include <imfy/image_size.hpp>
 #include <imfy/png_format.hpp>
+#include <imfy/vector.hpp>
 
 #if IMOGRIFY_USE_FMT_BASE_HEADER
 #include <fmt/base.h>
@@ -38,16 +39,15 @@ void write_data_to_buffer(
 	IMFY_ASSUME(png_ptr != nullptr);
 	auto* IMFY_RESTRICT io_pointer = png_get_io_ptr(png_ptr);
 	IMFY_ASSUME(io_pointer != nullptr);
-	auto& output_buffer = *static_cast<imfy::png::encoded_png*>(io_pointer);
-	const auto current_index = output_buffer.size;
+	auto& output_buffer = *static_cast<imfy::vector<std::uint8_t>*>(io_pointer);
+	const auto current_index = output_buffer.size();
 	const auto new_size = current_index + write_length;
-	if (output_buffer.memory.size() < new_size)
+	if (output_buffer.size() < new_size)
 	{
-		output_buffer.memory.enlarge(new_size);
+		output_buffer.resize(new_size);
 	}
 
-	std::memcpy(output_buffer.memory.span().data() + current_index, data, write_length);
-	output_buffer.size = new_size;
+	std::memcpy(output_buffer.data() + current_index, data, write_length);
 }
 
 /**
@@ -136,7 +136,7 @@ std::uint8_t channels_of_color_type(color_t color)
 namespace imfy::png
 {
 
-tl::expected<encoded_png, std::string_view> encode(
+tl::expected<vector<std::uint8_t>, std::string_view> encode(
 		const color_t color, const image::bit_depth_t bit_depth, const image::image_size img_size,
 		aligned_span<const std::uint8_t> input_image, const image::compression_t compression
 )
@@ -158,7 +158,7 @@ tl::expected<encoded_png, std::string_view> encode(
 	);
 
 	// The memory buffer is pre-allocated with an estimated size to reduce repeated resize/copy operations.
-	encoded_png buffer(input_image.size_bytes());
+	vector<std::uint8_t> buffer(input_image.size_bytes());
 	png_set_write_fn(png_ptr, &buffer, write_data_to_buffer, nullptr);
 
 	png_write_info(png_ptr, info_ptr);
