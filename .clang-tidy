@@ -43,6 +43,7 @@ WarningsAsErrors: '*'
 # llvm-header-guard: Allow use of #pragma once
 # llvm-namespace-comment: Do not require closing comments in namespaces as they can be shown by IDEs.
 # modernize-use-trailing-return-type: Do not force use of trailing return types.
+# portability-template-virtual-member-function: Triggers on std::ostream.
 
 Checks: '
 *,
@@ -66,4 +67,5 @@ Checks: '
 -llvm-namespace-comment,
 -hicpp-use-nullptr, -modernize-use-nullptr,
 -modernize-use-trailing-return-type,
+-portability-template-virtual-member-function,
 '

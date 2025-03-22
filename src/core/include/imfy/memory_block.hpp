@@ -62,15 +62,6 @@ public:
 	[[nodiscard]] aligned_span<value_type> span() noexcept { return {block_, size()}; }
 	[[nodiscard]] aligned_span<const value_type> span() const noexcept { return {block_, size()}; }
 
-	void enlarge(size_type block_size)
-	{
-		memory_block new_block(block_size);
-		const value_type* IMFY_RESTRICT current_pointer = block_;
-		value_type* IMFY_RESTRICT new_pointer = new_block.block_;
-		std::memcpy(new_pointer, current_pointer, size_);
-		std::swap(new_block, *this);
-	}
-
 private:
 	value_type* block_;
 	size_type size_;

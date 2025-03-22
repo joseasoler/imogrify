@@ -154,7 +154,7 @@ bool benchmark_images::save_all(const std::filesystem::path& path) const
 		{
 			return false;
 		}
-		const aligned_span span{encoded.value().memory.span().data(), encoded.value().size};
+		const aligned_span span{encoded.value().data(), encoded.value().size()};
 		if (const auto file_path = path / image_data.filename_; !fs::save(file_path, span))
 		{
 			return false;
