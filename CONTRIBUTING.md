@@ -16,7 +16,7 @@ Source code contributions must met the following requirements. These criteria ar
 
 * clang-format should issue no warnings. If the tool is installed, it will automatically emit format warnings during compilation.
 
-* clang-tidy should not trigger any warnings. Enable the `IMOGRIFY_CLANG_TIDY` CMake option to run clang tidy checks each time your code is compiled.
+* Recent versions of clang-tidy should not trigger any warnings. Enable the `IMOGRIFY_CLANG_TIDY` CMake option to run clang tidy checks each time your code is compiled.
 
 * Follow the [style guide](STYLE_GUIDE.md). Most but not all of its rules are enforced by clang-format and clang-tidy.
 

@@ -41,6 +41,7 @@ struct image_size final
 	}
 
 	constexpr bool operator==(const image_size& rhs) const noexcept { return width == rhs.width && height == rhs.height; }
+
 	constexpr bool operator!=(const image_size& rhs) const noexcept { return width != rhs.width || height != rhs.height; }
 };
 

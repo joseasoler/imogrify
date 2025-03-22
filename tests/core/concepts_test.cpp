@@ -18,13 +18,13 @@ namespace
 {
 struct simple_struct
 {
-	std::int64_t first_value;
-	std::int8_t second_value;
+	[[maybe_unused]] std::int64_t first_value;
+	[[maybe_unused]] std::int8_t second_value;
 };
 
-struct inheritance_struct final : public simple_struct
+struct inheritance_struct final : simple_struct
 {
-	std::int8_t third_value;
+	[[maybe_unused]] std::int8_t third_value;
 };
 
 }

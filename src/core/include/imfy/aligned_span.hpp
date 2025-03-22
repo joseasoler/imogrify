@@ -9,7 +9,8 @@
 
 #include <concepts>
 #include <cstddef>
-#include <iterator>
+#include <cstdint>
+#include <type_traits>
 
 namespace imfy
 {
@@ -36,7 +37,7 @@ public:
 	{
 	}
 
-	aligned_span(const pointer data, const size_type size) noexcept
+	aligned_span(pointer data, const size_type size) noexcept
 		: data_{data}
 		, size_{size}
 	{
@@ -53,12 +54,16 @@ public:
 	[[nodiscard]] size_type size() const noexcept { return size_; }
 	[[nodiscard]] size_type size_bytes() const noexcept { return size_ * sizeof(element_type); }
 	[[nodiscard]] bool empty() const noexcept { return size_ == 0U; }
+
 	[[nodiscard]] aligned_span<const std::uint8_t> as_bytes() const noexcept
 	{
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
 		return {reinterpret_cast<const std::uint8_t*>(data_), size_ * sizeof(element_type)};
 	}
+
 	[[nodiscard]] aligned_span<std::uint8_t> as_writable_bytes() const noexcept
 	{
+		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
 		return {reinterpret_cast<std::uint8_t*>(data_), size_ * sizeof(element_type)};
 	}
 

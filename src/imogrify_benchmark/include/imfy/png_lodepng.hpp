@@ -10,6 +10,9 @@
 #include <imfy/image_size.hpp>
 #include <imfy/png_format.hpp>
 
+#include <cstddef>
+#include <cstdint>
+
 namespace imfy
 {
 
