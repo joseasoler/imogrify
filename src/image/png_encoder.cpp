@@ -7,6 +7,7 @@
 
 #include <imfy/aligned_allocation.hpp>
 #include <imfy/aligned_span.hpp>
+#include <imfy/assert.hpp>
 #include <imfy/attributes.hpp>
 #include <imfy/image_format.hpp>
 #include <imfy/image_size.hpp>
@@ -30,9 +31,14 @@
 namespace
 {
 
-void write_data_to_buffer(png_struct* png_ptr, std::uint8_t* IMFY_RESTRICT data, const std::size_t write_length)
+void write_data_to_buffer(
+		png_struct* IMFY_RESTRICT png_ptr, std::uint8_t* IMFY_RESTRICT data, const std::size_t write_length
+)
 {
-	auto& output_buffer = *static_cast<imfy::png::encoded_png*>(png_get_io_ptr(png_ptr));
+	IMFY_ASSUME(png_ptr != nullptr);
+	auto* IMFY_RESTRICT io_pointer = png_get_io_ptr(png_ptr);
+	IMFY_ASSUME(io_pointer != nullptr);
+	auto& output_buffer = *static_cast<imfy::png::encoded_png*>(io_pointer);
 	const auto current_index = output_buffer.size;
 	const auto new_size = current_index + write_length;
 	if (output_buffer.memory.size() < new_size)
@@ -59,9 +65,10 @@ void write_data_to_buffer(png_struct* png_ptr, std::uint8_t* IMFY_RESTRICT data,
  * @param png_ptr Libpng control structure.
  * @param warning_msg Warning message sent by libpng.
  */
-void libpng_capture_warning(png_struct* png_ptr, const char* warning_msg)
+void libpng_capture_warning(png_struct* IMFY_RESTRICT png_ptr, const char* warning_msg)
 {
-	const char** error_ptr = static_cast<const char**>(png_get_error_ptr(png_ptr));
+	auto* const error_ptr = static_cast<const char**>(png_get_error_ptr(png_ptr));
+	IMFY_ASSUME(error_ptr != nullptr);
 	*error_ptr = warning_msg;
 }
 
@@ -84,9 +91,12 @@ public:
 					// NOLINTNEXTLINE(bugprone-multi-level-implicit-pointer-conversion)
 					static_cast<void*>(error), libpng_fatal_error, libpng_capture_warning, nullptr, libpng_malloc, libpng_free
 			)}
-		, info_ptr_{struct_ptr_ != nullptr ? png_create_info_struct(struct_ptr_) : nullptr}
+		, info_ptr_{png_create_info_struct(struct_ptr_)}
 	{
+		IMFY_ASSUME(struct_ptr_ != nullptr);
+		IMFY_ASSUME(info_ptr_ != nullptr);
 	}
+
 	png_info_raii(const png_info_raii&) = delete;
 	png_info_raii(png_info_raii&&) = delete;
 	png_info_raii& operator=(const png_info_raii&) = delete;

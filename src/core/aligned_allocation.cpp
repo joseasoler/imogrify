@@ -5,7 +5,7 @@
 
 #include "imfy/aligned_allocation.hpp"
 
-#include <imfy/attributes.hpp>
+#include <imfy/assert.hpp>
 
 #include <hwy/aligned_allocator.h>
 

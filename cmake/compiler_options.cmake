@@ -50,6 +50,8 @@ elseif (IMOGRIFY_CXX_COMPILER_MSVC)
 	# UTF-8 support is applied globally.
 	add_compile_definitions(UNICODE _UNICODE)
 	add_compile_options(/utf-8)
+	# Enable preprocessor conformance mode.
+	add_compile_options(/Zc:preprocessor)
 else ()
 	list(APPEND IMOGRIFY_CXX_COMPILE_DEFINITIONS
 		IMOGRIFY_COMPILER_APPLE_CLANG=0

@@ -5,6 +5,7 @@
 
 #include "imfy/benchmark_images.hpp"
 
+#include <imfy/attributes.hpp>
 #include <imfy/benchmark_definition.hpp>
 #include <imfy/benchmark_parameters.hpp>
 #include <imfy/filesystem.hpp>
@@ -45,7 +46,7 @@ image_size image_size_from_def(const size_gen_t def)
 raw_image get_zero_image(const channel_t channels, const bit_depth_t bit_depth, const image_size img_size)
 {
 	raw_image image(channels, bit_depth, img_size);
-	auto* data_ptr = image.data().as_writable_bytes().data();
+	auto* IMFY_RESTRICT data_ptr = image.data().as_writable_bytes().data();
 	std::memset(data_ptr, 0, image.data().size_bytes());
 	return image;
 }
@@ -56,8 +57,8 @@ raw_image get_modulo_image(const channel_t channels, const bit_depth_t bit_depth
 	constexpr std::array<std::uint8_t, 4U> byte_modulo{251U, 241U, 239U, 233U};
 
 	std::size_t value_index{0U};
-	auto* data_ptr = image.data().as_writable_bytes().data();
-	const auto* data_end = data_ptr + image.data().size_bytes();
+	auto* IMFY_RESTRICT data_ptr = image.data().as_writable_bytes().data();
+	const auto* IMFY_RESTRICT data_end = data_ptr + image.data().size_bytes();
 	const auto channels_value = static_cast<std::size_t>(channels);
 	for (; data_ptr != data_end; ++data_ptr, ++value_index)
 	{
@@ -80,8 +81,8 @@ raw_image get_random_image(const channel_t channels, const bit_depth_t bit_depth
 	// uint8_t is explicitly excluded by the standard, see https://eel.is/c++draft/rand.req.genl#1.6.
 	std::uniform_int_distribution<std::uint16_t> uniform_dist{0U, std::numeric_limits<std::uint8_t>::max()};
 
-	auto* data_ptr = image.data().as_writable_bytes().data();
-	const auto* data_end = data_ptr + image.data().size_bytes();
+	auto* IMFY_RESTRICT data_ptr = image.data().as_writable_bytes().data();
+	const auto* IMFY_RESTRICT data_end = data_ptr + image.data().size_bytes();
 	for (; data_ptr != data_end; ++data_ptr)
 	{
 		*data_ptr = static_cast<std::uint8_t>(uniform_dist(prng));
