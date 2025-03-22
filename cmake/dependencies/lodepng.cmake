@@ -10,7 +10,7 @@ if (IMOGRIFY_BUILD_MICROBENCHMARKS)
 	add_dependency_metadata(
 		NAME lodepng
 		VERSION "2021.12.4"
-		DESCRIPTION "PNG image decoder and encoder, all in one, no dependency or linkage to zlib or libpng required."
+		DESCRIPTION "PNG image decoder and encoder, all in one."
 		LICENSE_SPDX "Zlib"
 		USAGE "benchmark"
 	)
