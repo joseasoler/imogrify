@@ -11,6 +11,8 @@
 #include <imfy/string.hpp>
 #include <imfy/vector.hpp>
 
+#include <tl/expected.hpp>
+
 #include <filesystem>
 #include <span>
 
@@ -39,18 +41,18 @@ public:
 	~benchmark_images() = default;
 
 	/**
-	 * Save all created reference images to a specific path.
-	 * @param path Assumed to be a valid directory.
-	 * @return True if saving all images succeeded.
+	 * Save generated reference images to the filesystem.
+	 * @param path Destination path folder.
+	 * @return True unless an error happened.
 	 */
-	[[nodiscard]] bool save_all(const std::filesystem::path& path) const;
+	[[nodiscard]] bool save(const std::filesystem::path& path) const;
 
 	/**
 	 * Obtains an input image from the set.
-	 * @param def Test definition.
-	 * @return Referenced input image, or nullptr if it does not exist (which means a bug in the benchmark code).
+	 * @param def Definition to test. Must be one of the definitions used to initialize the images.
+	 * @return Referenced input image or an error description.
 	 */
-	[[nodiscard]] const image::raw_image* get(const definition& def) const noexcept;
+	[[nodiscard]] const image::raw_image& get(const definition& def) const noexcept;
 
 private:
 	vector<benchmark_image_data> images_;

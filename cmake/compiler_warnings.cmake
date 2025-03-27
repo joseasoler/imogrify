@@ -35,12 +35,12 @@ elseif (IMOGRIFY_CXX_COMPILER_CLANG OR IMOGRIFY_CXX_COMPILER_GCC)
 	if (IMOGRIFY_CXX_COMPILER_GCC)
 		list(APPEND IMOGRIFY_CXX_COMPILE_OPTIONS
 			-Wcast-align=strict         # Pointer casts which increase alignment.
-			-Wdisabled-optimization     # A requested optimization pass is disabled because GCC is not able to do it.
+			-Wdisabled-optimization     # A requested optimization pass is disabled.
 			-Wduplicated-branches       # Duplicated branches in if-else statements.
 			-Wduplicated-cond           # Duplicated conditions in an if-else-if chain.
 			-Wlogical-op                # A logical operator is always evaluating to true or false.
 			-Wredundant-decls           # Something is declared more than once in the same scope.
-			-Wunsafe-loop-optimizations # The loop cannot be optimized because the compiler cannot assume anything.
+			-Wunsafe-loop-optimizations # A loop cannot be optimized.
 			-Wuseless-cast              # Useless casts.
 		)
 	endif ()
@@ -49,7 +49,7 @@ elseif (IMOGRIFY_CXX_COMPILER_MSVC)
 		/permissive- # Specify standards conformance mode to the compiler.
 		/W4          # Enable level 4 warnings.
 		/analyze     # Code analysis.
-		# Warnings triggered by external headers are disabled here, as /external does not seem to work as expected.
+		# Warnings triggered by external headers.
 		/wd6239      # fmt.
 	)
 endif ()

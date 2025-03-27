@@ -5,7 +5,6 @@
 
 #include "imfy/benchmark_execution.hpp"
 
-#include <imfy/assert.hpp>
 #include <imfy/benchmark_definition.hpp>
 #include <imfy/benchmark_images.hpp>
 #include <imfy/benchmark_parameters.hpp>
@@ -198,18 +197,17 @@ result benchmark_execution::run(const definition& def)
 	res.channels = def.channels;
 	res.bit_depth = def.bit_depth;
 	res.image_gen = def.image_gen;
-	const image::raw_image* image = images_.get(def);
-	IMFY_ASSUME(image != nullptr);
-	res.img_size = image->size();
+	const image::raw_image& image = images_.get(def);
+	res.img_size = image.size();
 	res.compression = def.compression;
 
 	vector<raw_library_result> raw_library_results;
 	if (def.format == format_t::png && def.operation == operation_t::encode)
 	{
-		raw_library_results = run_png_encode_benchmark(*bench_, *image, def.libraries, res.compression);
+		raw_library_results = run_png_encode_benchmark(*bench_, image, def.libraries, res.compression);
 	}
 
-	const auto pixels = static_cast<std::size_t>(image->size().width) * static_cast<std::size_t>(image->size().height);
+	const auto pixels = static_cast<std::size_t>(res.img_size.width) * static_cast<std::size_t>(res.img_size.height);
 	res.library_results = calculate_library_results(raw_library_results, pixels);
 	return res;
 }
