@@ -8,26 +8,20 @@ You can use the [issue tracker](https://github.com/joseasoler/imogrify/issues) t
 
 ## Contributions
 
-Before submitting a pull request for a new feature, create an issue on the [tracker](https://github.com/joseasoler/imogrify/issues) to allow discussing and refining the idea before it is implemented.
+Before submitting pull requests for new features, create an issue on the [tracker](https://github.com/joseasoler/imogrify/issues) to allow discussing and refining the idea before it is implemented.
 
 ### Source code contributions
 
-Source code contributions must met the following requirements. These criteria are checked by continuous integration.
+Pull requests are checked with continuous integration, using the ci CMake presets. To perform the same checks locally during development, there are two options:
 
-* clang-format should issue no warnings. If the tool is installed, it will automatically emit format warnings during compilation.
+* Use one of the dev CMake presets supplied by imogrify. They require [installing vcpkg](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started) and setting the environment variable `VCPKG_ROOT` to its path.
 
-* Recent versions of clang-tidy should not trigger any warnings. Enable the `IMOGRIFY_CLANG_TIDY` CMake option to run clang tidy checks each time your code is compiled.
+* Enable the following CMake options: `CMAKE_COMPILE_WARNING_AS_ERROR`, `IMOGRIFY_BUILD_CPU_INFORMATION`, `IMOGRIFY_BUILD_MICROBENCHMARKS`, `IMOGRIFY_BUILD_UNIT_TESTS`, `IMOGRIFY_CLANG_TIDY`.
 
-* Follow the [style guide](STYLE_GUIDE.md). Most but not all of its rules are enforced by clang-format and clang-tidy.
+In both cases, [clang-tidy](https://clang.llvm.org/extra/clang-tidy) and [clang-format](https://clang.llvm.org/docs/ClangFormat.html) must be installed.
 
-* Compilation should not issue any warnings in supported compilers. Enable the `CMAKE_COMPILE_WARNING_AS_ERROR` CMake option to check this.
+Make sure to run the unit tests to ensure they are passing. Most of the [style guide](STYLE_GUIDE.md) rules are checked automatically by clang-format and clang-tidy during compilation.
 
-* Unit tests should be passing. Enable the `IMOGRIFY_BUILD_UNIT_TESTS` CMake option and run the tests to check this.
+Since CI will check multiple compilers and platforms, it might report additional warnings that did not appear in your compiler and platform of choice.
 
-* NOLINT should not be used, use NOLINTNEXTLINE instead.
-
-* These conditions must be met for all supported CMake options.
-
-#### Other considerations
-
-imogrify assumes UTF-8 encoding by default. Check the [UTF-8 Everywhere Manifesto](http://utf8everywhere.org) for details.
+imogrify uses UTF-8 encoding by default. Check the [UTF-8 Everywhere Manifesto](http://utf8everywhere.org) for details.
