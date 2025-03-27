@@ -9,3 +9,5 @@ Code formatting is handled by the rules set in the [.clang-format](https://clang
 * Source files must use the cpp extension.
 
 * The project uses a single tab for indentation.
+
+* Prefer NOLINTNEXTLINE over NOLINT.

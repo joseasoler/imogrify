@@ -4,15 +4,16 @@
 
 cmake_minimum_required(VERSION 3.25)
 
-# Define CMake options.
+# CMake options used by the project.
 include(cmake/options.cmake)
-# Define vcpkg manifest features when using vcpkg.
+# Dependency metadata included in the binary.
 include(cmake/dependency_data.cmake)
+# vcpkg manifest features to use in the build. Ignored when vcpkg is not in use.
 include(cmake/dependencies/vcpkg.cmake)
 
 project(imogrify
 	VERSION 0.1.0
-	DESCRIPTION "Image conversion tool optimized for processing large batches of files."
+	DESCRIPTION "Image conversion tool optimized for batch processing."
 	HOMEPAGE_URL "https://github.com/joseasoler/imogrify"
 	LANGUAGES C CXX
 )
