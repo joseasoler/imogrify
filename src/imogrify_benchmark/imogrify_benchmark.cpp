@@ -62,7 +62,7 @@ int main(int argc, char** argv)
 	// ToDo CLI arguments parsing and validation.
 	benchmark_output output(output_path, renderers);
 
-	if (has_output_path && !images.save_all(output_path))
+	if (has_output_path && !images.save(output_path))
 	{
 		fmt::println("Could not save reference images at {:s}.", output_path_view);
 		return EXIT_FAILURE;
