@@ -8,6 +8,7 @@
 #include <imfy/benchmark_definition.hpp>
 #include <imfy/benchmark_images.hpp>
 #include <imfy/benchmark_result.hpp>
+#include <imfy/vector.hpp>
 
 #include <memory>
 
@@ -22,7 +23,7 @@ namespace imfy::bench
 class benchmark_execution final
 {
 public:
-	explicit benchmark_execution(const benchmark_images& images);
+	benchmark_execution();
 	benchmark_execution(const benchmark_execution&) = delete;
 	benchmark_execution(benchmark_execution&&) noexcept = delete;
 	benchmark_execution& operator=(const benchmark_execution&) = delete;
@@ -32,13 +33,13 @@ public:
 	/**
 	 * Executes a benchmark and generates its results.
 	 * @param def Definition to be executed.
+	 * @param images Pre-generated reference images.
 	 * @return Results for each definition.
 	 */
-	result run(const definition& def);
+	result run(const definition& def, const vector<benchmark_image_data>& images);
 
 private:
 	std::unique_ptr<ankerl::nanobench::Bench> bench_;
-	const benchmark_images& images_;
 };
 
 }

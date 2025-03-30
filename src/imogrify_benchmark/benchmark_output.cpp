@@ -11,13 +11,11 @@
 #include <imfy/markdown.hpp>
 
 #include <cstdint>
-#include <filesystem>
 #include <iostream>
 #include <limits>
 #include <memory>
 #include <span>
 #include <string_view>
-#include <utility>
 
 #include <nanobench.h>
 
@@ -94,10 +92,7 @@ namespace imfy::bench
 class benchmark_renderer
 {
 public:
-	explicit benchmark_renderer(std::filesystem::path path)
-		: path_{std::move(path)}
-	{
-	}
+	benchmark_renderer() = default;
 	benchmark_renderer(const benchmark_renderer&) = delete;
 	benchmark_renderer(benchmark_renderer&&) noexcept = default;
 	benchmark_renderer& operator=(const benchmark_renderer&) = delete;
@@ -106,19 +101,13 @@ public:
 
 	virtual void render_context() = 0;
 	virtual void render(const result& res) = 0;
-
-	[[nodiscard]] const std::filesystem::path& path() const noexcept { return path_; }
-
-private:
-	std::filesystem::path path_;
 };
 
 class markdown_renderer final : public benchmark_renderer
 {
 public:
-	explicit markdown_renderer(std::filesystem::path path)
-		: benchmark_renderer(std::move(path))
-		, current_format_{invalid_format}
+	explicit markdown_renderer()
+		: current_format_{invalid_format}
 		, current_operation_{invalid_operation}
 		, mark_{std::cout}
 	{
@@ -213,11 +202,6 @@ class csv_renderer final : public benchmark_renderer
 public:
 	static constexpr char sep = ',';
 
-	explicit csv_renderer(std::filesystem::path path)
-		: benchmark_renderer(std::move(path))
-	{
-	}
-
 	void render_context() override
 	{
 		std::cout << library_header << sep << channels_header << sep << bit_depth_header << sep << width_header << sep
@@ -246,17 +230,17 @@ public:
 	}
 };
 
-benchmark_output::benchmark_output(const std::filesystem::path& path, std::span<const renderer> renderers)
+benchmark_output::benchmark_output(std::span<const renderer> renderers)
 {
 	for (const renderer renderer_def : renderers)
 	{
 		switch (renderer_def)
 		{
 			case renderer::markdown:
-				renderers_.emplace_back(std::make_unique<markdown_renderer>(path));
+				renderers_.emplace_back(std::make_unique<markdown_renderer>());
 				break;
 			case renderer::csv:
-				renderers_.emplace_back(std::make_unique<csv_renderer>(path));
+				renderers_.emplace_back(std::make_unique<csv_renderer>());
 				break;
 		}
 		renderers_.back()->render_context();

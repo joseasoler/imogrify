@@ -9,7 +9,8 @@
 #include <cassert>
 #endif
 
-#if defined(IMOGRIFY_CLANG_TIDY) || !defined(NDEBUG)
+#if defined(IMOGRIFY_CLANG_TIDY) || defined(NDEBUG)
+// NOLINTNEXTLINE(*-macro-usage)
 #define IMFY_ASSERT(expression) ((void)0)
 #else
 // NOLINTNEXTLINE(*-macro-usage)

@@ -181,15 +181,14 @@ imfy::vector<raw_library_result> run_png_encode_benchmark(
 namespace imfy::bench
 {
 
-benchmark_execution::benchmark_execution(const benchmark_images& images)
+benchmark_execution::benchmark_execution()
 	: bench_(initialize_nanobench())
-	, images_{images}
 {
 }
 
 benchmark_execution::~benchmark_execution() = default;
 
-result benchmark_execution::run(const definition& def)
+result benchmark_execution::run(const definition& def, const vector<benchmark_image_data>& images)
 {
 	result res;
 	res.format = def.format;
@@ -197,7 +196,7 @@ result benchmark_execution::run(const definition& def)
 	res.channels = def.channels;
 	res.bit_depth = def.bit_depth;
 	res.image_gen = def.image_gen;
-	const image::raw_image& image = images_.get(def);
+	const image::raw_image& image = get_image(def, images);
 	res.img_size = image.size();
 	res.compression = def.compression;
 

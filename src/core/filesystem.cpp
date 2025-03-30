@@ -6,29 +6,79 @@
 #include "imfy/filesystem.hpp"
 
 #include <imfy/aligned_span.hpp>
+#include <imfy/assert.hpp>
+
+#include <tl/expected.hpp>
 
 #include <cstddef>
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
 #include <ios>
+#include <string_view>
+
+namespace
+{
+constexpr imfy::fs::error_code to_error_code(const std::ios::iostate state)
+{
+	IMFY_ASSUME(state != std::ios::goodbit);
+	if (state == std::ios::badbit)
+	{
+		return imfy::fs::error_code::stream_error;
+	}
+	if (state == std::ios::failbit)
+	{
+		return imfy::fs::error_code::input_output_failed;
+	}
+	if (state == std::ios::eofbit)
+	{
+		return imfy::fs::error_code::end_of_file;
+	}
+	return imfy::fs::error_code::unknown_error;
+}
+}
 
 namespace imfy::fs
 {
 
-bool save(const std::filesystem::path& path, aligned_span<const std::uint8_t> data)
+std::string_view to_error_description(const error_code code) noexcept
+{
+	IMFY_ASSUME(code != error_code::success);
+	switch (code)
+	{
+		case error_code::stream_error:
+			return "irrecoverable stream error";
+		case error_code::input_output_failed:
+			return "input/output operation failed";
+		case error_code::end_of_file:
+			return "sequence has reached end-of-file";
+		case error_code::success:
+		case error_code::unknown_error:
+			return "unknown error";
+	}
+	return "unknown error";
+}
+
+tl::expected<void, error_code> save(const std::filesystem::path& path, const aligned_span<const std::uint8_t> data)
 {
 	// NOLINTNEXTLINE(hicpp-signed-bitwise)
 	constexpr auto open_mode = std::ios::out | std::ios::binary;
 	std::ofstream ofstr{path, open_mode};
-	if (!ofstr.is_open())
+	if (!ofstr.good())
 	{
-		return false;
+		return tl::make_unexpected(to_error_code(ofstr.rdstate()));
 	}
+
 	// NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
 	const auto* memory_begin = reinterpret_cast<const char*>(data.data());
 	ofstr.write(memory_begin, static_cast<std::ptrdiff_t>(data.size()));
-	return ofstr.good();
+
+	if (!ofstr.good())
+	{
+		return tl::make_unexpected(to_error_code(ofstr.rdstate()));
+	}
+
+	return {};
 }
 
 }

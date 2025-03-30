@@ -18,15 +18,20 @@
 #include <imfy/vector.hpp>
 
 #include <fmt/format.h>
+#include <tl/expected.hpp>
 
+#include <algorithm>
 #include <array>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
 #include <filesystem>
 #include <limits>
+#include <optional>
 #include <random>
 #include <span>
+
+#include "imfy/string.hpp"
 
 namespace
 {
@@ -34,14 +39,34 @@ namespace
 using namespace imfy::bench;
 using namespace imfy::image;
 
-image_size image_size_from_def(const size_gen_t def) noexcept
+[[nodiscard]] constexpr std::size_t id_from_def(const definition& def) noexcept
+{
+	constexpr auto fields_size = sizeof(format_t) + sizeof(channel_t) + sizeof(bit_depth_t) + sizeof(channel_t) +
+															 sizeof(image_gen_t) + sizeof(size_gen_t);
+
+	static_assert(fields_size <= sizeof(std::size_t));
+
+	// Definitions with the same values in these fields have the same reference image.
+	return static_cast<size_t>(def.format) | static_cast<size_t>(def.channels) << sizeof(format_t) |
+				 static_cast<size_t>(def.bit_depth) << sizeof(channel_t) |
+				 static_cast<size_t>(def.image_gen) << sizeof(bit_depth_t) |
+				 static_cast<size_t>(def.size) << sizeof(image_gen_t);
+}
+
+[[nodiscard]] constexpr bool sort_by_definition_id(const benchmark_image_data& data, const size_t def_id) noexcept
+{
+	return data.id < def_id;
+}
+
+[[nodiscard]] image_size image_size_from_def(const definition& def) noexcept
 {
 	constexpr std::uint16_t small_side{64U};
 	constexpr std::uint16_t large_side{1024U};
-	return image_size(
-			def == size_gen_t::small || def == size_gen_t::tall ? small_side : large_side,
-			def == size_gen_t::small || def == size_gen_t::wide ? small_side : large_side
-	);
+	const auto size = def.size;
+	return {
+			.width = size == size_gen_t::small || size == size_gen_t::tall ? small_side : large_side,
+			.height = size == size_gen_t::small || size == size_gen_t::wide ? small_side : large_side
+	};
 }
 
 void set_zero_image(std::uint8_t* const IMFY_RESTRICT data_ptr, const std::uint8_t* const IMFY_RESTRICT data_end)
@@ -63,10 +88,10 @@ void set_modulo_image(
 }
 
 void set_random_image(
-		std::uint8_t* IMFY_RESTRICT data_ptr, const std::uint8_t* IMFY_RESTRICT data_end, const std::uint32_t seed
+		std::uint8_t* IMFY_RESTRICT data_ptr, const std::uint8_t* IMFY_RESTRICT data_end, const std::size_t seed
 )
 {
-	std::mt19937 prng{seed};
+	std::mt19937 prng{static_cast<std::uint32_t>(seed)};
 	// uint8_t is explicitly excluded by the standard, see https://eel.is/c++draft/rand.req.genl#1.6.
 	std::uniform_int_distribution<std::uint16_t> uniform_dist{0U, std::numeric_limits<std::uint8_t>::max()};
 	for (; data_ptr != data_end; ++data_ptr)
@@ -75,28 +100,23 @@ void set_random_image(
 	}
 }
 
-raw_image generate_image(
-		const image_gen_t generation, const channel_t channels, const bit_depth_t bit_depth, const image_size img_size
-)
+raw_image generate_image(const definition& def, const image_size& size, const std::size_t def_id)
 {
-	raw_image image(channels, bit_depth, img_size);
+	raw_image image{def.channels, def.bit_depth, size};
 	auto* IMFY_RESTRICT data_ptr = image.data().as_writable_bytes().data();
 	const auto* IMFY_RESTRICT data_end = data_ptr + image.data().size_bytes();
-	switch (generation)
+	switch (def.image_gen)
 	{
 		case image_gen_t::zero:
 			set_zero_image(data_ptr, data_end);
 			break;
 		case image_gen_t::modulo:
-			set_modulo_image(data_ptr, data_end, channels);
+			set_modulo_image(data_ptr, data_end, def.channels);
 			break;
 		case image_gen_t::random:
 		{
 			// Generate the same image for each combination of input parameters.
-			const std::uint32_t seed =
-					(static_cast<std::uint32_t>(channels) << 16U | static_cast<std::uint32_t>(bit_depth)) ^
-					(static_cast<std::uint32_t>(img_size.width) << 16U | static_cast<std::uint32_t>(img_size.height));
-			set_random_image(data_ptr, data_end, seed);
+			set_random_image(data_ptr, data_end, def_id);
 			break;
 		}
 	}
@@ -104,83 +124,63 @@ raw_image generate_image(
 	return image;
 }
 
-constexpr std::size_t image_not_found = std::numeric_limits<std::size_t>::max();
-
-// Simple linear search, as the total number of input images should remain small.
-std::size_t position_of_image(
-		const imfy::vector<benchmark_image_data>& images, const definition& def, const image_size img_size
-) noexcept
-{
-	for (std::size_t position{0U}; position < images.size(); ++position)
-	{
-		if (const auto& image_data = images[position];
-				image_data.image_gen_ == def.image_gen && image_data.image_.channels() == def.channels &&
-				image_data.image_.bit_depth() == def.bit_depth && image_data.image_.size() == img_size)
-		{
-			return position;
-		}
-	}
-	return image_not_found;
-}
-
 }
 
 namespace imfy::bench
 {
 
-benchmark_image_data::benchmark_image_data(const definition& def, const image_size img_size)
-	: image_gen_{def.image_gen}
-	, image_{generate_image(image_gen_, def.channels, def.bit_depth, img_size)}
-	, filename_{fmt::format(
-				"imfy_{:d}_{:d}_{:s}_{:d}_{:d}.png", static_cast<int>(def.channels), static_cast<int>(def.bit_depth),
-				image_gen_string(image_gen_), img_size.width, img_size.height
-		)}
+tl::expected<vector<benchmark_image_data>, string> generate_benchmark_images(
+		const std::span<const definition> definitions, const std::optional<std::filesystem::path>& path
+)
 {
-}
+	vector<benchmark_image_data> data{};
 
-benchmark_images::benchmark_images(const std::span<const definition> definitions)
-{
-	for (const definition& def : definitions)
+	for (const auto& def : definitions)
 	{
-		const image_size img_size = image_size_from_def(def.size);
-		if (const auto position = position_of_image(images_, def, img_size); position == image_not_found)
+		const auto def_id = id_from_def(def);
+		const auto images_end = data.end();
+		const auto position_it = std::lower_bound(data.begin(), images_end, def_id, sort_by_definition_id);
+		if (position_it == images_end || position_it->id != def_id)
 		{
-			images_.emplace_back(def, img_size);
-		}
-	}
-}
+			const auto size = image_size_from_def(def);
+			const auto image_it =
+					data.emplace(position_it, benchmark_image_data{.id = def_id, .image = generate_image(def, size, def_id)});
+			if (path.has_value())
+			{
+				const std::filesystem::path filename{fmt::format(
+						"imfy_{:d}_{:d}_{:s}_{:d}_{:d}.png", static_cast<int>(def.channels), static_cast<int>(def.bit_depth),
+						image_gen_string(def.image_gen), size.width, size.height
+				)};
 
-bool benchmark_images::save(const std::filesystem::path& path) const
-{
-	for (std::size_t img_index{0U}; img_index < images_.size(); ++img_index)
-	{
-		const auto& image_data = images_[img_index];
-		const auto encoded = encode(
-				png::to_color_type(image_data.image_.channels()), image_data.image_.bit_depth(), image_data.image_.size(),
-				image_data.image_.data(), compression_t::standard
-		);
+				const auto& image = image_it->image;
+				const auto encoded = encode(
+						png::to_color_type(image.channels()), image.bit_depth(), image.size(), image.data(), compression_t::standard
+				);
 
-		if (!encoded.has_value()) [[unlikely]]
-		{
-			return false;
-		}
-
-		const aligned_span span{encoded.value().data(), encoded.value().size()};
-		if (const auto file_path = path / image_data.filename_; !fs::save(file_path, span))
-		{
-			return false;
+				if (!encoded.has_value()) [[unlikely]]
+				{
+					return tl::unexpected{string{encoded.error()}};
+				}
+				const auto file_path = path.value() / filename;
+				const aligned_span span{encoded.value().data(), encoded.value().size()};
+				if (const auto save_result = fs::save(file_path, span); !save_result.has_value())
+				{
+					return tl::make_unexpected(string{to_error_description(save_result.error())});
+				}
+			}
 		}
 	}
 
-	return true;
+	return data;
 }
 
-const raw_image& benchmark_images::get(const definition& def) const noexcept
+const raw_image& get_image(const definition& def, const vector<benchmark_image_data>& data) noexcept
 {
-	const image_size img_size = image_size_from_def(def.size);
-	const auto position = position_of_image(images_, def, img_size);
-	IMFY_ASSUME(position < images_.size());
-	return images_[position].image_;
+	const auto def_id = id_from_def(def);
+	const auto images_end = data.end();
+	const auto position_it = std::lower_bound(data.begin(), images_end, def_id, sort_by_definition_id);
+	IMFY_ASSERT(position_it != images_end);
+	return position_it->image;
 }
 
 }
