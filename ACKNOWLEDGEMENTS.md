@@ -2,7 +2,7 @@
 
 This file lists people or groups whose work has been helpful for the development of imogrify.
 
-* **[cppreference](https://en.cppreference.com)**
+* **[cppreference](https://cppreference.com)**
 * **[Craig Scott](https://crascit.com/about)** - [Professional CMake](https://crascit.com/professional-cmake)
 * **[GitHub](https://github.com)** - [Starter Workflows](https://github.com/actions/starter-workflows)
 * **[Jason Gregory](https://www.gameenginebook.com/bio.html)** - [Game Engine Architecture](https://www.gameenginebook.com)

@@ -31,7 +31,7 @@ struct library_result final
 	std::uint64_t branch_misses{};
 };
 
-/** Results of a single benchmark definition. */
+/** Results of executing a single benchmark definition. */
 struct result final
 {
 	format_t format{};
