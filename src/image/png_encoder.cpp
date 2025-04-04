@@ -113,7 +113,7 @@ private:
 
 using imfy::png::color_t;
 
-std::uint8_t channels_of_color_type(color_t color)
+std::uint8_t channels_of_color_type(const color_t color)
 {
 	switch (color)
 	{

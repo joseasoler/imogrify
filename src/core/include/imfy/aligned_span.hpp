@@ -18,7 +18,7 @@ namespace imfy
 /**
  * Span referencing a contiguous block of aligned memory.
  * Loosely based on std::span, lacking some of its features.
- * @tparam Type
+ * @tparam Type Type contained in the span.
  */
 template <std::unsigned_integral Type>
 class aligned_span final
@@ -37,7 +37,7 @@ public:
 	{
 	}
 
-	aligned_span(pointer data, const size_type size) noexcept
+	aligned_span(const pointer data, const size_type size) noexcept
 		: data_{data}
 		, size_{size}
 	{
@@ -61,7 +61,7 @@ public:
 		return {reinterpret_cast<const std::uint8_t*>(data_), size_ * sizeof(element_type)};
 	}
 
-	[[nodiscard]] aligned_span<std::uint8_t> as_writable_bytes() const noexcept
+	[[nodiscard]] aligned_span<std::uint8_t> as_writable_bytes() noexcept
 	{
 		// NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
 		return {reinterpret_cast<std::uint8_t*>(data_), size_ * sizeof(element_type)};
@@ -71,5 +71,8 @@ private:
 	pointer data_;
 	size_type size_;
 };
+
+template <typename PointerType>
+aligned_span(PointerType pointer, size_t size) noexcept -> aligned_span<std::remove_pointer_t<PointerType>>;
 
 }

@@ -34,6 +34,7 @@ WarningsAsErrors: '*'
 # bugprone-easily-swappable-parameters: Do not require strong types for image width and height.
 # clang-diagnostic-unknown-warning-option: Triggered by GCC-only warnings.
 # clang-diagnostic-unused-command-line-argument: Ignore unused command line arguments.
+# clang-diagnostic-used-but-marked-unused: Triggered by highway functions when using clang.
 # cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays: Aliases for modernize-avoid-c-arrays
 # cppcoreguidelines-no-malloc: Alias for hicpp-no-malloc.
 # cppcoreguidelines-owning-memory: Allow owning memory pointers without requiring gsl libraries.
@@ -58,6 +59,7 @@ Checks: '
 -bugprone-easily-swappable-parameters,
 -clang-diagnostic-unknown-warning-option,
 -clang-diagnostic-unused-command-line-argument,
+-clang-diagnostic-used-but-marked-unused,
 -cppcoreguidelines-avoid-c-arrays,-hicpp-avoid-c-arrays,
 -cppcoreguidelines-no-malloc,
 -cppcoreguidelines-owning-memory,

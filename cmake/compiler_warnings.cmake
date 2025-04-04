@@ -6,10 +6,15 @@ include_guard(GLOBAL)
 
 if (IMOGRIFY_CLANG_ALL_WARNINGS AND IMOGRIFY_CXX_COMPILER_CLANG)
 	list(APPEND IMOGRIFY_CXX_COMPILE_OPTIONS
-		-Weverything               # Enable every Clang warning except for the following exceptions.
-		-Wno-c++98-compat          # This project is not compatible with C++98.
-		-Wno-c++98-compat-pedantic # This project is not compatible with C++98.
-		-Wno-c++20-compat          # This project is compatible with C++20 only.
+		-Weverything                # Enable every Clang warning except for the following exceptions.
+		-Wno-c++98-compat           # This project is not compatible with C++98.
+		-Wno-c++98-compat-pedantic  # This project is not compatible with C++98.
+		-Wno-c++20-compat           # This project is compatible with C++20 only.
+		-Wno-covered-switch-default # Prefer a explicit default label.
+		-Wno-documentation          # Fails when tparam is used in concepts.
+		-Wno-padded                 # Allow padding on complex types such as raw_image.
+		-Wno-unsafe-buffer-usage    # Allow using pointer arithmetic.
+		-Wno-used-but-marked-unused # Triggered by highway functions when using clang.
 	)
 elseif (IMOGRIFY_CXX_COMPILER_CLANG OR IMOGRIFY_CXX_COMPILER_GCC)
 	# Warnings present in all supported versions of GCC and Clang.
