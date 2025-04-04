@@ -52,11 +52,13 @@ std::string_view to_error_description(const error_code code) noexcept
 			return "input/output operation failed";
 		case error_code::end_of_file:
 			return "sequence has reached end-of-file";
-		case error_code::success:
-		case error_code::unknown_error:
+		[[unlikely]] case error_code::success:
+			[[fallthrough]];
+		[[unlikely]] case error_code::unknown_error:
+			[[fallthrough]];
+		[[unlikely]] default:
 			return "unknown error";
 	}
-	return "unknown error";
 }
 
 tl::expected<void, error_code> save(const std::filesystem::path& path, const aligned_span<const std::uint8_t> data)

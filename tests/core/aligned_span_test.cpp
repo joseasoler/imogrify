@@ -29,7 +29,7 @@ TEST_CASE("Constructor checks.")
 	constexpr std::size_t allocation_size{64U};
 	auto* allocation_input = imfy::aligned_allocation<std::uint32_t>(allocation_size);
 	*allocation_input = initial_value;
-	const aligned_span array_span(allocation_input, allocation_size);
+	const aligned_span<std::uint32_t> array_span(allocation_input, allocation_size);
 	CHECK(array_span.data() != nullptr);
 	CHECK(array_span.size() == allocation_size);
 	CHECK(array_span.size_bytes() == allocation_size * sizeof(std::uint32_t));
@@ -43,14 +43,15 @@ TEST_CASE("as_bytes checks.")
 	constexpr std::size_t allocation_size{1U};
 	auto* allocation_input = imfy::aligned_allocation<std::uint16_t>(allocation_size);
 	*allocation_input = initial_value;
-	const aligned_span span(allocation_input, allocation_size);
+	aligned_span span(allocation_input, allocation_size);
 	const auto bytes_span = span.as_bytes();
 	CHECK(*bytes_span.data() == initial_value);
 
-	const auto writable_span = span.as_writable_bytes();
+	auto writable_bytes_span = span.as_writable_bytes();
 	constexpr std::uint8_t set_value{0xAU};
-	*writable_span.data() = set_value;
-	*(writable_span.data() + 1U) = set_value;
-	CHECK(*span.data() == (set_value << 8U) + set_value);
+	constexpr std::uint16_t expected_value = (set_value << 8U) + set_value;
+	writable_bytes_span[0U] = set_value;
+	writable_bytes_span[1U] = set_value;
+	CHECK(span[0] == expected_value);
 	imfy::aligned_deallocation<std::uint16_t>(allocation_input);
 }

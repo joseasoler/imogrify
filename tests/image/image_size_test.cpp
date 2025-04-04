@@ -19,7 +19,7 @@ TEST_CASE("Basic image_size checks")
 	static_assert(sizeof(image_size) == sizeof(std::uint32_t));
 	constexpr std::uint16_t width = 12U;
 	constexpr std::uint16_t height = 17U;
-	constexpr image_size size_test(width, height);
+	constexpr image_size size_test{.width = width, .height = height};
 	static_assert(size_test.width == width);
 	static_assert(size_test.height == height);
 }
@@ -27,21 +27,43 @@ TEST_CASE("Basic image_size checks")
 TEST_CASE("image_size comparison checks")
 {
 	constexpr std::uint16_t small_size = 8U;
-	constexpr std::uint16_t large_side = 2048U;
-	static_assert(image_size(small_size, small_size) == image_size(small_size, small_size));
+	constexpr std::uint16_t large_size = 2048U;
 
-	static_assert(image_size(small_size, large_side) != image_size(large_side, small_size));
+	constexpr image_size small_small{.width = small_size, .height = small_size};
+	constexpr image_size small_large{.width = small_size, .height = large_size};
+	constexpr image_size large_small{.width = large_size, .height = small_size};
+	constexpr image_size large_large{.width = large_size, .height = large_size};
 
-	static_assert(image_size(small_size, small_size) < image_size(large_side, large_side));
-	static_assert(image_size(small_size, large_side) < image_size(large_side, small_size));
+	constexpr image_size other_small_small{.width = small_size, .height = small_size};
+	static_assert(small_small == other_small_small);
+	static_assert(small_small <= other_small_small);
+	static_assert(small_small >= other_small_small);
+	static_assert(!(small_small != other_small_small));
+	static_assert(!(small_small < other_small_small));
+	static_assert(!(small_small > other_small_small));
 
-	static_assert(image_size(small_size, small_size) <= image_size(small_size, small_size));
-	static_assert(image_size(small_size, small_size) <= image_size(large_side, small_size));
-	static_assert(image_size(small_size, large_side) <= image_size(large_side, small_size));
-	static_assert(image_size(large_side, large_side) > image_size(small_size, small_size));
-	static_assert(image_size(large_side, small_size) > image_size(small_size, large_side));
+	static_assert(small_small != small_large);
+	static_assert(small_small != large_small);
+	static_assert(small_small != large_large);
 
-	static_assert(image_size(small_size, small_size) >= image_size(small_size, small_size));
-	static_assert(image_size(large_side, small_size) >= image_size(small_size, small_size));
-	static_assert(image_size(large_side, small_size) >= image_size(small_size, large_side));
+	static_assert(small_small < small_large);
+	static_assert(small_small <= small_large);
+	static_assert(small_small < large_small);
+	static_assert(small_small <= large_small);
+	static_assert(small_small < large_large);
+	static_assert(small_small <= large_large);
+
+	static_assert(small_large > small_small);
+	static_assert(small_large >= small_small);
+	static_assert(large_small > small_small);
+	static_assert(large_small >= small_small);
+	static_assert(large_large > small_small);
+	static_assert(large_large >= small_small);
+
+	static_assert(small_large != large_small);
+	static_assert(small_large < large_small);
+	static_assert(small_large <= large_small);
+
+	static_assert(large_small > small_large);
+	static_assert(large_small >= small_large);
 }
