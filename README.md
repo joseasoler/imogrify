@@ -51,7 +51,7 @@ With `IMOGRIFY_BUILD_CPU_INFORMATION`:
 
 With `IMOGRIFY_BUILD_UNIT_TESTS`:
 
-* **[doctest](https://github.com/doctest/doctest)**: Fast C++ testing framework.
+* **[Catch2](https://github.com/catchorg/Catch2)**: A modern, C++-native, test framework for unit-tests.
 
 With `IMOGRIFY_BUILD_MICROBENCHMARKS`:
 
@@ -63,11 +63,11 @@ With `IMOGRIFY_BUILD_MICROBENCHMARKS`:
 
 ### vcpkg support
 
-Dependencies can optionally be retrieved and built using [vcpkg](https://github.com/microsoft/vcpkg). This is disabled by default, but it is enabled by default in the provided CMake presets. vcpkg support in imogrify uses custom triplets and ports found in the `cmake/custom_vcpkg` subfolder.
+Dependencies can optionally be retrieved and built using [vcpkg](https://github.com/microsoft/vcpkg). This is disabled by default, but it is enabled by the CMake presets provided by imogrify. vcpkg support in imogrify uses custom triplets and ports found in the `cmake/custom_vcpkg` subfolder.
 
 Using vcpkg enables extra CMake options:
 
-* `IMOGRIFY_VCPKG_USE_ZLIB_NG`: Replaces [zlib](https://www.zlib.net) with **[zlib-ng](https://github.com/zlib-ng/zlib-ng)**. zlib-ng is a zlib data compression library for the next generation systems. [libpng](http://www.libpng.org)** and [libspng](https://libspng.org) will use zlib-ng instead of zlib. On by default.
+* `IMOGRIFY_VCPKG_USE_ZLIB_NG`: Replaces [zlib](https://www.zlib.net) with **[zlib-ng](https://github.com/zlib-ng/zlib-ng)**. zlib-ng is a zlib data compression library for the next generation systems. [libpng](http://www.libpng.org) and [libspng](https://libspng.org) will use zlib-ng instead of zlib. On by default.
 
 ### CMake presets
 

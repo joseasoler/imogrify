@@ -37,7 +37,7 @@
 		"imogrify-tests": {
 			"description": "Build unit tests",
 			"dependencies": [
-				"doctest"
+				"catch2"
 			]
 		},
 		"imogrify-use-zlib": {

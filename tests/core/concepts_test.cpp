@@ -12,7 +12,7 @@
 #include <cstdint>
 #include <memory>
 
-#include <doctest/doctest.h>
+#include <catch2/catch_test_macros.hpp>
 
 namespace
 {

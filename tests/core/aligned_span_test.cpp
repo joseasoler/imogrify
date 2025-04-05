@@ -10,13 +10,13 @@
 #include <cstddef>
 #include <cstdint>
 
-#include <doctest/doctest.h>
+#include <catch2/catch_test_macros.hpp>
 
 using imfy::aligned_span;
 
 TEST_CASE("Type traits checks.")
 {
-	static_assert(sizeof(aligned_span<unsigned int>) == (sizeof(std::size_t) + sizeof(void*)));
+	static_assert(sizeof(aligned_span<unsigned int>) == sizeof(std::size_t) + sizeof(void*));
 }
 
 TEST_CASE("Constructor checks.")
