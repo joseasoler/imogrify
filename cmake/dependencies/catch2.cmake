@@ -5,13 +5,13 @@
 include_guard(GLOBAL)
 
 if (IMOGRIFY_BUILD_UNIT_TESTS)
-	find_package(doctest REQUIRED)
+	find_package(Catch2 CONFIG REQUIRED)
 
 	add_dependency_metadata(
-		NAME doctest
-		VERSION ${doctest_VERSION}
-		DESCRIPTION "Fast C++ testing framework."
-		LICENSE_SPDX "MIT"
+		NAME "Catch2"
+		VERSION ${Catch2_VERSION}
+		DESCRIPTION "A modern, C++-native, test framework for unit-tests."
+		LICENSE_SPDX "BSL-1.0"
 		USAGE "test"
 	)
 

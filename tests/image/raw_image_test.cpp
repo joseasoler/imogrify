@@ -11,7 +11,7 @@
 #include <cstddef>
 #include <cstdint>
 
-#include <doctest/doctest.h>
+#include <catch2/catch_test_macros.hpp>
 
 using namespace imfy::image;
 

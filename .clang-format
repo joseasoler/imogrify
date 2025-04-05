@@ -135,7 +135,7 @@ IncludeCategories:
     Priority: 300
   - Regex: '^<tl.*'
     Priority: 300
-  - Regex: '^<doctest.*'
+  - Regex: '^<catch2.*'
     Priority: 1000
   - Regex: '^<nanobench.*'
     Priority: 1000

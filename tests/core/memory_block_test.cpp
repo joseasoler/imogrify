@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <cstring>
 
-#include <doctest/doctest.h>
+#include <catch2/catch_test_macros.hpp>
 
 using imfy::memory_block;
 

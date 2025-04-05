@@ -20,7 +20,7 @@ target_compile_definitions(imogrify_unit_tests PRIVATE ${IMOGRIFY_CXX_COMPILE_DE
 target_compile_options(imogrify_unit_tests PRIVATE ${IMOGRIFY_CXX_COMPILE_OPTIONS})
 
 target_link_libraries(imogrify_unit_tests PRIVATE
-	doctest::doctest
+	Catch2::Catch2
 	fmt::fmt
 	PNG::PNG
 	ZLIB::ZLIB
