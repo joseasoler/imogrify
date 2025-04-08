@@ -6,6 +6,7 @@
 #pragma once
 
 #include <imfy/benchmark_definition.hpp>
+#include <imfy/filesystem.hpp>
 #include <imfy/raw_image.hpp>
 #include <imfy/string.hpp>
 #include <imfy/vector.hpp>
@@ -13,7 +14,6 @@
 #include <tl/expected.hpp>
 
 #include <cstdint>
-#include <filesystem>
 #include <optional>
 #include <span>
 
@@ -34,7 +34,7 @@ struct benchmark_image_data final
  */
 
 tl::expected<vector<benchmark_image_data>, string> generate_benchmark_images(
-		std::span<const definition> definitions, const std::optional<std::filesystem::path>& path
+		std::span<const definition> definitions, const std::optional<fs::path_view>& path
 );
 
 /**

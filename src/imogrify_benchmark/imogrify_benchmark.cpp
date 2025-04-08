@@ -11,6 +11,7 @@
 #include <imfy/benchmark_result.hpp>
 #include <imfy/build.hpp>
 #include <imfy/character_encoding.hpp>
+#include <imfy/filesystem.hpp>
 #include <imfy/image_format.hpp>
 #include <imfy/string.hpp>
 #include <imfy/vector.hpp>
@@ -22,26 +23,26 @@
 #include <array>
 #include <cstdlib>
 #include <exception>
-#include <filesystem>
 #include <optional>
-#include <system_error>
 
 namespace
 {
-tl::expected<std::optional<std::filesystem::path>, imfy::string> get_output_path(const int argc, char** argv)
+tl::expected<std::optional<imfy::fs::path_view>, imfy::string> get_output_path(const int argc, char** argv)
 {
-	std::optional<std::filesystem::path> output_path{};
 	if (argc > 1)
 	{
-		output_path = argv[1U];
-		std::error_code error_code{};
-		if (!is_directory(output_path.value(), error_code))
+		using namespace imfy::fs;
+		const path_view directory{argv[1U]};
+		if (const auto result = create_directories(directory); !result.has_value())
 		{
-			return tl::unexpected{fmt::format("{:s} must be a valid directory.", output_path.value().string())};
+			const auto description = error_description(result.error());
+			return tl::unexpected{fmt::format("Could not create output directory {:s}: {:s}", directory, description)};
 		}
+
+		return directory;
 	}
 
-	return output_path;
+	return {};
 }
 
 }
@@ -52,7 +53,7 @@ int main(const int argc, char** argv)
 	{
 		if (const auto encoding_result = imfy::character_encoding::initialize(); !encoding_result)
 		{
-			fmt::print("{}", encoding_result.error());
+			fmt::print("{:s}", encoding_result.error());
 			return EXIT_FAILURE;
 		}
 
@@ -61,11 +62,11 @@ int main(const int argc, char** argv)
 		const auto output_path_result = get_output_path(argc, argv);
 		if (!output_path_result)
 		{
-			fmt::print("{}", output_path_result.error());
+			fmt::print("{:s}", output_path_result.error());
 			return EXIT_FAILURE;
 		}
 
-		const std::optional<std::filesystem::path>& output_path = output_path_result.value();
+		const auto& output_path = output_path_result.value();
 
 		// ToDo CLI arguments parsing and validation.
 		constexpr std::array renderers{renderer::markdown};
@@ -86,9 +87,7 @@ int main(const int argc, char** argv)
 		{
 			if (output_path.has_value())
 			{
-				fmt::println(
-						"Could not save reference images at {:s}: {:s}", output_path.value().string(), image_result.error()
-				);
+				fmt::println("Could not save reference images at {:s}: {:s}", output_path.value(), image_result.error());
 			}
 			return EXIT_FAILURE;
 		}
