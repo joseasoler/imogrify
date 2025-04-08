@@ -16,6 +16,6 @@ namespace imfy::character_encoding
  * Sets up UTF-8 character for the current platform.
  * @return Error description if the operation failed.
  */
-[[nodiscard]] tl::expected<void, std::string_view> initialize();
+[[nodiscard]] tl::expected<void, std::string_view> initialize() noexcept;
 
 }

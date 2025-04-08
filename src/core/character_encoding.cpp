@@ -19,7 +19,7 @@
 namespace imfy::character_encoding
 {
 
-tl::expected<void, std::string_view> initialize()
+tl::expected<void, std::string_view> initialize() noexcept
 {
 #if IMOGRIFY_OS_WINDOWS
 	// NOLINTNEXTLINE(misc-include-cleaner)
@@ -35,9 +35,10 @@ tl::expected<void, std::string_view> initialize()
 	}
 	if (std::setvbuf(stderr, nullptr, _IOFBF, buffer_size) != 0)
 	{
-		return tl::unexpected<std::string_view>("UTF-8 encoding issue. Could not set standard error output buffer size.");
+		return tl::unexpected<std::string_view>("UTF-8 encoding issue. Could not set standard error buffer size.");
 	}
 #endif // IMOGRIFY_OS_WINDOWS
+
 	return {};
 }
 
