@@ -12,6 +12,7 @@
 
 #include <tl/expected.hpp>
 
+#include <cstdint>
 #include <filesystem>
 #include <optional>
 #include <span>
@@ -21,7 +22,7 @@ namespace imfy::bench
 
 struct benchmark_image_data final
 {
-	size_t id;
+	std::uint64_t id;
 	image::raw_image image;
 };
 

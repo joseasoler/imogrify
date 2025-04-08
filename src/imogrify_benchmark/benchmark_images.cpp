@@ -39,21 +39,21 @@ namespace
 using namespace imfy::bench;
 using namespace imfy::image;
 
-[[nodiscard]] constexpr std::size_t id_from_def(const definition& def) noexcept
+[[nodiscard]] constexpr std::uint64_t id_from_def(const definition& def) noexcept
 {
 	constexpr auto fields_size = sizeof(format_t) + sizeof(channel_t) + sizeof(bit_depth_t) + sizeof(channel_t) +
 															 sizeof(image_gen_t) + sizeof(size_gen_t);
 
-	static_assert(fields_size <= sizeof(std::size_t));
+	static_assert(fields_size <= sizeof(std::uint64_t));
 
 	// Definitions with the same values in these fields have the same reference image.
-	return static_cast<size_t>(def.format) | static_cast<size_t>(def.channels) << sizeof(format_t) |
-				 static_cast<size_t>(def.bit_depth) << sizeof(channel_t) |
-				 static_cast<size_t>(def.image_gen) << sizeof(bit_depth_t) |
-				 static_cast<size_t>(def.size) << sizeof(image_gen_t);
+	return static_cast<uint64_t>(def.format) | static_cast<uint64_t>(def.channels) << sizeof(format_t) |
+				 static_cast<uint64_t>(def.bit_depth) << sizeof(channel_t) |
+				 static_cast<uint64_t>(def.image_gen) << sizeof(bit_depth_t) |
+				 static_cast<uint64_t>(def.size) << sizeof(image_gen_t);
 }
 
-[[nodiscard]] constexpr bool sort_by_definition_id(const benchmark_image_data& data, const size_t def_id) noexcept
+[[nodiscard]] constexpr bool sort_by_definition_id(const benchmark_image_data& data, const uint64_t def_id) noexcept
 {
 	return data.id < def_id;
 }
@@ -79,8 +79,8 @@ void set_modulo_image(
 ) noexcept
 {
 	constexpr std::array<std::uint8_t, 4U> byte_modulo{251U, 241U, 239U, 233U};
-	std::size_t value_index{0U};
-	const auto channels_value = static_cast<std::size_t>(channels);
+	std::uint64_t value_index{0U};
+	const auto channels_value = static_cast<std::uint64_t>(channels);
 	for (; data_ptr != data_end; ++data_ptr, ++value_index)
 	{
 		*data_ptr = static_cast<std::uint8_t>(value_index % byte_modulo[value_index % channels_value]);
@@ -88,7 +88,7 @@ void set_modulo_image(
 }
 
 void set_random_image(
-		std::uint8_t* IMFY_RESTRICT data_ptr, const std::uint8_t* IMFY_RESTRICT data_end, const std::size_t seed
+		std::uint8_t* IMFY_RESTRICT data_ptr, const std::uint8_t* IMFY_RESTRICT data_end, const std::uint64_t seed
 )
 {
 	std::mt19937 prng{static_cast<std::uint32_t>(seed)};
@@ -100,7 +100,7 @@ void set_random_image(
 	}
 }
 
-raw_image generate_image(const definition& def, const image_size& size, const std::size_t def_id)
+raw_image generate_image(const definition& def, const image_size& size, const std::uint64_t def_id)
 {
 	raw_image image{def.channels, def.bit_depth, size};
 	auto* IMFY_RESTRICT data_ptr = image.data().as_writable_bytes().data();
@@ -140,34 +140,40 @@ tl::expected<vector<benchmark_image_data>, string> generate_benchmark_images(
 		const auto def_id = id_from_def(def);
 		const auto images_end = data.end();
 		const auto position_it = std::lower_bound(data.begin(), images_end, def_id, sort_by_definition_id);
-		if (position_it == images_end || position_it->id != def_id)
+		if (position_it != images_end)
 		{
-			const auto size = image_size_from_def(def);
-			const auto image_it =
-					data.emplace(position_it, benchmark_image_data{.id = def_id, .image = generate_image(def, size, def_id)});
-			if (path.has_value())
-			{
-				const std::filesystem::path filename{fmt::format(
-						"imfy_{:d}_{:d}_{:s}_{:d}_{:d}.png", static_cast<int>(def.channels), static_cast<int>(def.bit_depth),
-						image_gen_string(def.image_gen), size.width, size.height
-				)};
+			IMFY_ASSERT(position_it->id == def_id);
+			continue;
+		}
 
-				const auto& image = image_it->image;
-				const auto encoded = encode(
-						png::to_color_type(image.channels()), image.bit_depth(), image.size(), image.data(), compression_t::standard
-				);
+		const auto size = image_size_from_def(def);
+		const auto image_it =
+				data.emplace(position_it, benchmark_image_data{.id = def_id, .image = generate_image(def, size, def_id)});
 
-				if (!encoded.has_value()) [[unlikely]]
-				{
-					return tl::unexpected{string{encoded.error()}};
-				}
-				const auto file_path = path.value() / filename;
-				const aligned_span span{encoded.value().data(), encoded.value().size()};
-				if (const auto save_result = fs::save(file_path, span); !save_result.has_value())
-				{
-					return tl::make_unexpected(string{to_error_description(save_result.error())});
-				}
-			}
+		if (!path.has_value())
+		{
+			continue;
+		}
+
+		const std::filesystem::path filename{fmt::format(
+				"imfy_{:d}_{:d}_{:s}_{:d}_{:d}.png", static_cast<int>(def.channels), static_cast<int>(def.bit_depth),
+				image_gen_string(def.image_gen), size.width, size.height
+		)};
+
+		const auto& image = image_it->image;
+		const auto encoded = encode(
+				png::to_color_type(image.channels()), image.bit_depth(), image.size(), image.data(), compression_t::standard
+		);
+
+		if (!encoded.has_value()) [[unlikely]]
+		{
+			return tl::unexpected{string{encoded.error()}};
+		}
+		const auto file_path = path.value() / filename;
+		const aligned_span span{encoded.value().data(), encoded.value().size()};
+		if (const auto save_result = fs::save(file_path, span); !save_result.has_value())
+		{
+			return tl::make_unexpected(string{to_error_description(save_result.error())});
 		}
 	}
 
