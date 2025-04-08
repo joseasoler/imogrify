@@ -16,68 +16,128 @@
 #include <fstream>
 #include <ios>
 #include <string_view>
+#include <system_error>
 
 namespace
 {
-constexpr imfy::fs::error_code to_error_code(const std::ios::iostate state)
+/**
+ * Retrieves a file status and return its type while handling any errors.
+ * @param path Path to check.
+ * @return File type or none if an error occurred.
+ */
+[[nodiscard]] std::filesystem::file_type get_file_type(const std::filesystem::path& path) noexcept
 {
-	IMFY_ASSUME(state != std::ios::goodbit);
-	if (state == std::ios::badbit)
+	using namespace std::filesystem;
+	std::error_code status_error_code{};
+	const file_status status_check = status(path, status_error_code);
+
+	// not_found may set an error code that can be ignored.
+	if (status_error_code && status_check.type() != file_type::not_found)
 	{
-		return imfy::fs::error_code::stream_error;
+		return file_type::none;
 	}
-	if (state == std::ios::failbit)
-	{
-		return imfy::fs::error_code::input_output_failed;
-	}
-	if (state == std::ios::eofbit)
-	{
-		return imfy::fs::error_code::end_of_file;
-	}
-	return imfy::fs::error_code::unknown_error;
+
+	return status_check.type();
 }
+
 }
 
 namespace imfy::fs
 {
 
-std::string_view to_error_description(const error_code code) noexcept
+std::string_view error_description(const error_code code) noexcept
 {
-	IMFY_ASSUME(code != error_code::success);
+	IMFY_ASSERT(code != error_code::unknown);
 	switch (code)
 	{
-		case error_code::stream_error:
-			return "irrecoverable stream error";
-		case error_code::input_output_failed:
-			return "input/output operation failed";
-		case error_code::end_of_file:
-			return "sequence has reached end-of-file";
-		[[unlikely]] case error_code::success:
-			[[fallthrough]];
-		[[unlikely]] case error_code::unknown_error:
+		case error_code::invalid_file_status:
+			return "file status retrieval error";
+		case error_code::invalid_directory:
+			return "invalid directory path";
+		case error_code::path_in_use:
+			return "path is in use";
+		case error_code::creation_error:
+			return "could not create filesystem entry";
+		case error_code::write_error:
+			return "file writing error";
+
+		[[unlikely]] case error_code::unknown:
 			[[fallthrough]];
 		[[unlikely]] default:
 			return "unknown error";
 	}
 }
 
-tl::expected<void, error_code> save(const std::filesystem::path& path, const aligned_span<const std::uint8_t> data)
+tl::expected<bool, error_code> create_directories(const path_view directory) noexcept
 {
+	using namespace std::filesystem;
+	const auto directory_type = get_file_type(directory);
+
+	if (directory_type == file_type::none)
+	{
+		return tl::make_unexpected(error_code::invalid_file_status);
+	}
+	if (directory_type == file_type::directory)
+	{
+		return false;
+	}
+	if (directory_type != file_type::not_found)
+	{
+		return tl::make_unexpected(error_code::path_in_use);
+	}
+
+	try
+	{
+		// The error_code overload of std::filesystem::create_directories lacks noexcept.
+		return std::filesystem::create_directories(directory);
+	}
+	catch (const filesystem_error&)
+	{
+		return tl::make_unexpected(error_code::creation_error);
+	}
+}
+
+tl::expected<void, error_code> save_file(
+		const path_view directory, const path_view file, const aligned_span<const std::uint8_t> data
+) noexcept
+{
+	using namespace std::filesystem;
+
+	const path directory_path{directory};
+	if (const auto directory_type = get_file_type(directory); directory_type != file_type::directory)
+	{
+		return tl::make_unexpected(error_code::invalid_directory);
+	}
+
+	const auto file_path = directory_path / file;
+	const auto file_type = get_file_type(file_path);
+	if (file_type == file_type::none)
+	{
+		return tl::make_unexpected(error_code::invalid_file_status);
+	}
+
+	if (file_type != file_type::not_found && file_type != file_type::regular)
+	{
+		// Allow overwriting if a regular file is found in the path.
+		return tl::make_unexpected(error_code::path_in_use);
+	}
+
 	// NOLINTNEXTLINE(hicpp-signed-bitwise)
 	constexpr auto open_mode = std::ios::out | std::ios::binary;
-	std::ofstream ofstr{path, open_mode};
-	if (!ofstr.good())
+
+	std::ofstream ofstream{file_path, open_mode};
+	if (!ofstream.good())
 	{
-		return tl::make_unexpected(to_error_code(ofstr.rdstate()));
+		return tl::make_unexpected(error_code::creation_error);
 	}
 
 	// NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
 	const auto* memory_begin = reinterpret_cast<const char*>(data.data());
-	ofstr.write(memory_begin, static_cast<std::ptrdiff_t>(data.size()));
+	ofstream.write(memory_begin, static_cast<std::ptrdiff_t>(data.size()));
 
-	if (!ofstr.good())
+	if (!ofstream.good())
 	{
-		return tl::make_unexpected(to_error_code(ofstr.rdstate()));
+		return tl::make_unexpected(error_code::write_error);
 	}
 
 	return {};

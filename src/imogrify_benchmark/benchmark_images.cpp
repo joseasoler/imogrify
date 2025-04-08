@@ -15,6 +15,7 @@
 #include <imfy/png_encoder.hpp>
 #include <imfy/png_format.hpp>
 #include <imfy/raw_image.hpp>
+#include <imfy/string.hpp>
 #include <imfy/vector.hpp>
 
 #include <fmt/format.h>
@@ -25,13 +26,10 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
-#include <filesystem>
 #include <limits>
 #include <optional>
 #include <random>
 #include <span>
-
-#include "imfy/string.hpp"
 
 namespace
 {
@@ -130,7 +128,7 @@ namespace imfy::bench
 {
 
 tl::expected<vector<benchmark_image_data>, string> generate_benchmark_images(
-		const std::span<const definition> definitions, const std::optional<std::filesystem::path>& path
+		const std::span<const definition> definitions, const std::optional<fs::path_view>& path
 )
 {
 	vector<benchmark_image_data> data{};
@@ -155,7 +153,7 @@ tl::expected<vector<benchmark_image_data>, string> generate_benchmark_images(
 			continue;
 		}
 
-		const std::filesystem::path filename{fmt::format(
+		const string file_name{fmt::format(
 				"imfy_{:d}_{:d}_{:s}_{:d}_{:d}.png", static_cast<int>(def.channels), static_cast<int>(def.bit_depth),
 				image_gen_string(def.image_gen), size.width, size.height
 		)};
@@ -169,11 +167,11 @@ tl::expected<vector<benchmark_image_data>, string> generate_benchmark_images(
 		{
 			return tl::unexpected{string{encoded.error()}};
 		}
-		const auto file_path = path.value() / filename;
 		const aligned_span span{encoded.value().data(), encoded.value().size()};
-		if (const auto save_result = fs::save(file_path, span); !save_result.has_value())
+		if (const auto save_result = fs::save_file(path.value(), file_name, span); !save_result.has_value())
 		{
-			return tl::make_unexpected(string{to_error_description(save_result.error())});
+			const auto description = fs::error_description(save_result.error());
+			return tl::make_unexpected(fmt::format("Could not save file {:s}: {:s}", file_name, description));
 		}
 	}
 
