@@ -11,7 +11,6 @@ add_executable(imogrify_unit_tests
 	core/concepts_test.cpp
 	core/memory_block_test.cpp
 	image/image_size_test.cpp
-	image/png_format_test.cpp
 	image/raw_image_test.cpp
 	${PROJECT_SOURCE_DIR}/imogrify_application.manifest
 )

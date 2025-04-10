@@ -10,7 +10,7 @@
 #include <imfy/benchmark_parameters.hpp>
 #include <imfy/benchmark_result.hpp>
 #include <imfy/image_format.hpp>
-#include <imfy/png_format.hpp>
+#include <imfy/png.hpp>
 #include <imfy/png_lodepng.hpp>
 #include <imfy/png_spng.hpp>
 #include <imfy/raw_image.hpp>
@@ -23,8 +23,6 @@
 #include <memory>
 #include <ratio>
 #include <type_traits>
-
-#include "imfy/png_encoder.hpp"
 
 #include <nanobench.h>
 
@@ -142,7 +140,6 @@ imfy::vector<raw_library_result> run_png_encode_benchmark(
 )
 {
 	imfy::vector<raw_library_result> results;
-	const auto color = imfy::png::to_color_type(image.channels());
 
 	for (const library_t library : libraries)
 	{
@@ -150,9 +147,9 @@ imfy::vector<raw_library_result> run_png_encode_benchmark(
 		{
 			results.push_back(run_benchmark_impl(
 					bench, library,
-					[&color, &image, &compression]() -> std::size_t
+					[&image, &compression]() -> std::size_t
 					{
-						const auto result = encode(color, image.bit_depth(), image.size(), image.data(), compression);
+						const auto result = imfy::png::encode(image, compression);
 						return result.has_value() ? result.value().size() : 0U;
 					}
 			));
@@ -160,15 +157,13 @@ imfy::vector<raw_library_result> run_png_encode_benchmark(
 		else if (library == library_t::lodepng)
 		{
 			results.push_back(run_benchmark_impl(
-					bench, library, [&color, &image, &compression]() -> std::size_t
-					{ return encode_lodepng(color, image.bit_depth(), image.size(), image.data(), compression); }
+					bench, library, [&image, &compression]() -> std::size_t { return imfy::encode_lodepng(image, compression); }
 			));
 		}
 		else if (library == library_t::spng)
 		{
 			results.push_back(run_benchmark_impl(
-					bench, library, [&color, &image, &compression]() -> std::size_t
-					{ return encode_spng(color, image.bit_depth(), image.size(), image.data(), compression); }
+					bench, library, [&image, &compression]() -> std::size_t { return imfy::encode_spng(image, compression); }
 			));
 		}
 	}

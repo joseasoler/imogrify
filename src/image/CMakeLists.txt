@@ -3,7 +3,7 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 add_library(imogrify_image STATIC
-	png_encoder.cpp
+	png.cpp
 	raw_image.cpp
 )
 

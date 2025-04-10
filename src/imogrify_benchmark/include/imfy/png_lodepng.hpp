@@ -5,20 +5,23 @@
 
 #pragma once
 
-#include <imfy/aligned_span.hpp>
 #include <imfy/image_format.hpp>
-#include <imfy/image_size.hpp>
-#include <imfy/png_format.hpp>
 
 #include <cstddef>
-#include <cstdint>
 
 namespace imfy
 {
+namespace image
+{
+class raw_image;
+}
 
-std::size_t encode_lodepng(
-		png::color_t color, image::bit_depth_t bit_depth, image::image_size img_size,
-		aligned_span<const std::uint8_t> input_image, image::compression_t compression
-);
+/**
+ * Encode an image as PNG using lodepng and return its size. Errors are not handled.
+ * @param input_image Image to encode.
+ * @param compression_level Level of compression to use for encoding.
+ * @return Size of the sequence of encoded bytes or an error description.
+ */
+std::size_t encode_lodepng(const image::raw_image& input_image, image::compression_t compression_level);
 
 }

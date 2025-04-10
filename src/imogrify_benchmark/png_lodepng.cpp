@@ -8,23 +8,38 @@
 #include <imfy/aligned_span.hpp>
 #include <imfy/image_format.hpp>
 #include <imfy/image_size.hpp>
-#include <imfy/png_format.hpp>
+#include <imfy/raw_image.hpp>
 
 #include <lodepng.h>
 
-#include <cstdint>
 #include <cstdlib>
 
 namespace
 {
 using namespace imfy::image;
-using namespace imfy::png;
 
-static_assert(static_cast<int>(color_t::gray) == LCT_GREY);
-static_assert(static_cast<int>(color_t::ga) == LCT_GREY_ALPHA);
-static_assert(static_cast<int>(color_t::palette) == LCT_PALETTE);
-static_assert(static_cast<int>(color_t::rgb) == LCT_RGB);
-static_assert(static_cast<int>(color_t::rgba) == LCT_RGBA);
+/**
+ * Maps the channel counts supported by imogrify to PNG color types. Ignores palette.
+ * @param channels Channel count.
+ * @return Color type.
+ */
+constexpr int to_color_type(const channel_t channels)
+{
+	using imfy::image::channel_t;
+	switch (channels)
+	{
+		case channel_t::one:
+			return LCT_GREY;
+		case channel_t::two:
+			return LCT_GREY_ALPHA;
+		case channel_t::three:
+			return LCT_RGB;
+		default:
+			[[fallthrough]];
+		case channel_t::four:
+			return LCT_RGBA;
+	}
+}
 
 constexpr unsigned int default_window_size = 1U << 11U;
 constexpr unsigned int best_window_size = 1U << 15U;
@@ -72,23 +87,22 @@ constexpr LodePNGCompressSettings get_compression_settings(const compression_t c
 namespace imfy
 {
 
-std::size_t encode_lodepng(
-		const color_t color, const bit_depth_t bit_depth, const image_size img_size,
-		const aligned_span<const std::uint8_t> input_image, const compression_t compression
-)
+std::size_t encode_lodepng(const raw_image& input_image, const compression_t compression_level)
 {
 	unsigned char* png{};
 	std::size_t png_size{};
 	LodePNGState state;
 
 	lodepng_state_init(&state);
-	state.info_raw.colortype = static_cast<LodePNGColorType>(color);
-	state.info_raw.bitdepth = static_cast<unsigned int>(bit_depth);
-	state.info_png.color.colortype = static_cast<LodePNGColorType>(color);
-	state.info_png.color.bitdepth = static_cast<unsigned int>(bit_depth);
-	state.encoder.zlibsettings = get_compression_settings(compression);
+	state.info_raw.colortype = static_cast<LodePNGColorType>(to_color_type(input_image.channels()));
+	state.info_raw.bitdepth = static_cast<unsigned int>(input_image.bit_depth());
+	state.info_png.color.colortype = state.info_raw.colortype;
+	state.info_png.color.bitdepth = static_cast<unsigned int>(input_image.bit_depth());
+	state.encoder.zlibsettings = get_compression_settings(compression_level);
 
-	auto error = lodepng_encode(&png, &png_size, input_image.data(), img_size.width, img_size.height, &state);
+	const auto error = lodepng_encode(
+			&png, &png_size, input_image.data().data(), input_image.size().width, input_image.size().height, &state
+	);
 	if (error != 0U) [[unlikely]]
 	{
 		std::abort();
