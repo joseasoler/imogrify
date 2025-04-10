@@ -9,28 +9,73 @@
 #include <imfy/attributes.hpp>
 #include <imfy/image_format.hpp>
 #include <imfy/image_size.hpp>
-#include <imfy/png_format.hpp>
+#include <imfy/raw_image.hpp>
 
 #include <spng.h>
+#include <zlib.h>
 
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
 
-using imfy::png::color_t;
-
 namespace
 {
-static_assert(static_cast<int>(color_t::gray) == SPNG_COLOR_TYPE_GRAYSCALE);
-static_assert(static_cast<int>(color_t::ga) == SPNG_COLOR_TYPE_GRAYSCALE_ALPHA);
-static_assert(static_cast<int>(color_t::palette) == SPNG_COLOR_TYPE_INDEXED);
-static_assert(static_cast<int>(color_t::rgb) == SPNG_COLOR_TYPE_TRUECOLOR);
-static_assert(static_cast<int>(color_t::rgba) == SPNG_COLOR_TYPE_TRUECOLOR_ALPHA);
+
+/**
+ * Maps the channel counts supported by imogrify to PNG color types. Ignores palette.
+ * See http://www.libpng.org/pub/png/spec/1.2/PNG-Chunks.html#C.IHDR.
+ * @param channels Channel count.
+ * @return Color type.
+ */
+constexpr std::uint8_t to_color_type(const imfy::image::channel_t channels)
+{
+	using imfy::image::channel_t;
+	switch (channels)
+	{
+		case channel_t::one:
+			return SPNG_COLOR_TYPE_GRAYSCALE;
+		case channel_t::two:
+			return SPNG_COLOR_TYPE_GRAYSCALE_ALPHA;
+		case channel_t::three:
+			return SPNG_COLOR_TYPE_TRUECOLOR;
+		default:
+			[[fallthrough]];
+		case channel_t::four:
+			return SPNG_COLOR_TYPE_TRUECOLOR_ALPHA;
+	}
+}
+
+/**
+ * Maps imogrify compression levels to the levels used by spng.
+ * See https://libspng.org/docs/encode
+ * @param compression imogrify compression level.
+ * @return spng compression level.
+ */
+constexpr int to_png_compression(const imfy::image::compression_t compression)
+{
+	using imfy::image::compression_t;
+	switch (compression)
+	{
+		case compression_t::none:
+			return Z_NO_COMPRESSION;
+		case compression_t::speed:
+			return Z_BEST_SPEED;
+		default:
+			[[fallthrough]];
+		case compression_t::standard:
+		{
+			constexpr int zlib_standard_compression = 6;
+			return zlib_standard_compression;
+		}
+		case compression_t::best:
+			return Z_BEST_COMPRESSION;
+	}
+}
 
 class spng_context final
 {
 public:
-	explicit spng_context(int flags)
+	explicit spng_context(const int flags)
 		: _ctx{spng_ctx_new(flags)}
 	{
 	}
@@ -52,29 +97,23 @@ private:
 namespace imfy
 {
 
-std::size_t encode_spng(
-		const color_t color, const image::bit_depth_t bit_depth, const image::image_size img_size,
-		const aligned_span<const std::uint8_t> input_image, const image::compression_t compression
-)
+std::size_t encode_spng(const image::raw_image& input_image, const image::compression_t compression_level)
 {
 	const spng_context context{SPNG_CTX_ENCODER};
 	spng_set_option(context.get(), SPNG_ENCODE_TO_BUFFER, 1);
-	spng_set_option(context.get(), SPNG_IMG_COMPRESSION_LEVEL, static_cast<int>(compression));
+	spng_set_option(context.get(), SPNG_IMG_COMPRESSION_LEVEL, to_png_compression(compression_level));
 
 	spng_ihdr ihdr{};
-	ihdr.width = img_size.width;
-	ihdr.height = img_size.height;
-	ihdr.color_type = static_cast<std::uint8_t>(color);
-	ihdr.bit_depth = static_cast<std::uint8_t>(bit_depth);
+	ihdr.width = input_image.size().width;
+	ihdr.height = input_image.size().height;
+	ihdr.color_type = to_color_type(input_image.channels());
+	ihdr.bit_depth = static_cast<std::uint8_t>(input_image.bit_depth());
 	spng_set_ihdr(context.get(), &ihdr);
-	if (const int ret =
-					spng_encode_image(context.get(), input_image.data(), input_image.size(), SPNG_FMT_PNG, SPNG_ENCODE_FINALIZE);
+	if (const int ret = spng_encode_image(
+					context.get(), input_image.data().data(), input_image.data().size(), SPNG_FMT_PNG, SPNG_ENCODE_FINALIZE
+			);
 			ret != 0) [[unlikely]]
 	{
-		if (ret == SPNG_EBUFSIZ)
-		{
-			spng_set_option(context.get(), SPNG_ENCODE_TO_BUFFER, 1);
-		}
 		std::abort();
 	}
 	std::size_t buffer_size{};

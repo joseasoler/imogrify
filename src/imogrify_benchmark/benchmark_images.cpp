@@ -12,8 +12,7 @@
 #include <imfy/filesystem.hpp>
 #include <imfy/image_format.hpp>
 #include <imfy/image_size.hpp>
-#include <imfy/png_encoder.hpp>
-#include <imfy/png_format.hpp>
+#include <imfy/png.hpp>
 #include <imfy/raw_image.hpp>
 #include <imfy/string.hpp>
 #include <imfy/vector.hpp>
@@ -45,10 +44,16 @@ using namespace imfy::image;
 	static_assert(fields_size <= sizeof(std::uint64_t));
 
 	// Definitions with the same values in these fields have the same reference image.
-	return static_cast<uint64_t>(def.format) | static_cast<uint64_t>(def.channels) << sizeof(format_t) |
-				 static_cast<uint64_t>(def.bit_depth) << sizeof(channel_t) |
-				 static_cast<uint64_t>(def.image_gen) << sizeof(bit_depth_t) |
-				 static_cast<uint64_t>(def.size) << sizeof(image_gen_t);
+	auto result = static_cast<uint64_t>(def.format);
+	result <<= sizeof(format_t);
+	result |= static_cast<std::uint64_t>(def.channels);
+	result <<= sizeof(channel_t);
+	result |= static_cast<std::uint64_t>(def.bit_depth);
+	result <<= sizeof(bit_depth_t);
+	result |= static_cast<std::uint64_t>(def.image_gen);
+	result <<= sizeof(image_gen_t);
+	result |= static_cast<std::uint64_t>(def.size);
+	return result;
 }
 
 [[nodiscard]] constexpr bool sort_by_definition_id(const benchmark_image_data& data, const uint64_t def_id) noexcept
@@ -159,15 +164,14 @@ tl::expected<vector<benchmark_image_data>, string> generate_benchmark_images(
 		)};
 
 		const auto& image = image_it->image;
-		const auto encoded = encode(
-				png::to_color_type(image.channels()), image.bit_depth(), image.size(), image.data(), compression_t::standard
-		);
+		const auto encoded = png::encode(image, compression_t::standard);
 
 		if (!encoded.has_value()) [[unlikely]]
 		{
 			return tl::unexpected{string{encoded.error()}};
 		}
-		const aligned_span span{encoded.value().data(), encoded.value().size()};
+
+		const auto span{encoded.value().span()};
 		if (const auto save_result = fs::save_file(path.value(), file_name, span); !save_result.has_value())
 		{
 			const auto description = fs::error_description(save_result.error());

@@ -80,6 +80,14 @@ int main(const int argc, char** argv)
 				 .image_gen = image_gen_t::modulo,
 				 .size = size_gen_t::small,
 				 .compression = imfy::image::compression_t::standard},
+				{.format = format_t::png,
+				 .operation = operation_t::encode,
+				 .libraries = {library_t::libpng, library_t::lodepng, library_t::spng},
+				 .channels = imfy::image::channel_t::four,
+				 .bit_depth = imfy::image::bit_depth_t::eight,
+				 .image_gen = image_gen_t::modulo,
+				 .size = size_gen_t::large,
+				 .compression = imfy::image::compression_t::standard},
 		};
 
 		const auto image_result{generate_benchmark_images(definitions, output_path)};
