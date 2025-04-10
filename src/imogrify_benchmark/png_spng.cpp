@@ -5,6 +5,7 @@
 
 #include "imfy/png_spng.hpp"
 
+#include <imfy/aligned_allocation.hpp>
 #include <imfy/aligned_span.hpp>
 #include <imfy/attributes.hpp>
 #include <imfy/image_format.hpp>
@@ -17,6 +18,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
+#include <cstring>
 
 namespace
 {
@@ -71,12 +73,33 @@ constexpr int to_png_compression(const imfy::image::compression_t compression)
 			return Z_BEST_COMPRESSION;
 	}
 }
+void* imogrify_realloc(void* aligned_pointer, const std::size_t size)
+{
+	imfy::aligned_deallocation_bytes(aligned_pointer);
+	return imfy::aligned_allocation_bytes(size);
+}
+
+void* imogrify_calloc(const std::size_t count, const std::size_t size)
+{
+	const auto size_bytes = count * size;
+	void* IMFY_RESTRICT aligned_pointer = imfy::aligned_allocation_bytes(size_bytes);
+	std::memset(aligned_pointer, 0, size_bytes);
+	return aligned_pointer;
+}
+
+constexpr spng_alloc global_allocation{
+		.malloc_fn = imfy::aligned_allocation_bytes,
+		.realloc_fn = imogrify_realloc,
+		.calloc_fn = imogrify_calloc,
+		.free_fn = imfy::aligned_deallocation_bytes
+};
 
 class spng_context final
 {
 public:
 	explicit spng_context(const int flags)
-		: _ctx{spng_ctx_new(flags)}
+		: _allocation{global_allocation}
+		, _ctx{spng_ctx_new2(&_allocation, flags)}
 	{
 	}
 
@@ -90,6 +113,7 @@ public:
 	[[nodiscard]] spng_ctx* get() const { return _ctx; }
 
 private:
+	spng_alloc _allocation;
 	spng_ctx* _ctx;
 };
 }
@@ -124,8 +148,7 @@ std::size_t encode_spng(const image::raw_image& input_image, const image::compre
 		std::abort();
 	}
 
-	// NOLINTNEXTLINE(hicpp-no-malloc)
-	std::free(buffer_data);
+	aligned_deallocation_bytes(buffer_data);
 
 	return buffer_size;
 }

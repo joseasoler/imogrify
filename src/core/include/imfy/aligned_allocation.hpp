@@ -42,6 +42,12 @@ void* aligned_allocation_bytes(std::size_t size);
 void aligned_deallocation_bytes(const void* aligned_pointer);
 
 /**
+ * Deallocates a memory chunk allocated by aligned_allocation_bytes. Provided for compatibility with C-style APIs.
+ * @param aligned_pointer Memory to deallocate. Must have been allocated by aligned_allocation_bytes.
+ */
+void aligned_deallocation_bytes(void* aligned_pointer);
+
+/**
  * Allocates a contiguous memory array of elements of a specific type.
  * @tparam Type Type of the elements.
  * @param size Size of the block. size * sizeof(Type) must be less than std::numeric_limits<std::size_t>::max() / 2.
