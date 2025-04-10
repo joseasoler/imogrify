@@ -14,13 +14,18 @@
 namespace imfy
 {
 
-void* aligned_allocation_bytes(std::size_t size)
+void* aligned_allocation_bytes(const std::size_t size)
 {
 	IMFY_ASSUME(size > 0);
 	return assume_aligned(hwy::AllocateAlignedBytes(size, nullptr, nullptr));
 }
 
 void aligned_deallocation_bytes(const void* aligned_pointer)
+{
+	hwy::FreeAlignedBytes(aligned_pointer, nullptr, nullptr);
+}
+
+void aligned_deallocation_bytes(void* aligned_pointer)
 {
 	hwy::FreeAlignedBytes(aligned_pointer, nullptr, nullptr);
 }

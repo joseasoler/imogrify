@@ -89,9 +89,7 @@ namespace imfy
 
 std::size_t encode_lodepng(const raw_image& input_image, const compression_t compression_level)
 {
-	unsigned char* png{};
-	std::size_t png_size{};
-	LodePNGState state;
+	LodePNGState state{};
 
 	lodepng_state_init(&state);
 	state.info_raw.colortype = static_cast<LodePNGColorType>(to_color_type(input_image.channels()));
@@ -100,6 +98,8 @@ std::size_t encode_lodepng(const raw_image& input_image, const compression_t com
 	state.info_png.color.bitdepth = static_cast<unsigned int>(input_image.bit_depth());
 	state.encoder.zlibsettings = get_compression_settings(compression_level);
 
+	unsigned char* png{};
+	std::size_t png_size{};
 	const auto error = lodepng_encode(
 			&png, &png_size, input_image.data().data(), input_image.size().width, input_image.size().height, &state
 	);
