@@ -31,14 +31,13 @@ public:
 	using value_type = Type;
 	using size_type = std::size_t;
 
-	explicit memory_block(size_type block_size)
+	explicit memory_block(const size_type block_size)
+		: block_{aligned_allocation<value_type>(block_size)}
+		, size_{block_size}
 	{
-		IMFY_ASSUME(block_size > 0);
-		block_ = aligned_allocation<value_type>(block_size);
-		size_ = block_size;
 	}
 
-	memory_block() = delete;
+	memory_block() = default;
 	memory_block(const memory_block&) = delete;
 	memory_block(memory_block&& other) noexcept
 		: block_{other.block_}
@@ -62,9 +61,22 @@ public:
 	[[nodiscard]] aligned_span<value_type> span() noexcept { return {block_, size()}; }
 	[[nodiscard]] aligned_span<const value_type> span() const noexcept { return {block_, size()}; }
 
+	void swap(memory_block& other) noexcept
+	{
+		using std::swap;
+		swap(block_, other.block_);
+		swap(size_, other.size_);
+	}
+
 private:
 	value_type* block_;
 	size_type size_;
 };
+
+template <pod_type Type>
+void swap(memory_block<Type>& lhs, memory_block<Type> rhs) noexcept
+{
+	lhs.swap(rhs);
+}
 
 }
