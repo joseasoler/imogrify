@@ -16,6 +16,6 @@ Create an issue on the [tracker](https://github.com/joseasoler/imogrify/issues) 
 
 - Make sure that [clang-tidy](https://clang.llvm.org/extra/clang-tidy) and [clang-format](https://clang.llvm.org/docs/ClangFormat.html) are enabled and report no issues.
 
-- Unit tests should be upgraded as needed and run successfully.
+- Unit tests must be built by enabling the `IMOGRIFY_BUILD_UNIT_TESTS` CMake option. They must be updated as needed and run successfully.
 
 - imogrify uses UTF-8 encoding by default. Check the [UTF-8 Everywhere Manifesto](http://utf8everywhere.org) for details.
