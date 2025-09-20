@@ -18,16 +18,22 @@ Building imogrify requires [CMake](https://cmake.org) 4 or newer and a [compiler
 
 ### CMake options
 
-* `CMAKE_COMPILE_WARNING_AS_ERROR`: Compilers treat warnings as errors. Off by default.
-* `IMOGRIFY_BUILD_UNIT_TESTS`: Builds unit tests. Off by default.
-* `IMOGRIFY_CLANG_ALL_WARNINGS`: Enables all [clang](https://clang.llvm.org) compiler warnings, except for some which are already known to cause issues. Should be used only for identifying new warnings on compiler updates. Off by default.
-* `IMOGRIFY_CLANG_TIDY`: Analyze the project using [clang-tidy](https://clang.llvm.org/extra/clang-tidy). Warnings will be treated as errors if `CMAKE_COMPILE_WARNING_AS_ERROR` is enabled. Off by default.
+- `CMAKE_COMPILE_WARNING_AS_ERROR`: Compilers treat warnings as errors. Off by default.
+- `IMOGRIFY_BUILD_UNIT_TESTS`: Builds unit tests. Off by default.
+- `IMOGRIFY_CLANG_ALL_WARNINGS`: Enables all [clang](https://clang.llvm.org) compiler warnings, except for some which are already known to cause issues. Should be used only for identifying new warnings on compiler updates. Off by default.
+- `IMOGRIFY_CLANG_TIDY`: Analyze the project using [clang-tidy](https://clang.llvm.org/extra/clang-tidy). Warnings will be treated as errors if `CMAKE_COMPILE_WARNING_AS_ERROR` is enabled. Off by default.
+
+-DCMAKE_COMPILE_WARNING_AS_ERROR -DIMOGRIFY_BUILD_UNIT_TESTS -DIMOGRIFY_CLANG_TIDY
 
 ### Dependencies
 
-ToDo
-
 Dependencies are retrieved through the `find_package` CMake feature. imogrify has optional [vcpkg](https://github.com/microsoft/vcpkg) support, disabled by default.
+
+- **[fmt](https://fmt.dev/latest/index.html)**: Modern formatting and printing library.
+
+With `IMOGRIFY_BUILD_UNIT_TESTS` enabled:
+
+- **[Catch2](https://github.com/catchorg/Catch2)**: A modern, C++-native, test framework for unit-tests.
 
 ### CMake presets
 

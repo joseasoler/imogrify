@@ -1,0 +1,72 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
+ * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+#pragma once
+
+#include <imfy/version.hpp>
+
+#include <array>
+#include <string_view>
+
+namespace imfy::core::build
+{
+
+/** Stores dependency information retrieved during compile time. */
+struct dependency_t final
+{
+	/** Name of the dependency. */
+	std::string_view name;
+
+	/** <A HREF="https://semver.org/">Semantic version_t</A> in use. */
+	version_t version;
+
+	/** Short description of the dependency */
+	std::string_view description;
+
+	/** SPDX identifier of the license used by the dependency. */
+	std::string_view license;
+};
+
+constexpr dependency_t project{
+		"@CMAKE_PROJECT_NAME@",
+		// clang-format off
+		{@CMAKE_PROJECT_VERSION_MAJOR@, @CMAKE_PROJECT_VERSION_MINOR@, @CMAKE_PROJECT_VERSION_PATCH@},
+		// clang-format on
+		"@CMAKE_PROJECT_DESCRIPTION@",
+		"MPL-2.0"
+};
+
+inline constexpr std::string_view build_type{"@IMOGRIFY_BUILD_TYPE@"};
+
+consteval std::string_view compiler_name()
+{
+	if (IMOGRIFY_COMPILER_CLANG)
+	{
+		return "Clang";
+	}
+	if (IMOGRIFY_COMPILER_GCC)
+	{
+		return "GCC";
+	}
+	if (IMOGRIFY_COMPILER_MSVC)
+	{
+		return "MSVC";
+	}
+	return {};
+}
+
+inline constexpr version_t compiler_version{
+	// clang-format off
+	@IMOGRIFY_CXX_COMPILER_VERSION@
+	// clang-format on
+};
+
+constexpr auto dependencies = std::to_array<dependency_t>({
+	// clang-format off
+	@IMOGRIFY_DEPENDENCY_DATA_STRING@
+	// clang-format on
+});
+
+}

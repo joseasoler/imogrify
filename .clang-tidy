@@ -1,0 +1,69 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Generated with clang-tidy 18.1.8.
+
+# Use clang-format.
+HeaderFileExtensions:
+  - hpp
+ImplementationFileExtensions:
+  - cpp
+FormatStyle: file
+
+CheckOptions:
+  - { key: readability-identifier-naming.ClassCase,              value: lower_case }
+  - { key: readability-identifier-naming.EnumCase,               value: lower_case }
+  - { key: readability-identifier-naming.EnumConstantCase,       value: lower_case }
+  - { key: readability-identifier-naming.FunctionCase,           value: lower_case }
+  - { key: readability-identifier-naming.NamespaceCase,          value: lower_case }
+  - { key: readability-identifier-naming.ParameterCase,          value: lower_case }
+  - { key: readability-identifier-naming.TypeAliasCase,          value: lower_case }
+  - { key: readability-identifier-naming.UnionCase,              value: lower_case }
+  - { key: readability-identifier-naming.VariableCase,           value: lower_case }
+# Ignore public members in structs.
+  - { key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic, value: true }
+# String view literals using MSVC
+  - { key: misc-include-cleaner.IgnoreHeaders, value: "__msvc_string_view.hpp" }
+
+WarningsAsErrors: '*'
+
+# All clang-checks are enabled by default. Project-specific diagnostics such as boost or fuchsia are disabled.
+# Other disabled diagnostics are documented below.
+#
+# clang-diagnostic-unknown-warning-option: Triggered by GCC-only warnings.
+# clang-diagnostic-unused-command-line-argument: Ignore unused command line arguments.
+# cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays: Aliases for modernize-avoid-c-arrays
+# cppcoreguidelines-no-malloc: Alias for hicpp-no-malloc.
+# cppcoreguidelines-owning-memory: Allow owning memory pointers without requiring gsl libraries.
+# cppcoreguidelines-pro-bounds-constant-array-index: Allow casting enum values to use them as array indexes.
+# cppcoreguidelines-pro-bounds-pointer-arithmetic: Allow pointer arithmetic.
+# hicpp-use-nullptr, modernize-use-nullptr: Workaround for https://github.com/llvm/llvm-project/issues/53778
+# llvm-header-guard: Allow #pragma once
+# llvm-namespace-comment: Do not require closing comments in namespaces.
+# modernize-use-trailing-return-type: Do not force use of trailing return types.
+# portability-template-virtual-member-function: Triggers on std::ostream.
+
+Checks: '
+*,
+-altera-*,
+-android-*,
+-boost-*,
+-fuchsia-*,
+-google-*,
+-llvmlibc-*,
+-zircon-*,
+
+-clang-diagnostic-unknown-warning-option,
+-clang-diagnostic-unused-command-line-argument,
+-cppcoreguidelines-avoid-c-arrays,-hicpp-avoid-c-arrays,
+-cppcoreguidelines-no-malloc,
+-cppcoreguidelines-owning-memory,
+-cppcoreguidelines-pro-bounds-constant-array-index,
+-cppcoreguidelines-pro-bounds-pointer-arithmetic,
+-hicpp-use-nullptr, -modernize-use-nullptr,
+-llvm-header-guard,
+-llvm-namespace-comment,
+-modernize-use-trailing-return-type,
+-portability-template-virtual-member-function,
+'
