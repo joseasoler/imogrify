@@ -1,0 +1,45 @@
+# This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
+# distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Build folders
+build
+cmake-build*
+
+# IDE project folders
+.idea
+.vs
+
+# User provided CMake presets
+CMakeUserPresets.json
+
+# Visual Studio build folders
+out*
+
+# Prerequisites
+*.d
+
+# Compiled object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled headers
+*.gch
+*.pch
+
+# Compiled dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
