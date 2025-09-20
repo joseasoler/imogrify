@@ -10,7 +10,7 @@
 
 // NOLINTNEXTLINE(misc-include-cleaner)
 #include <Windows.h>
-#endif // IMOGRIFY_OS_WINDOWS
+#endif
 
 namespace imfy::core::platform
 {
@@ -26,7 +26,8 @@ bool initialize() noexcept
 		return false;
 	}
 	constexpr std::size_t buffer_size = 1024U;
-	return std::setvbuf(stdout, nullptr, _IOFBF, buffer_size) == 0 && std::setvbuf(stderr, nullptr, _IOFBF, buffer_size) == 0;
+	return std::setvbuf(stdout, nullptr, _IOFBF, buffer_size) == 0 &&
+				 std::setvbuf(stderr, nullptr, _IOFBF, buffer_size) == 0;
 #else
 	return true;
 #endif

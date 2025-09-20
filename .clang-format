@@ -121,6 +121,8 @@ IncludeCategories:
     Priority: 100
   - Regex: '^<fmt.*'
     Priority: 300
+  - Regex: '^<catch2.*'
+    Priority: 1000
   - Regex: '^<.*'
     Priority: 400
   - Regex: '.*'

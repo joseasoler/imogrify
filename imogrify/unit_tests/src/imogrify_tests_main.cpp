@@ -5,9 +5,9 @@
 
 #include <imfy/platform.hpp>
 
-#include <catch2/catch_session.hpp>
-
 #include <cstdlib>
+
+#include <catch2/catch_session.hpp>
 
 int main(const int argc, char** argv)
 {

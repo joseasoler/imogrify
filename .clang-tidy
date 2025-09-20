@@ -21,9 +21,9 @@ CheckOptions:
   - { key: readability-identifier-naming.TypeAliasCase,          value: lower_case }
   - { key: readability-identifier-naming.UnionCase,              value: lower_case }
   - { key: readability-identifier-naming.VariableCase,           value: lower_case }
-# Ignore public members in structs.
+  # Ignore public members in structs.
   - { key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic, value: true }
-# String view literals using MSVC
+  # String view literals using MSVC
   - { key: misc-include-cleaner.IgnoreHeaders, value: "__msvc_string_view.hpp" }
 
 WarningsAsErrors: '*'

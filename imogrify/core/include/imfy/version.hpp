@@ -7,7 +7,6 @@
 
 #include <cstdint>
 
-
 namespace imfy::core::build
 {
 
@@ -15,11 +14,11 @@ namespace imfy::core::build
 struct version_t final
 {
 	/** Incremented after making incompatible API changes. */
-	std::uint16_t major;
+	std::uint16_t major{};
 	/** Incremented after adding functionality in a backwards compatible manner. */
-	std::uint16_t minor;
+	std::uint16_t minor{};
 	/** Incremented after making backwards compatible bug fixes. */
-	std::uint16_t patch;
+	std::uint16_t patch{};
 };
 
 }
