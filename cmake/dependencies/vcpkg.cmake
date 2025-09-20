@@ -12,7 +12,7 @@ if (VCPKG_TARGET_TRIPLET)
 
 	add_dependency_metadata(
 		NAME vcpkg
-		VERSION "2025.08.27" # Must be updated along with vcpkg.json.
+		VERSION "2025.8.27" # Must be updated along with vcpkg.json.
 		DESCRIPTION "A free and open-source C/C++ package manager."
 		LICENSE_SPDX "MIT"
 	)

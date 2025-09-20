@@ -1,0 +1,133 @@
+{
+	"version": 6,
+	"cmakeMinimumRequired": {
+		"major": 3,
+		"minor": 25,
+		"patch": 0
+	},
+	"configurePresets": [
+		{
+			"name": "base",
+			"binaryDir": "build/${presetName}",
+			"hidden": true,
+			"generator": "Ninja",
+			"cacheVariables": {
+				"VCPKG_OVERLAY_PORTS": "${sourceDir}/cmake/vcpkg/ports",
+				"VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/cmake/vcpkg/triplets",
+				"CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+				"CMAKE_COMPILE_WARNING_AS_ERROR": "ON",
+				"IMOGRIFY_BUILD_UNIT_TESTS": "ON",
+				"IMOGRIFY_CLANG_TIDY": "ON"
+			}
+		},
+		{
+			"name": "x64-linux-clang",
+			"hidden": true,
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Linux"
+			},
+			"cacheVariables": {
+				"CMAKE_C_COMPILER": "clang",
+				"CMAKE_CXX_COMPILER": "clang++",
+				"VCPKG_TARGET_TRIPLET": "imfy-x64-linux-clang"
+			},
+			"inherits": [
+				"base"
+			]
+		},
+		{
+			"name": "x64-linux-gcc",
+			"hidden": true,
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Linux"
+			},
+			"cacheVariables": {
+				"VCPKG_TARGET_TRIPLET": "imfy-x64-linux-gcc"
+			},
+			"inherits": [
+				"base"
+			]
+		},
+		{
+			"name": "x64-windows-msvc",
+			"hidden": true,
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Windows"
+			},
+			"cacheVariables": {
+				"VCPKG_TARGET_TRIPLET": "imfy-x64-windows-msvc"
+			},
+			"inherits": [
+				"base"
+			]
+		},
+		{
+			"name": "x64-linux-clang-debug",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug"
+			},
+			"inherits": [
+				"x64-linux-clang"
+			],
+			"displayName": "x64 Linux Clang Debug"
+		},
+		{
+			"name": "x64-linux-clang-release",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Release"
+			},
+			"inherits": [
+				"x64-linux-clang"
+			],
+			"displayName": "x64 Linux Clang Release"
+		},
+		{
+			"name": "x64-linux-gcc-debug",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug"
+			},
+			"inherits": [
+				"x64-linux-gcc"
+			],
+			"displayName": "x64 Linux GCC Debug"
+		},
+		{
+			"name": "x64-linux-gcc-release",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Release"
+			},
+			"inherits": [
+				"x64-linux-gcc"
+			],
+			"displayName": "x64 Linux GCC Release"
+		},
+		{
+			"name": "x64-windows-msvc-debug",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug",
+				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreadedDebug"
+			},
+			"inherits": [
+				"x64-windows-msvc"
+			],
+			"displayName": "x64 Windows MSVC Debug"
+		},
+		{
+			"name": "x64-windows-msvc-release",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Release",
+				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded"
+			},
+			"inherits": [
+				"x64-windows-msvc"
+			],
+			"displayName": "x64 Windows MSVC Release"
+		}
+	]
+}
