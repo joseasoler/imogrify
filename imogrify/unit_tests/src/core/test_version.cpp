@@ -10,7 +10,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-TEST_CASE("Type traits.")
+TEST_CASE("Type traits")
 {
 	using imfy::core::build::version_t;
 	static_assert(sizeof(version_t) < sizeof(std::uint64_t));

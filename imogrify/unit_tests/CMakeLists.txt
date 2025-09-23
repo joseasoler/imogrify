@@ -8,6 +8,7 @@ add_executable(imogrify_unit_tests
 	src/test_preprocessor_defines.cpp
 	src/core/test_build.cpp
 	src/core/test_version.cpp
+	src/report/test_logger.cpp
 )
 
 target_compile_definitions(imogrify_unit_tests PRIVATE ${IMOGRIFY_CXX_COMPILE_DEFINITIONS})
@@ -17,6 +18,7 @@ target_link_libraries(imogrify_unit_tests PRIVATE
 	Catch2::Catch2
 	fmt::fmt
 	imogrify_core
+	imogrify_report
 )
 
 if (IMOGRIFY_CLANG_FORMAT_BINARY)

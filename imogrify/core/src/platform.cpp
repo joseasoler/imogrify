@@ -3,7 +3,7 @@
  * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include <imfy/platform.hpp>
+#include "imfy/platform.hpp"
 
 #if IMOGRIFY_OS_WINDOWS
 #include <cstdio>

@@ -3,6 +3,7 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 add_subdirectory(core)
+add_subdirectory(report)
 
 if (IMOGRIFY_BUILD_UNIT_TESTS)
 	add_subdirectory(unit_tests)
