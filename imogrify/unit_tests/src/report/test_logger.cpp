@@ -5,7 +5,10 @@
 
 #include <imfy/logger.hpp>
 
+#include <chrono>
 #include <concepts>
+#include <string_view>
+#include <thread>
 #include <type_traits>
 
 #include <catch2/catch_test_macros.hpp>
@@ -28,9 +31,16 @@ TEST_CASE("Basic test")
 	using imfy::report::logger;
 
 	logger logs{level::info};
-	logs.add(level::trace, "Test0");
-	logs.add(level::info, "Test1");
+	logs.add(level::trace, "test_0");
+	constexpr std::string_view test_1{"test_1"};
+	logs.add(level::info, "test_1");
+	constexpr auto duration = std::chrono::microseconds(1);
+	std::this_thread::sleep_for(duration);
+	constexpr std::string_view test_2{"test_2"};
+	logs.add(level::info, test_2);
 
 	const auto data = logs.take_all();
-	REQUIRE(data.size() == 1U);
+	REQUIRE(data.size() == 2U);
+	const auto& first_log = data.front();
+	REQUIRE(first_log.ends_with(test_1));
 }

@@ -7,6 +7,7 @@
 
 #include <imfy/fundamental.hpp>
 
+#include <chrono>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -38,7 +39,9 @@ public:
 	std::vector<std::string> take_all();
 
 private:
+	using clock = std::chrono::steady_clock;
 	std::vector<std::string> _logs;
+	clock::time_point _start_time;
 	uint8_t _min_level{0U};
 };
 

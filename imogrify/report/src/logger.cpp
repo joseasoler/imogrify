@@ -27,7 +27,8 @@ namespace imfy::report
 {
 
 logger::logger(const level min_level)
-	: _min_level{static_cast<uint8_t>(min_level)}
+	: _start_time{clock::now()}
+	, _min_level{static_cast<uint8_t>(min_level)}
 {
 }
 
@@ -37,8 +38,9 @@ void logger::add(const level lvl, const std::string_view text)
 	{
 		return;
 	}
-	constexpr std::string_view format{"[{:s}] {:s}"};
-	_logs.emplace_back(fmt::format(format, level_names[static_cast<size_t>(lvl)], text));
+	constexpr std::string_view format{"[{:d} ns] [{:s}] {:s}"};
+	const int64_t nanoseconds = (clock::now() - _start_time).count();
+	_logs.emplace_back(fmt::format(format, nanoseconds, level_names[static_cast<size_t>(lvl)], text));
 }
 
 std::vector<std::string> logger::take_all()
