@@ -6,6 +6,7 @@
 #include "imfy/logger.hpp"
 
 #include <imfy/fundamental.hpp>
+#include <imfy/thread.hpp>
 
 #include <fmt/format.h>
 
@@ -38,9 +39,11 @@ void logger::add(const level lvl, const std::string_view text)
 	{
 		return;
 	}
-	constexpr std::string_view format{"[{:d} ns] [{:s}] {:s}"};
+	constexpr std::string_view format{"[{:d} ns] [@{:s}] [{:s}] {:s}"};
 	const int64_t nanoseconds = (clock::now() - _start_time).count();
-	_logs.emplace_back(fmt::format(format, nanoseconds, level_names[static_cast<size_t>(lvl)], text));
+	_logs.emplace_back(
+			fmt::format(format, nanoseconds, this_thread::name(), level_names[static_cast<size_t>(lvl)], text)
+	);
 }
 
 std::vector<std::string> logger::take_all()

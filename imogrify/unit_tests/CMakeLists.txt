@@ -7,6 +7,7 @@ add_executable(imogrify_unit_tests
 	src/imogrify_tests_main.cpp
 	src/test_preprocessor_defines.cpp
 	src/core/test_build.cpp
+	src/core/test_thread.cpp
 	src/core/test_version.cpp
 	src/report/test_logger.cpp
 )

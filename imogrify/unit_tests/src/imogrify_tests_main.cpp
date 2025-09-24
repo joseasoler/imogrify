@@ -4,6 +4,7 @@
  */
 
 #include <imfy/platform.hpp>
+#include <imfy/thread.hpp>
 
 #include <cstdlib>
 
@@ -15,5 +16,6 @@ int main(const int argc, char** argv)
 	{
 		return EXIT_FAILURE;
 	}
+	imfy::this_thread::set_name("catch_main");
 	return Catch::Session().run(argc, argv);
 }

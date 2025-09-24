@@ -27,7 +27,7 @@ configure_file(include/imfy/build.hpp.in include/imfy/build.hpp @ONLY)
 
 set(IMOGRIFY_CORE_SOURCE_FILES
 	src/platform.cpp
-		include/imfy/version.hpp
+	src/thread.cpp
 )
 
 add_library(imogrify_core STATIC ${IMOGRIFY_CORE_SOURCE_FILES})
