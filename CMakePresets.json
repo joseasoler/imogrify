@@ -17,7 +17,8 @@
 				"CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
 				"CMAKE_COMPILE_WARNING_AS_ERROR": "ON",
 				"IMOGRIFY_BUILD_UNIT_TESTS": "ON",
-				"IMOGRIFY_CLANG_TIDY": "ON"
+				"IMOGRIFY_CLANG_TIDY": "ON",
+				"IMOGRIFY_USE_LIBASSERT": "ON"
 			}
 		},
 		{
