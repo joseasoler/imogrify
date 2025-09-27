@@ -28,7 +28,7 @@
 #elif IMOGRIFY_COMPILER_MSVC
 #define IMFY_ASSUME(expression, ...) __assume(expression)
 #elif IMOGRIFY_COMPILER_GCC
-#define IMFY_ASSUME(expressio, ...n) __attribute__((assume(expression)))
+#define IMFY_ASSUME(expression, ...) __attribute__((assume(expression)))
 #elif IMOGRIFY_COMPILER_CLANG
 #define IMFY_ASSUME(expression, ...) __builtin_assume(expression)
 #else

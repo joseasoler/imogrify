@@ -17,8 +17,7 @@
 				"CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
 				"CMAKE_COMPILE_WARNING_AS_ERROR": "ON",
 				"IMOGRIFY_BUILD_UNIT_TESTS": "ON",
-				"IMOGRIFY_CLANG_TIDY": "ON",
-				"IMOGRIFY_USE_LIBASSERT": "ON"
+				"IMOGRIFY_CLANG_TIDY": "ON"
 			}
 		},
 		{
@@ -69,64 +68,71 @@
 			]
 		},
 		{
-			"name": "x64-linux-clang-debug",
+			"name": "base-debug",
+			"hidden": true,
 			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "Debug"
-			},
+				"CMAKE_BUILD_TYPE": "Debug",
+				"IMOGRIFY_USE_LIBASSERT": "ON"
+			}
+		},
+		{
+			"name": "base-release",
+			"hidden": true,
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Release"
+			}
+		},
+		{
+			"name": "x64-linux-clang-debug",
 			"inherits": [
-				"x64-linux-clang"
+				"x64-linux-clang",
+				"base-debug"
 			],
 			"displayName": "x64 Linux Clang Debug"
 		},
 		{
 			"name": "x64-linux-clang-release",
-			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "Release"
-			},
 			"inherits": [
-				"x64-linux-clang"
+				"x64-linux-clang",
+				"base-release"
 			],
 			"displayName": "x64 Linux Clang Release"
 		},
 		{
 			"name": "x64-linux-gcc-debug",
-			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "Debug"
-			},
 			"inherits": [
-				"x64-linux-gcc"
+				"x64-linux-gcc",
+				"base-debug"
 			],
 			"displayName": "x64 Linux GCC Debug"
 		},
 		{
 			"name": "x64-linux-gcc-release",
-			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "Release"
-			},
 			"inherits": [
-				"x64-linux-gcc"
+				"x64-linux-gcc",
+				"base-release"
 			],
 			"displayName": "x64 Linux GCC Release"
 		},
 		{
 			"name": "x64-windows-msvc-debug",
 			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "Debug",
 				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreadedDebug"
 			},
 			"inherits": [
-				"x64-windows-msvc"
+				"x64-windows-msvc",
+				"base-debug"
 			],
 			"displayName": "x64 Windows MSVC Debug"
 		},
 		{
 			"name": "x64-windows-msvc-release",
 			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "Release",
 				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded"
 			},
 			"inherits": [
-				"x64-windows-msvc"
+				"x64-windows-msvc",
+				"base-release"
 			],
 			"displayName": "x64 Windows MSVC Release"
 		}
