@@ -5,6 +5,7 @@
 
 #include "imfy/logger.hpp"
 
+#include <imfy/assert.hpp>
 #include <imfy/fundamental.hpp>
 #include <imfy/thread.hpp>
 
@@ -23,6 +24,7 @@ constexpr std::array<std::string_view, static_cast<imfy::size_t>(imfy::report::l
 		"trace", "info", "warn", "error", "critical"
 };
 
+
 }
 
 namespace imfy::report
@@ -33,6 +35,10 @@ logger::logger(const level min_level)
 	, _start_time{clock::now()}
 	, _min_level{static_cast<uint8_t>(min_level)}
 {
+
+	[[maybe_unused]] constexpr auto uint_min_level = static_cast<uint8_t>(level::trace);
+	[[maybe_unused]] constexpr auto uint_max_level = static_cast<uint8_t>(level::critical);
+	IMFY_ASSUME(uint_min_level <= _min_level && _min_level <= uint_max_level);
 }
 
 logger::token_t logger::create_token()
@@ -42,6 +48,7 @@ logger::token_t logger::create_token()
 
 void logger::add_log(const token_t& token, const level lvl, const std::string_view text)
 {
+	IMFY_ASSERT(!text.empty());
 	if (static_cast<uint8_t>(lvl) < _min_level)
 	{
 		return;

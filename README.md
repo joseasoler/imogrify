@@ -23,8 +23,6 @@ Building imogrify requires [CMake](https://cmake.org) 3.25 or newer and a [compi
 - `IMOGRIFY_CLANG_ALL_WARNINGS`: Enables all [clang](https://clang.llvm.org) compiler warnings, except for some which are already known to cause issues. Should be used only for identifying new warnings on compiler updates. Off by default.
 - `IMOGRIFY_CLANG_TIDY`: Analyze the project using [clang-tidy](https://clang.llvm.org/extra/clang-tidy). Warnings will be treated as errors if `CMAKE_COMPILE_WARNING_AS_ERROR` is enabled. Off by default.
 
--DCMAKE_COMPILE_WARNING_AS_ERROR -DIMOGRIFY_BUILD_UNIT_TESTS -DIMOGRIFY_CLANG_TIDY
-
 ### Dependencies
 
 Dependencies are retrieved through the `find_package` CMake feature.
