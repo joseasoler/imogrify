@@ -21,6 +21,8 @@
 
 #if defined(IMOGRIFY_CLANG_TIDY_ANALYSIS)
 #define IMFY_ASSUME(expression, ...) ((void)0)
+#elif !defined(NDEBUG) && IMOGRIFY_USE_LIBASSERT
+#define IMFY_ASSUME(expression, ...) LIBASSERT_INVOKE(expression, "IMFY_ASSUME", debug_assertion, LIBASSERT_NOP_ACTION, __VA_ARGS__)
 #elif !defined(NDEBUG)
 #define IMFY_ASSUME(expression, ...) IMFY_ASSERT(expression, __VA_ARGS__)
 #elif IMOGRIFY_COMPILER_MSVC
