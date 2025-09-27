@@ -16,7 +16,7 @@ int main([[maybe_unused]] const int argc, [[maybe_unused]] const char** argv)
 		return EXIT_FAILURE;
 	}
 	IMFY_ASSUME(argv != nullptr);
-	IMFY_ASSERT(argc == 3);
+	IMFY_ASSERT(argc == 3, "Test", argc, argv);
 
 	return EXIT_SUCCESS;
 }
