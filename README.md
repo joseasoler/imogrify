@@ -31,6 +31,8 @@ Dependencies are retrieved through the `find_package` CMake feature.
 
 - **[Catch2](https://github.com/catchorg/Catch2)**: A modern, C++-native, test framework for unit-tests. Only used if `IMOGRIFY_BUILD_UNIT_TESTS` is enabled.
 
+- **[ConcurrentQueue](https://github.com/cameron314/concurrentqueue)**: An industrial-strength lock-free queue for C++.
+
 - **[fmt](https://fmt.dev/latest/index.html)**: Modern formatting and printing library.
 
 #### vcpkg

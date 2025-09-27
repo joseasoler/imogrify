@@ -17,4 +17,6 @@ target_link_libraries(imogrify_report
 		PRIVATE
 		fmt::fmt
 		imogrify_core
+		PUBLIC
+		concurrentqueue::concurrentqueue
 )

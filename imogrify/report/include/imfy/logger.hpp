@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <imfy/concurrent_queue.hpp>
 #include <imfy/fundamental.hpp>
 
 #include <chrono>
@@ -27,6 +28,7 @@ enum class level : uint8_t
 class logger final
 {
 public:
+	using token_t = moodycamel::ProducerToken;
 	explicit logger(level min_level);
 	~logger() = default;
 
@@ -35,12 +37,15 @@ public:
 	logger& operator=(const logger&) = delete;
 	logger& operator=(logger&&) = default;
 
-	void add(level lvl, std::string_view text);
-	std::vector<std::string> take_all();
+	token_t create_token();
+	void add_log(const token_t& token, level lvl, std::string_view text);
+	[[nodiscard]] bool pending_logs() const;
+	void take_logs(std::vector<std::string>& container);
 
 private:
 	using clock = std::chrono::steady_clock;
-	std::vector<std::string> _logs;
+	moodycamel::ConcurrentQueue<std::string> _logs;
+	moodycamel::ConsumerToken _token;
 	clock::time_point _start_time;
 	uint8_t _min_level{0U};
 };
