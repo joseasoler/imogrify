@@ -4,9 +4,9 @@
 
 include_guard(GLOBAL)
 
-# See README.md for details.
 option(IMOGRIFY_BUILD_UNIT_TESTS "Build unit tests" OFF)
 option(IMOGRIFY_CLANG_TIDY "Analyze the project with clang-tidy" OFF)
+option(IMOGRIFY_USE_LIBASSERT "Implement asserts using libassert" OFF)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	option(IMOGRIFY_CLANG_ALL_WARNINGS

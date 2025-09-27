@@ -9,6 +9,10 @@
 
 #if defined(NDEBUG) || defined(IMOGRIFY_CLANG_TIDY_ANALYSIS)
 #define IMFY_ASSERT(expression) ((void)0)
+#elif IMOGRIFY_USE_LIBASSERT
+
+#include <libassert/assert.hpp>
+#define IMFY_ASSERT(expression) LIBASSERT_INVOKE(expression, "IMFY_ASSERT", debug_assertion, LIBASSERT_NOP_ACTION)
 #else
 #include <cassert>
 

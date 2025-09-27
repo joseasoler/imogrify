@@ -42,5 +42,6 @@ include(cmake/clang_tidy.cmake)
 include(cmake/dependencies/catch2.cmake)
 include(cmake/dependencies/concurrentqueue.cmake)
 include(cmake/dependencies/fmt.cmake)
+include(cmake/dependencies/libassert.cmake)
 
 add_subdirectory(imogrify)

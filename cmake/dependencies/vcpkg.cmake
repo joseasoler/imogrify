@@ -9,6 +9,9 @@ if (VCPKG_TARGET_TRIPLET)
 	if (IMOGRIFY_BUILD_UNIT_TESTS)
 		list(APPEND VCPKG_MANIFEST_FEATURES "imogrify-tests")
 	endif ()
+	if (IMOGRIFY_USE_LIBASSERT)
+		list(APPEND VCPKG_MANIFEST_FEATURES "imogrify-use-libassert")
+	endif ()
 
 	add_dependency_metadata(
 		NAME vcpkg

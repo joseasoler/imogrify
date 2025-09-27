@@ -22,6 +22,7 @@ Building imogrify requires [CMake](https://cmake.org) 3.25 or newer and a [compi
 - `IMOGRIFY_BUILD_UNIT_TESTS`: Builds unit tests. Off by default.
 - `IMOGRIFY_CLANG_ALL_WARNINGS`: Enables all [clang](https://clang.llvm.org) compiler warnings, except for some which are already known to cause issues. Should be used only for identifying new warnings on compiler updates. Off by default.
 - `IMOGRIFY_CLANG_TIDY`: Analyze the project using [clang-tidy](https://clang.llvm.org/extra/clang-tidy). Warnings will be treated as errors if `CMAKE_COMPILE_WARNING_AS_ERROR` is enabled. Off by default.
+- `IMOGRIFY_USE_LIBASSERT`: Implement asserts using [libassert](github.com/jeremy-rifkin/libassert). Off by default.
 
 ### Dependencies
 
@@ -32,6 +33,8 @@ Dependencies are retrieved through the `find_package` CMake feature.
 - **[ConcurrentQueue](https://github.com/cameron314/concurrentqueue)**: An industrial-strength lock-free queue for C++.
 
 - **[fmt](https://fmt.dev/latest/index.html)**: Modern formatting and printing library.
+
+ - **[libassert](github.com/jeremy-rifkin/libassert)**: The most over-engineered C++ assertion library. Only used if `IMOGRIFY_USE_LIBASSERT` is enabled.
 
 #### vcpkg
 

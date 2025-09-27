@@ -12,7 +12,6 @@ if (IMOGRIFY_BUILD_UNIT_TESTS)
 		VERSION ${Catch2_VERSION}
 		DESCRIPTION "A modern, C++-native, test framework for unit-tests."
 		LICENSE_SPDX "BSL-1.0"
-		USAGE "test"
 	)
 
 endif ()

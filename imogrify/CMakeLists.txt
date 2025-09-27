@@ -4,6 +4,7 @@
 
 add_subdirectory(core)
 add_subdirectory(report)
+add_subdirectory(app)
 
 if (IMOGRIFY_BUILD_UNIT_TESTS)
 	add_subdirectory(unit_tests)
