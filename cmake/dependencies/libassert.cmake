@@ -8,6 +8,8 @@ if (IMOGRIFY_USE_LIBASSERT)
 	find_package(libassert REQUIRED)
 
 	list(APPEND IMOGRIFY_CXX_COMPILE_DEFINITIONS IMOGRIFY_USE_LIBASSERT=1)
+	# Assertion failure triggers debug break on the assert line.
+	add_compile_definitions(LIBASSERT_BREAK_ON_FAIL)
 
 	add_dependency_metadata(
 		NAME "libassert"
