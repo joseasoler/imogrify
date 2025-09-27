@@ -14,7 +14,7 @@ imogrify is licensed under the Mozilla Public License, v. 2.0. See the [LICENSE]
 
 ## Building
 
-Building imogrify requires [CMake](https://cmake.org) 4 or newer and a [compiler with C++20 support](https://en.cppreference.com/w/cpp/compiler_support#cpp20). It supports the Windows and Linux operative systems.
+Building imogrify requires [CMake](https://cmake.org) 3.25 or newer and a [compiler with C++20 support](https://en.cppreference.com/w/cpp/compiler_support#cpp20). It supports the Windows and Linux operative systems.
 
 ### CMake options
 
@@ -27,17 +27,19 @@ Building imogrify requires [CMake](https://cmake.org) 4 or newer and a [compiler
 
 ### Dependencies
 
-Dependencies are retrieved through the `find_package` CMake feature. imogrify has optional [vcpkg](https://github.com/microsoft/vcpkg) support, disabled by default.
+Dependencies are retrieved through the `find_package` CMake feature.
+
+- **[Catch2](https://github.com/catchorg/Catch2)**: A modern, C++-native, test framework for unit-tests. Only used if `IMOGRIFY_BUILD_UNIT_TESTS` is enabled.
 
 - **[fmt](https://fmt.dev/latest/index.html)**: Modern formatting and printing library.
 
-With `IMOGRIFY_BUILD_UNIT_TESTS` enabled:
+#### vcpkg
 
-- **[Catch2](https://github.com/catchorg/Catch2)**: A modern, C++-native, test framework for unit-tests.
+imogrify has optional [vcpkg](https://github.com/microsoft/vcpkg) support, disabled by default. imogrify uses custom ports for some of its dependencies, which can be found in the cmake/vcpkg/ports subfolder.
 
 ### CMake presets
 
-imogrify provides a set of CMake presets commonly used during development.
+imogrify provides a set of CMake presets used during development.
 
 ## Acknowledgements
 
