@@ -4,6 +4,7 @@
 
 add_library(imogrify_report STATIC
 		src/report_queue.cpp
+		src/report_utility.cpp
 )
 
 target_include_directories(imogrify_report PUBLIC

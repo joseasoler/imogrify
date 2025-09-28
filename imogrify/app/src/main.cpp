@@ -5,10 +5,12 @@
 
 #include <imfy/fundamental.hpp>
 #include <imfy/platform.hpp>
+#include <imfy/report_utility.hpp>
 
 #include <fmt/base.h>
 
 #include <cstdlib>
+#include <sstream>
 
 namespace
 {
@@ -38,6 +40,10 @@ int main([[maybe_unused]] const int argc, [[maybe_unused]] const char** argv)
 		fmt::println(stderr, "{:s}", error_message);
 		return get_exit_code(exit_status::platform_initialization_failed);
 	}
+
+	std::ostringstream buffer;
+	imfy::report::generate_build_report(buffer);
+	fmt::print("{:s}", buffer.view());
 
 	return get_exit_code(exit_status::success);
 }

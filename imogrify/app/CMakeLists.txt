@@ -14,4 +14,5 @@ target_link_libraries(imogrify_app
 	PRIVATE
 	fmt::fmt
 	imogrify_core
+	imogrify_report
 )
