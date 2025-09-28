@@ -10,10 +10,13 @@
 
 #include <ostream>
 #include <sstream>
+#include <string_view>
 
 namespace
 {
 using namespace imfy::core::build;
+
+constexpr std::string_view list_prefix = " · ";
 
 [[nodiscard]] std::ostream& operator<<(std::ostream& oss, const version_t& version)
 {
@@ -36,9 +39,9 @@ namespace imfy::report
 void generate_build_report(std::ostringstream& buffer)
 {
 	buffer << "Build:" << '\n';
-	buffer << '\t' << project << '\n';
-	buffer << '\t' << "Compiler: " << compiler_name() << ' ' << compiler_version << '\n';
-	buffer << '\t' << "Build type: " << build_type << '\n';
+	buffer << list_prefix << project << '\n';
+	buffer << list_prefix << "Compiler: " << compiler_name() << " [" << compiler_version << ']' << '\n';
+	buffer << list_prefix << "Build type: " << build_type << '\n';
 }
 
 void generate_dependencies_report(std::ostringstream& buffer)
@@ -46,7 +49,7 @@ void generate_dependencies_report(std::ostringstream& buffer)
 	buffer << "Dependencies:" << '\n';
 	for (const auto& dependency : dependencies)
 	{
-		buffer << '\t' << dependency << '\n';
+		buffer << list_prefix << dependency << '\n';
 	}
 }
 
