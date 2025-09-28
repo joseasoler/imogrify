@@ -22,6 +22,7 @@ Building imogrify requires [CMake](https://cmake.org) 3.25 or newer and a [compi
 - `IMOGRIFY_BUILD_UNIT_TESTS`: Builds unit tests. Off by default.
 - `IMOGRIFY_CLANG_TIDY`: Analyze the project using [clang-tidy](https://clang.llvm.org/extra/clang-tidy). Warnings will be treated as errors if `CMAKE_COMPILE_WARNING_AS_ERROR` is enabled. Off by default.
 - `IMOGRIFY_CMAKE_VERBOSE`: Show additional information during CMake configuration. Off by default.
+- `IMOGRIFY_SHOW_DEBUG_REPORTS`: Display debug reports on release builds. Off by default.
 - `IMOGRIFY_USE_LIBASSERT`: Implement asserts using [libassert](github.com/jeremy-rifkin/libassert). Off by default.
 
 ### Dependencies

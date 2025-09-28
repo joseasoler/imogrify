@@ -3,7 +3,7 @@
  * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include "imfy/logger.hpp"
+#include "imfy/report_queue.hpp"
 
 #include <imfy/assert.hpp>
 #include <imfy/fundamental.hpp>
@@ -20,35 +20,32 @@
 namespace
 {
 
-constexpr std::array<std::string_view, static_cast<imfy::size_t>(imfy::report::level::critical) + 1U> level_names{
-		"trace", "info", "warn", "error", "critical"
+constexpr std::array<std::string_view, static_cast<imfy::size_t>(imfy::report::level::fatal) + 1U> level_names{
+		"trace", "info", "warn", "error", "halt", "fatal"
 };
-
 
 }
 
 namespace imfy::report
 {
 
-logger::logger(const level min_level)
+report_queue::report_queue(const level min_level)
 	: _token{_logs}
 	, _start_time{clock::now()}
 	, _min_level{static_cast<uint8_t>(min_level)}
 {
-
 	[[maybe_unused]] constexpr auto uint_min_level = static_cast<uint8_t>(level::trace);
-	[[maybe_unused]] constexpr auto uint_max_level = static_cast<uint8_t>(level::critical);
+	[[maybe_unused]] constexpr auto uint_max_level = static_cast<uint8_t>(level::fatal);
 	IMFY_ASSUME(uint_min_level <= _min_level && _min_level <= uint_max_level);
 }
 
-logger::token_t logger::create_token()
+report_queue::report_token_t report_queue::create_token()
 {
-	return token_t{_logs};
+	return report_token_t{_logs};
 }
 
-void logger::add_log(const token_t& token, const level lvl, const std::string_view text)
+void report_queue::make_report(const report_token_t& token, const level lvl, const std::string_view text)
 {
-	IMFY_ASSERT(!text.empty());
 	if (static_cast<uint8_t>(lvl) < _min_level)
 	{
 		return;
@@ -60,12 +57,22 @@ void logger::add_log(const token_t& token, const level lvl, const std::string_vi
 	);
 }
 
-bool logger::pending_logs() const
+void report_queue::make_debug_report(
+		[[maybe_unused]] const report_token_t& token, [[maybe_unused]] const level lvl,
+		[[maybe_unused]] const std::string_view text
+)
+{
+#if IMOGRIFY_SHOW_DEBUG_REPORTS || !defined(NDEBUG)
+	make_report(token, lvl, text);
+#endif
+}
+
+bool report_queue::pending_reports() const
 {
 	return _logs.size_approx() > 0U;
 }
 
-void logger::take_logs(std::vector<std::string>& container)
+void report_queue::take_reports(std::vector<std::string>& container)
 {
 	const auto max = _logs.size_approx();
 	_logs.try_dequeue_bulk(_token, std::back_inserter(container), max);

@@ -9,7 +9,7 @@ add_executable(imogrify_unit_tests
 	src/core/test_build.cpp
 	src/core/test_thread.cpp
 	src/core/test_version.cpp
-	src/report/test_logger.cpp
+	src/report/test_report_queue.cpp
 )
 
 target_compile_definitions(imogrify_unit_tests PRIVATE ${IMOGRIFY_CXX_COMPILE_DEFINITIONS})
