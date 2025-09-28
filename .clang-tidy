@@ -31,6 +31,7 @@ WarningsAsErrors: '*'
 # All clang-checks are enabled by default. Project-specific diagnostics such as boost or fuchsia are disabled.
 # Other disabled diagnostics are documented below.
 #
+# cert-int09-c: Alias for readability-enum-initial-value
 # clang-diagnostic-unknown-warning-option: Triggered by GCC-only warnings.
 # clang-diagnostic-unused-command-line-argument: Ignore unused command line arguments.
 # cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays: Aliases for modernize-avoid-c-arrays
@@ -54,6 +55,7 @@ Checks: '
 -llvmlibc-*,
 -zircon-*,
 
+-cert-int09-c,
 -clang-diagnostic-unknown-warning-option,
 -clang-diagnostic-unused-command-line-argument,
 -cppcoreguidelines-avoid-c-arrays,-hicpp-avoid-c-arrays,

@@ -6,16 +6,20 @@
 #include <imfy/platform.hpp>
 #include <imfy/thread.hpp>
 
+#include <fmt/base.h>
+
 #include <cstdlib>
 
 #include <catch2/catch_session.hpp>
 
 int main(const int argc, char** argv)
 {
-	if (!imfy::core::platform::initialize())
+	if (const char* error_message = imfy::core::platform::initialize(); error_message != nullptr)
 	{
+		fmt::println(stderr, "{:s}", error_message);
 		return EXIT_FAILURE;
 	}
+
 	imfy::this_thread::set_name("catch_main");
 	return Catch::Session().run(argc, argv);
 }

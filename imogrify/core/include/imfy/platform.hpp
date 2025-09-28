@@ -10,8 +10,8 @@ namespace imfy::core::platform
 
 /**
  * Platform-specific initialization steps.
- * @return False if the operation failed.
+ * @return Null pointer if the operation succeeded. Error string otherwise.
  */
-[[nodiscard]] bool initialize() noexcept;
+[[nodiscard]] const char* initialize() noexcept;
 
 }
