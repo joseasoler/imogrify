@@ -7,10 +7,10 @@ include_guard(GLOBAL)
 if (VCPKG_TARGET_TRIPLET)
 	# Define vcpkg manifest features depending on CMake option status.
 	if (IMOGRIFY_BUILD_UNIT_TESTS)
-		list(APPEND VCPKG_MANIFEST_FEATURES "imogrify-tests")
+		list(APPEND VCPKG_MANIFEST_FEATURES "build-unit-tests")
 	endif ()
 	if (IMOGRIFY_USE_LIBASSERT)
-		list(APPEND VCPKG_MANIFEST_FEATURES "imogrify-use-libassert")
+		list(APPEND VCPKG_MANIFEST_FEATURES "use-libassert")
 	endif ()
 
 	add_dependency_metadata(
@@ -19,5 +19,14 @@ if (VCPKG_TARGET_TRIPLET)
 		DESCRIPTION "A free and open-source C/C++ package manager."
 		LICENSE_SPDX "MIT"
 	)
+
+	if (IMOGRIFY_CMAKE_VERBOSE AND VCPKG_MANIFEST_FEATURES)
+		set(IMOGRIFY_VCPKG_FEATURES_REPORT "vcpkg features:")
+		foreach(VCPKG_FEATURE IN LISTS VCPKG_MANIFEST_FEATURES)
+			string(APPEND IMOGRIFY_VCPKG_FEATURES_REPORT "\n · ${VCPKG_FEATURE}")
+		endforeach ()
+
+		message(STATUS "${IMOGRIFY_VCPKG_FEATURES_REPORT}")
+	endif ()
 
 endif ()

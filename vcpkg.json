@@ -8,13 +8,13 @@
 		"fmt"
 	],
 	"features": {
-		"imogrify-tests": {
+		"build-unit-tests": {
 			"description": "Build unit tests",
 			"dependencies": [
 				"catch2"
 			]
 		},
-		"imogrify-use-libassert": {
+		"use-libassert": {
 			"description": "Implement asserts using libassert",
 			"dependencies": [
 				"libassert"

@@ -44,4 +44,5 @@ include(cmake/dependencies/concurrentqueue.cmake)
 include(cmake/dependencies/fmt.cmake)
 include(cmake/dependencies/libassert.cmake)
 
+# Project source files
 add_subdirectory(imogrify)

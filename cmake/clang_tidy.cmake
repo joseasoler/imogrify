@@ -26,6 +26,6 @@ if (IMOGRIFY_CLANG_TIDY)
 
 		set(CMAKE_CXX_CLANG_TIDY ${IMOGRIFY_CLANG_TIDY_OPTIONS})
 	else ()
-		message(FATAL_ERROR "IMOGRIFY_CLANG_TIDY is enabled but the clang-tidy binary was not found.")
+		message(FATAL_ERROR "clang-tidy binary not found.")
 	endif ()
 endif ()

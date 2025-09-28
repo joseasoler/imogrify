@@ -4,16 +4,7 @@
 
 include_guard(GLOBAL)
 
-if (IMOGRIFY_CLANG_ALL_WARNINGS AND IMOGRIFY_CXX_COMPILER_CLANG)
-	list(APPEND IMOGRIFY_CXX_COMPILE_OPTIONS
-		-Weverything                # Enable all warning except for:
-		-Wno-c++98-compat           # C++20 project.
-		-Wno-c++98-compat-pedantic  # C++20 project.
-		-Wno-covered-switch-default # Prefer a explicit default label.
-		-Wno-documentation          # Fails when tparam is used in concepts.
-		-Wno-unsafe-buffer-usage    # Allow pointer arithmetic.
-	)
-elseif (IMOGRIFY_CXX_COMPILER_CLANG OR IMOGRIFY_CXX_COMPILER_GCC)
+if (IMOGRIFY_CXX_COMPILER_CLANG OR IMOGRIFY_CXX_COMPILER_GCC)
 	# Warnings present in all supported versions of GCC and Clang.
 	list(APPEND IMOGRIFY_CXX_COMPILE_OPTIONS
 		-Wall                # Enables most warnings.
@@ -33,7 +24,6 @@ elseif (IMOGRIFY_CXX_COMPILER_CLANG OR IMOGRIFY_CXX_COMPILER_GCC)
 		-Wswitch-enum        # A switch statement has an index of enumerated type and lacks a case.
 		-Wundef              # An undefined identifier is evaluated in an #if directive.
 	)
-	# Enable additional warnings depending on the compiler type and version in use.
 	if (IMOGRIFY_CXX_COMPILER_GCC)
 		list(APPEND IMOGRIFY_CXX_COMPILE_OPTIONS
 			-Wcast-align=strict         # Pointer casts which increase alignment.
