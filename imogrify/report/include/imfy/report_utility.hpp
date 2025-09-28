@@ -11,5 +11,6 @@ namespace imfy::report
 {
 
 void generate_build_report(std::ostringstream& buffer);
+void generate_dependencies_report(std::ostringstream& buffer);
 
 }
