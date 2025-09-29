@@ -12,6 +12,8 @@
 #include <sstream>
 #include <string_view>
 
+#include "imfy/runtime.hpp"
+
 namespace
 {
 using namespace imfy::core::build;
@@ -50,6 +52,26 @@ void generate_dependencies_report(std::ostringstream& buffer)
 	for (const auto& dependency : dependencies)
 	{
 		buffer << list_prefix << dependency << '\n';
+	}
+}
+
+void generate_runtime_report(std::ostringstream& buffer)
+{
+	if constexpr (!core::runtime::available)
+	{
+		return;
+	}
+	buffer << "Runtime:" << '\n';
+
+	const auto [model, microarchitecture] = core::runtime::get_cpu_info();
+	if (const bool error = model.empty(); !error)
+	{
+		buffer << list_prefix << "CPU Model: " << model << '\n';
+		buffer << list_prefix << "CPU Microarchitecture: " << microarchitecture << '\n';
+	}
+	else
+	{
+		buffer << list_prefix << "CPU information error: " << microarchitecture << '\n';
 	}
 }
 

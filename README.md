@@ -23,19 +23,26 @@ Building imogrify requires [CMake](https://cmake.org) 3.25 or newer and a [compi
 - `IMOGRIFY_CLANG_TIDY`: Analyze the project using [clang-tidy](https://clang.llvm.org/extra/clang-tidy). Warnings will be treated as errors if `CMAKE_COMPILE_WARNING_AS_ERROR` is enabled. Off by default.
 - `IMOGRIFY_CMAKE_VERBOSE`: Show additional information during CMake configuration. Off by default.
 - `IMOGRIFY_SHOW_DEBUG_REPORTS`: Display debug reports on release builds. Off by default.
-- `IMOGRIFY_USE_LIBASSERT`: Implement asserts using [libassert](github.com/jeremy-rifkin/libassert). Off by default.
+- `IMOGRIFY_USE_LIBCPUID`: Provide runtime information using [libcpuid](https://libcpuid.sourceforge.net/). Off by default.
+- `IMOGRIFY_USE_LIBASSERT`: Implement asserts using [libassert](https://github.com/jeremy-rifkin/libassert). Off by default.
 
 ### Dependencies
 
 Dependencies are retrieved through the `find_package` CMake feature.
 
-- **[Catch2](https://github.com/catchorg/Catch2)**: A modern, C++-native, test framework for unit-tests. Only used if `IMOGRIFY_BUILD_UNIT_TESTS` is enabled.
-
 - **[ConcurrentQueue](https://github.com/cameron314/concurrentqueue)**: An industrial-strength lock-free queue for C++.
 
 - **[fmt](https://fmt.dev/latest/index.html)**: Modern formatting and printing library.
 
-- **[libassert](github.com/jeremy-rifkin/libassert)**: The most over-engineered C++ assertion library. Only used if `IMOGRIFY_USE_LIBASSERT` is enabled.
+#### Optional dependencies
+
+These are only required if a CMake option is enabled.
+
+- **[Catch2](https://github.com/catchorg/Catch2)**: A modern, C++-native, test framework for unit-tests. `IMOGRIFY_BUILD_UNIT_TESTS`.
+
+- **[libcpuid](https://libcpuid.sourceforge.net/)**: Provides CPU identification. `IMOGRIFY_USE_LIBCPUID`.
+
+- **[libassert](https://github.com/jeremy-rifkin/libassert)**: The most over-engineered C++ assertion library. `IMOGRIFY_USE_LIBASSERT`.
 
 #### vcpkg
 

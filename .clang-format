@@ -121,6 +121,8 @@ IncludeCategories:
     Priority: 100
   - Regex: '^<libassert.*'
     Priority: 300
+  - Regex: '^<libcpuid.*'
+    Priority: 300
   - Regex: '^<concurrentqueue.*'
     Priority: 300
   - Regex: '^<fmt.*'

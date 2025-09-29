@@ -42,15 +42,15 @@ inline constexpr std::string_view build_type{"@IMOGRIFY_BUILD_TYPE@"};
 
 consteval std::string_view compiler_name()
 {
-	if (IMOGRIFY_COMPILER_CLANG)
+	if constexpr (IMOGRIFY_COMPILER_CLANG)
 	{
 		return "Clang";
 	}
-	if (IMOGRIFY_COMPILER_GCC)
+	if constexpr (IMOGRIFY_COMPILER_GCC)
 	{
 		return "GCC";
 	}
-	if (IMOGRIFY_COMPILER_MSVC)
+	if constexpr (IMOGRIFY_COMPILER_MSVC)
 	{
 		return "MSVC";
 	}

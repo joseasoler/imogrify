@@ -27,6 +27,7 @@ configure_file(include/imfy/build.hpp.in include/imfy/build.hpp @ONLY)
 
 set(IMOGRIFY_CORE_SOURCE_FILES
 	src/platform.cpp
+	src/runtime.cpp
 	src/thread.cpp
 )
 
@@ -44,6 +45,10 @@ target_compile_options(imogrify_core PRIVATE ${IMOGRIFY_CXX_COMPILE_OPTIONS})
 set(IMOGRIFY_CORE_LINK_LIBRARIES_PRIVATE
 		fmt::fmt
 )
+
+if (IMOGRIFY_USE_LIBCPUID)
+	list(APPEND IMOGRIFY_CORE_LINK_LIBRARIES_PRIVATE cpuid::cpuid)
+endif ()
 
 set(IMOGRIFY_CORE_LINK_LIBRARIES_PUBLIC)
 

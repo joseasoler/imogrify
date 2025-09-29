@@ -9,6 +9,7 @@ option(IMOGRIFY_CLANG_TIDY "Analyze the project with clang-tidy" OFF)
 option(IMOGRIFY_CMAKE_VERBOSE "Show additional information during CMake configuration" OFF)
 option(IMOGRIFY_SHOW_DEBUG_REPORTS "Display debug reports on release builds" OFF)
 option(IMOGRIFY_USE_LIBASSERT "Implement asserts using libassert" OFF)
+option(IMOGRIFY_USE_LIBCPUID "Implement CPU runtime information using libcpuid" OFF)
 
 if (IMOGRIFY_CMAKE_VERBOSE)
 	message(STATUS "CMake options:"
@@ -18,5 +19,6 @@ if (IMOGRIFY_CMAKE_VERBOSE)
 			"\n · IMOGRIFY_CMAKE_VERBOSE         ${IMOGRIFY_CMAKE_VERBOSE}"
 			"\n · IMOGRIFY_SHOW_DEBUG_REPORTS    ${IMOGRIFY_SHOW_DEBUG_REPORTS}"
 			"\n · IMOGRIFY_USE_LIBASSERT         ${IMOGRIFY_USE_LIBASSERT}"
+			"\n · IMOGRIFY_USE_LIBCPUID          ${IMOGRIFY_USE_LIBCPUID}"
 	)
 endif ()
