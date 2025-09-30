@@ -40,6 +40,20 @@ constexpr dependency_t project{
 
 inline constexpr std::string_view build_type{"@IMOGRIFY_BUILD_TYPE@"};
 
+consteval std::string_view operative_system_name()
+{
+	if constexpr (IMOGRIFY_OS_LINUX)
+	{
+		return "Linux";
+	}
+	if constexpr (IMOGRIFY_OS_WINDOWS)
+	{
+		return "Windows";
+	}
+
+	return {};
+}
+
 consteval std::string_view compiler_name()
 {
 	if constexpr (IMOGRIFY_COMPILER_CLANG)

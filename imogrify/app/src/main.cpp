@@ -43,8 +43,8 @@ int main([[maybe_unused]] const int argc, [[maybe_unused]] const char** argv)
 
 	std::ostringstream buffer;
 	imfy::report::generate_build_report(buffer);
-	imfy::report::generate_dependencies_report(buffer);
 	imfy::report::generate_runtime_report(buffer);
+	imfy::report::generate_dependencies_report(buffer);
 	fmt::print("{:s}", buffer.view());
 
 	return get_exit_code(exit_status::success);

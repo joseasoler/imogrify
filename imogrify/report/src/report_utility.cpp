@@ -42,6 +42,7 @@ void generate_build_report(std::ostringstream& buffer)
 {
 	buffer << "Build:" << '\n';
 	buffer << list_prefix << project << '\n';
+	buffer << list_prefix << "OS: " << operative_system_name() << '\n';
 	buffer << list_prefix << "Compiler: " << compiler_name() << " [" << compiler_version << ']' << '\n';
 	buffer << list_prefix << "Build type: " << build_type << '\n';
 }
