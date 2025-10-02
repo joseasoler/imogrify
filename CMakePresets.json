@@ -70,7 +70,7 @@
 			"name": "compiler-gcc",
 			"hidden": true
 		},
-				{
+		{
 			"name": "compiler-msvc",
 			"hidden": true
 		},
@@ -103,14 +103,13 @@
 				"VCPKG_TARGET_TRIPLET": "imfy-x64-linux-clang"
 			}
 		},
-				{
+		{
 			"name": "triplet-vcpkg-windows-msvc",
 			"hidden": true,
 			"cacheVariables": {
 				"VCPKG_TARGET_TRIPLET": "imfy-x64-windows-msvc"
 			}
 		},
-		
 		{
 			"name": "system-linux-gcc-release",
 			"inherits": [
@@ -165,7 +164,7 @@
 				"triplet-vcpkg-linux-gcc"
 			]
 		},
-				{
+		{
 			"name": "vcpkg-windows-msvc-debug",
 			"cacheVariables": {
 				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreadedDebug"
