@@ -8,6 +8,8 @@ cmake-build*
 # IDE project folders
 .idea
 .vs
+.cache
+.vscode
 
 # User provided CMake presets
 CMakeUserPresets.json
