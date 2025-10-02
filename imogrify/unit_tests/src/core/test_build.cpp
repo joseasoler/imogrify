@@ -45,8 +45,9 @@ template <typename array>
 	return iterator != std::cend(arr) && (*iterator) == str_view;
 }
 
-constexpr std::array compatible_licenses_spdx{"Apache-2.0"sv, "BSD-2-Clause"sv, "BSL-1.0"sv, "CC0-1.0"sv,
-																							"libpng-2.0"sv, "MIT"sv,					"MPL-2.0"sv, "Zlib"sv};
+constexpr std::array compatible_licenses_spdx{"Apache-2.0"sv, "BSD-2-Clause"sv, "BSD-3-Clause"sv,
+																							"BSL-1.0"sv,		"CC0-1.0"sv,			"libpng-2.0"sv,
+																							"MIT"sv,				"MPL-2.0"sv,			"Zlib"sv};
 
 }
 

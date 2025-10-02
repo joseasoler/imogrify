@@ -3,6 +3,7 @@
  * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+#include <imfy/arguments.hpp>
 #include <imfy/fundamental.hpp>
 #include <imfy/platform.hpp>
 #include <imfy/report_utility.hpp>
@@ -10,7 +11,9 @@
 #include <fmt/base.h>
 
 #include <cstdlib>
+#include <exception>
 #include <sstream>
+#include <variant>
 
 namespace
 {
@@ -26,14 +29,12 @@ enum class exit_status : imfy::uint8_t
 	max_allowed_code = 63U,					// First code used by sysexits.h.
 };
 
-[[nodiscard]] int get_exit_code(const exit_status status)
+[[nodiscard]] int get_exit_code(const exit_status status) noexcept
 {
 	return static_cast<int>(status);
 }
 
-}
-
-int main([[maybe_unused]] const int argc, [[maybe_unused]] const char** argv)
+int imogrify_main(const int argc, const char** argv)
 {
 	if (const char* error_message = imfy::core::platform::initialize(); error_message != nullptr)
 	{
@@ -41,11 +42,40 @@ int main([[maybe_unused]] const int argc, [[maybe_unused]] const char** argv)
 		return get_exit_code(exit_status::platform_initialization_failed);
 	}
 
-	std::ostringstream buffer;
-	imfy::report::generate_build_report(buffer);
-	imfy::report::generate_runtime_report(buffer);
-	imfy::report::generate_dependencies_report(buffer);
-	fmt::print("{:s}", buffer.view());
+	const auto result = imfy::arguments::parse(argc, argv);
+	if (std::holds_alternative<imfy::arguments::parse_exit_code>(result))
+	{
+		return std::get<imfy::arguments::parse_exit_code>(result).exit_code;
+	}
+
+	const auto argument_data = std::get<imfy::arguments::data>(result);
+
+	if (argument_data.build_report)
+	{
+		std::ostringstream buffer;
+		imfy::report::generate_build_report(buffer);
+		imfy::report::generate_runtime_report(buffer);
+		imfy::report::generate_dependencies_report(buffer);
+		fmt::print("{:s}", buffer.view());
+	}
 
 	return get_exit_code(exit_status::success);
+}
+
+}
+
+int main(const int argc, const char** argv)
+{
+	try
+	{
+		return imogrify_main(argc, argv);
+	}
+	catch (std::exception& exc)
+	{
+		fmt::println(stderr, "Uncaught exception: {:s}", exc.what());
+	}
+	catch (...)
+	{
+		fmt::println(stderr, "Uncaught unknown exception.");
+	}
 }

@@ -6,6 +6,8 @@
 add_subdirectory(core)
 # Report data back to the user.
 add_subdirectory(report)
+# Arguments definition and parsing.
+add_subdirectory(arguments)
 # Executable of the application.
 add_subdirectory(app)
 

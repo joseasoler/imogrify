@@ -119,13 +119,15 @@ IncludeCategories:
   # SortPriority can be used to sort includes in the same group.
   - Regex: '^<imfy.*'
     Priority: 100
-  - Regex: '^<libassert.*'
-    Priority: 300
-  - Regex: '^<libcpuid.*'
+  - Regex: '^<CLI.*'
     Priority: 300
   - Regex: '^<concurrentqueue.*'
     Priority: 300
   - Regex: '^<fmt.*'
+    Priority: 300
+  - Regex: '^<libassert.*'
+    Priority: 300
+  - Regex: '^<libcpuid.*'
     Priority: 300
   - Regex: '^<catch2.*'
     Priority: 1000

@@ -15,4 +15,5 @@ target_link_libraries(imogrify_app
 	fmt::fmt
 	imogrify_core
 	imogrify_report
+	imogrify_arguments
 )
