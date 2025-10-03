@@ -13,6 +13,9 @@ cmake-build*
 *.kdev4
 CMakeLists.txt.user
 
+# Compile commands
+compile_commands.json
+
 # User provided CMake presets
 CMakeUserPresets.json
 
