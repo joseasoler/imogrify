@@ -37,7 +37,7 @@ result_t parse(const int argc, const char** argv)
 	catch (const CLI::Error& exc)
 	{
 		// CLI11 prints its own errors in this call.
-		return parse_exit_code{app.exit(exc)};
+		return parse_exit_code{.exit_code = app.exit(exc)};
 	}
 
 	return data;
