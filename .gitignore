@@ -5,11 +5,13 @@
 build
 cmake-build*
 
-# IDE project folders
+# IDE project folders and files
 .idea
 .vs
 .cache
 .vscode
+*.kdev4
+CMakeLists.txt.user
 
 # User provided CMake presets
 CMakeUserPresets.json
