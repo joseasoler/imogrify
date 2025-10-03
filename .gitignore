@@ -13,7 +13,7 @@ cmake-build*
 *.kdev4
 CMakeLists.txt.user
 
-# Compile commands
+# Compile commands for clangd
 compile_commands.json
 
 # User provided CMake presets

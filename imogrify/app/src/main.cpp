@@ -12,6 +12,7 @@
 
 #include <cstdlib>
 #include <exception>
+#include <span>
 #include <sstream>
 #include <variant>
 
@@ -34,7 +35,7 @@ enum class exit_status : imfy::uint8_t
 	return static_cast<int>(status);
 }
 
-int imogrify_main(const int argc, const char** argv)
+int imogrify_main(std::span<const char*> args)
 {
 	if (const char* error_message = imfy::core::platform::initialize(); error_message != nullptr)
 	{
@@ -42,7 +43,7 @@ int imogrify_main(const int argc, const char** argv)
 		return get_exit_code(exit_status::platform_initialization_failed);
 	}
 
-	const auto result = imfy::arguments::parse(argc, argv);
+	const auto result = imfy::arguments::parse(args);
 	if (std::holds_alternative<imfy::arguments::parse_exit_code>(result))
 	{
 		return std::get<imfy::arguments::parse_exit_code>(result).exit_code;
@@ -68,7 +69,7 @@ int main(const int argc, const char** argv)
 {
 	try
 	{
-		return imogrify_main(argc, argv);
+		return imogrify_main(std::span<const char*>{argv, static_cast<imfy::size_t>(argc)});
 	}
 	catch (std::exception& exc)
 	{

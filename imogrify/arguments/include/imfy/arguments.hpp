@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <span>
 #include <variant>
 
 namespace imfy::arguments
@@ -22,6 +23,6 @@ struct parse_exit_code final
 
 using result_t = std::variant<data, parse_exit_code>;
 
-[[nodiscard]] result_t parse(int argc, const char** argv);
+[[nodiscard]] result_t parse(std::span<const char*> arguments);
 
 }
