@@ -23,11 +23,11 @@ namespace
 // NOLINTNEXTLINE(readability-enum-initial-value)
 enum class exit_status : imfy::uint8_t
 {
-	success = EXIT_SUCCESS,					// Everything went fine.
-	general_error = EXIT_FAILURE,		// Prefer more specific exit codes when possible.
-	bash_shell_misuse = 2U,					// Avoided as it has special meaning on bash.
-	platform_initialization_failed, // imogrify platform-specific initialization has failed.
-	max_allowed_code = 63U,					// First code used by sysexits.h.
+	success = static_cast<imfy::uint8_t>(EXIT_SUCCESS),				// Everything went fine.
+	general_error = static_cast<imfy::uint8_t>(EXIT_FAILURE), // Prefer more specific exit codes when possible.
+	bash_shell_misuse = 2U,																		// Avoided as it has special meaning on bash.
+	platform_initialization_failed,														// imogrify platform-specific initialization has failed.
+	max_allowed_code = 63U,																		// First code used by sysexits.h.
 };
 
 [[nodiscard]] int get_exit_code(const exit_status status) noexcept

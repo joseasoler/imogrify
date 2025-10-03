@@ -4,6 +4,7 @@
  */
 
 #include <imfy/fundamental.hpp>
+#include <imfy/report_level.hpp>
 #include <imfy/report_queue.hpp>
 
 #include <chrono>

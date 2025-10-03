@@ -7,6 +7,7 @@
 
 #include <imfy/assert.hpp>
 #include <imfy/fundamental.hpp>
+#include <imfy/report_level.hpp>
 #include <imfy/thread.hpp>
 
 #include <fmt/format.h>
