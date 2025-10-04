@@ -58,21 +58,20 @@ void generate_dependencies_report(std::ostringstream& buffer)
 
 void generate_runtime_report(std::ostringstream& buffer)
 {
-	if constexpr (!core::runtime::available)
+	if constexpr (core::runtime::available)
 	{
-		return;
-	}
-	buffer << "Runtime:" << '\n';
+		buffer << "Runtime:" << '\n';
 
-	const auto [model, microarchitecture] = core::runtime::get_cpu_info();
-	if (const bool error = model.empty(); !error)
-	{
-		buffer << list_prefix << "CPU Model: " << model << '\n';
-		buffer << list_prefix << "CPU Microarchitecture: " << microarchitecture << '\n';
-	}
-	else
-	{
-		buffer << list_prefix << "CPU information error: " << microarchitecture << '\n';
+		const auto [model, microarchitecture] = core::runtime::get_cpu_info();
+		if (const bool error = model.empty(); !error)
+		{
+			buffer << list_prefix << "CPU Model: " << model << '\n';
+			buffer << list_prefix << "CPU Microarchitecture: " << microarchitecture << '\n';
+		}
+		else
+		{
+			buffer << list_prefix << "CPU information error: " << microarchitecture << '\n';
+		}
 	}
 }
 
