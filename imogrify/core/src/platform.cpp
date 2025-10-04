@@ -35,9 +35,8 @@ const char* initialize() noexcept
 	{
 		return "UTF-8 encoding issue. Could not set standard error buffer size.";
 	}
-#else
-	return nullptr;
 #endif
+	return nullptr;
 }
 
 }
