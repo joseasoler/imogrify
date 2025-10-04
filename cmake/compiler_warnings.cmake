@@ -73,5 +73,13 @@ elseif(IMOGRIFY_CXX_COMPILER_MSVC)
 		/W4
 		# Code analysis.
 		/analyze
+		# concurrentqueue library
+		/wd6011
+		# fmt library
+		/wd6294
+		# fmt library
+		/wd6240
+		# fmt library
+		/wd6326
 	)
 endif()

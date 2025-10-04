@@ -386,5 +386,40 @@
 				}
 			]
 		}
+		,
+		{
+			"name": "vcpkg-windows-msvc-debug",
+			"steps": [
+				{
+					"type": "configure",
+					"name": "vcpkg-windows-msvc-debug"
+				},
+				{
+					"type": "build",
+					"name": "vcpkg-windows-msvc-debug"
+				},
+				{
+					"type": "test",
+					"name": "vcpkg-windows-msvc-debug"
+				}
+			]
+		},
+		{
+			"name": "vcpkg-windows-msvc-release",
+			"steps": [
+				{
+					"type": "configure",
+					"name": "vcpkg-windows-msvc-release"
+				},
+				{
+					"type": "build",
+					"name": "vcpkg-windows-msvc-release"
+				},
+				{
+					"type": "test",
+					"name": "vcpkg-windows-msvc-release"
+				}
+			]
+		}
 	]
 }
