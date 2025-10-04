@@ -252,5 +252,92 @@
 			"name": "vcpkg-windows-msvc-release",
 			"configurePreset": "vcpkg-windows-msvc-release"
 		}
+	],
+	"workflowPresets": [
+		{
+			"name": "system-linux-gcc-release",
+			"steps": [
+				{
+					"type": "configure",
+					"name": "system-linux-gcc-release"
+				},
+				{
+					"type": "build",
+					"name": "system-linux-gcc-release"
+				},
+				{
+					"type": "test",
+					"name": "system-linux-gcc-release"
+				}
+			]
+		},
+		{
+			"name": "vcpkg-linux-gcc-debug",
+			"steps": [
+				{
+					"type": "configure",
+					"name": "vcpkg-linux-gcc-debug"
+				},
+				{
+					"type": "build",
+					"name": "vcpkg-linux-gcc-debug"
+				},
+				{
+					"type": "test",
+					"name": "vcpkg-linux-gcc-debug"
+				}
+			]
+		},
+		{
+			"name": "vcpkg-linux-gcc-release",
+			"steps": [
+				{
+					"type": "configure",
+					"name": "vcpkg-linux-gcc-release"
+				},
+				{
+					"type": "build",
+					"name": "vcpkg-linux-gcc-release"
+				},
+				{
+					"type": "test",
+					"name": "vcpkg-linux-gcc-release"
+				}
+			]
+		},
+		{
+			"name": "vcpkg-linux-clang-debug",
+			"steps": [
+				{
+					"type": "configure",
+					"name": "vcpkg-linux-clang-debug"
+				},
+				{
+					"type": "build",
+					"name": "vcpkg-linux-clang-debug"
+				},
+				{
+					"type": "test",
+					"name": "vcpkg-linux-clang-debug"
+				}
+			]
+		},
+		{
+			"name": "vcpkg-linux-clang-release",
+			"steps": [
+				{
+					"type": "configure",
+					"name": "vcpkg-linux-clang-release"
+				},
+				{
+					"type": "build",
+					"name": "vcpkg-linux-clang-release"
+				},
+				{
+					"type": "test",
+					"name": "vcpkg-linux-clang-release"
+				}
+			]
+		}
 	]
 }
