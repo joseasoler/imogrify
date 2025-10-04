@@ -31,7 +31,6 @@ cpu_info get_cpu_info()
 		return {.model{}, .microarchitecture = cpuid_error()};
 	}
 
-	cpu_info info{};
 	info.model = static_cast<const char*>(cpu_id.brand_str);
 	// Remove trailing spaces from the CPU brand string.
 	auto last_index = info.model.find_last_not_of(' ');

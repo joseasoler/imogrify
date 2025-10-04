@@ -35,6 +35,7 @@
 			"name": "pkg-vcpkg",
 			"hidden": true,
 			"cacheVariables": {
+				"IMOGRIFY_USE_LIBCPUID": "ON",
 				"VCPKG_OVERLAY_PORTS": {
 					"type": "FILEPATH",
 					"value": "${sourceDir}/cmake/vcpkg/ports"
