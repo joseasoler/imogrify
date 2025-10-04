@@ -1,6 +1,5 @@
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+# This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
+# distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 cmake_minimum_required(VERSION 3.25)
 
@@ -11,7 +10,8 @@ include(cmake/dependency_data.cmake)
 # vcpkg manifest features to use in the build. Ignored when vcpkg is not in use.
 include(cmake/dependencies/vcpkg.cmake)
 
-project(imogrify
+project(
+	imogrify
 	VERSION 0.1.0
 	DESCRIPTION "Batch image format conversion tool."
 	HOMEPAGE_URL "https://github.com/joseasoler/imogrify"
