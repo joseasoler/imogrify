@@ -11,7 +11,7 @@
 namespace imfy::core::runtime
 {
 
-inline constexpr bool available = IMOGRIFY_USE_LIBCPUID > 0;
+inline constexpr bool available = IMOGRIFY_USE_LIBCPUID;
 
 struct cpu_info final
 {
