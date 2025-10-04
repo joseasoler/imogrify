@@ -4,6 +4,8 @@
 include_guard(GLOBAL)
 
 if(IMOGRIFY_BUILD_UNIT_TESTS)
+	enable_testing()
+
 	find_package(Catch2 CONFIG REQUIRED)
 
 	add_dependency_metadata(

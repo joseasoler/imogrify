@@ -26,5 +26,6 @@ if (IMOGRIFY_CLANG_FORMAT_BINARY)
 	add_dependencies(imogrify_unit_tests imogrify_clang_format)
 endif ()
 
-enable_testing()
-add_test(NAME imogrify_unit_tests COMMAND $<TARGET_FILE:imogrify_unit_tests>)
+include(Catch)
+set(CMAKE_CATCH_DISCOVER_TESTS_DISCOVERY_MODE PRE_TEST)
+catch_discover_tests(imogrify_unit_tests)
