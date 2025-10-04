@@ -16,7 +16,7 @@ using namespace std::string_view_literals;
 namespace
 {
 
-constexpr char to_lower(const char character)
+char to_lower(const char character)
 {
 	return character >= 'A' && character <= 'Z' ? static_cast<char>(character + 'a' - 'A') : character;
 }
@@ -25,21 +25,21 @@ using imfy::core::build::dependency_t;
 
 struct is_case_insensitive_less final
 {
-	consteval bool operator()(const std::string_view lhs, const std::string_view rhs) const
+	bool operator()(const std::string_view lhs, const std::string_view rhs) const
 	{
 		return std::ranges::lexicographical_compare(
 				lhs, rhs, [](const char lhs_char, const char rhs_char) { return to_lower(lhs_char) < to_lower(rhs_char); }
 		);
 	}
 
-	consteval bool operator()(const dependency_t& lhs, const dependency_t& rhs) const
+	bool operator()(const dependency_t& lhs, const dependency_t& rhs) const
 	{
 		return operator()(lhs.name, rhs.name);
 	}
 };
 
 template <typename array>
-[[nodiscard]] constexpr bool is_in_array(const array& arr, const std::string_view& str_view)
+[[nodiscard]] bool is_in_array(const array& arr, const std::string_view& str_view)
 {
 	const auto iterator = std::find(arr.cbegin(), arr.cend(), str_view);
 	return iterator != std::cend(arr) && (*iterator) == str_view;
@@ -53,7 +53,7 @@ constexpr std::array compatible_licenses_spdx{"Apache-2.0"sv, "BSD-2-Clause"sv, 
 
 TEST_CASE("Test data")
 {
-	static_assert(std::ranges::is_sorted(compatible_licenses_spdx, is_case_insensitive_less{}));
+	REQUIRE(std::ranges::is_sorted(compatible_licenses_spdx, is_case_insensitive_less{}));
 }
 
 TEST_CASE("Project information")
@@ -63,7 +63,7 @@ TEST_CASE("Project information")
 	static_assert(!project.name.empty());
 	static_assert(project.version.major > 0U || project.version.minor > 0U || project.version.patch > 0U);
 	static_assert(project.license == "MPL-2.0"sv);
-	static_assert(is_in_array(compatible_licenses_spdx, project.license));
+	REQUIRE(is_in_array(compatible_licenses_spdx, project.license));
 	static_assert(!build_type.empty());
 }
 
@@ -79,19 +79,19 @@ TEST_CASE("Dependency metadata")
 	using namespace imfy::core::build;
 
 	static_assert(std::size(dependencies) > 0U);
-	static_assert(std::ranges::is_sorted(dependencies, is_case_insensitive_less{}));
+	REQUIRE(std::ranges::is_sorted(dependencies, is_case_insensitive_less{}));
 
-	static_assert(std::ranges::all_of(
+	REQUIRE(std::ranges::all_of(
 			dependencies, [](const dependency_t& dependency) -> bool
 			{ return !dependency.name.empty() && !dependency.description.empty() && !dependency.license.empty(); }
 	));
 
-	static_assert(std::ranges::all_of(
+	REQUIRE(std::ranges::all_of(
 			dependencies, [](const dependency_t& dependency) -> bool
 			{ return dependency.version.major != 0U || dependency.version.minor != 0U || dependency.version.patch != 0U; }
 	));
 
-	static_assert(std::ranges::all_of(
+	REQUIRE(std::ranges::all_of(
 			dependencies,
 			[](const dependency_t& dependency) -> bool { return is_in_array(compatible_licenses_spdx, dependency.license); }
 	));
