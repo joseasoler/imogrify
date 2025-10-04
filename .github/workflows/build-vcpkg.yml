@@ -1,0 +1,57 @@
+# Copyright (c) 2020 GitHub
+# Copyright (c) 2025 Imogrify contributors
+# File licensed under the MIT license (see CI_LICENSE for details).
+# Based on: https://github.com/actions/starter-workflows/blob/main/ci/cmake-multi-platform.yml
+
+name: build-vcpkg
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.runner }}
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        cmake_workflow_preset:
+          [
+            vcpkg-linux-gcc-debug-tidy,
+            vcpkg-linux-clang-release,
+            vcpkg-windows-msvc-release,
+          ]
+        include:
+          - cmake_workflow_preset: vcpkg-linux-gcc-debug-tidy
+            runner: ubuntu-24.04
+          - cmake_workflow_preset: vcpkg-linux-clang-release
+            runner: ubuntu-24.04
+          - cmake_workflow_preset: vcpkg-windows-msvc-release
+            runner: windows-latest
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v5
+
+      - name: Setup MSVC
+        if: matrix.runner == 'windows-latest'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          # Must be updated along with cmake/dependencies/vcpkg.cmake and vcpkg.json.
+          vcpkgGitCommitId: "4334d8b4c8916018600212ab4dd4bbdc343065d1" # 2025.9.17
+
+      - name: Setup python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
+      - name: Install build dependencies
+        run: pip install ninja
+
+      - name: CMake workflow
+        run: cmake --workflow ${{ matrix.cmake_workflow_preset }}
