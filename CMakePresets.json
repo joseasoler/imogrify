@@ -222,5 +222,35 @@
 			"name": "vcpkg-windows-msvc-release",
 			"configurePreset": "vcpkg-windows-msvc-release"
 		}
+	],
+	"testPresets": [
+		{
+			"name": "system-linux-gcc-release",
+			"configurePreset": "system-linux-gcc-release"
+		},
+		{
+			"name": "vcpkg-linux-gcc-debug",
+			"configurePreset": "vcpkg-linux-gcc-debug"
+		},
+		{
+			"name": "vcpkg-linux-gcc-release",
+			"configurePreset": "vcpkg-linux-gcc-release"
+		},
+		{
+			"name": "vcpkg-linux-clang-debug",
+			"configurePreset": "vcpkg-linux-clang-debug"
+		},
+		{
+			"name": "vcpkg-linux-clang-release",
+			"configurePreset": "vcpkg-linux-clang-release"
+		},
+		{
+			"name": "vcpkg-windows-msvc-debug",
+			"configurePreset": "vcpkg-windows-msvc-debug"
+		},
+		{
+			"name": "vcpkg-windows-msvc-release",
+			"configurePreset": "vcpkg-windows-msvc-release"
+		}
 	]
 }
