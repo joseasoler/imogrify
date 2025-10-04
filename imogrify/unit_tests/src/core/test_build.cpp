@@ -32,10 +32,7 @@ struct is_case_insensitive_less final
 		);
 	}
 
-	bool operator()(const dependency_t& lhs, const dependency_t& rhs) const
-	{
-		return operator()(lhs.name, rhs.name);
-	}
+	bool operator()(const dependency_t& lhs, const dependency_t& rhs) const { return operator()(lhs.name, rhs.name); }
 };
 
 template <typename array>
@@ -81,18 +78,24 @@ TEST_CASE("Dependency metadata")
 	static_assert(std::size(dependencies) > 0U);
 	REQUIRE(std::ranges::is_sorted(dependencies, is_case_insensitive_less{}));
 
-	REQUIRE(std::ranges::all_of(
-			dependencies, [](const dependency_t& dependency) -> bool
-			{ return !dependency.name.empty() && !dependency.description.empty() && !dependency.license.empty(); }
-	));
+	REQUIRE(
+			std::ranges::all_of(
+					dependencies, [](const dependency_t& dependency) -> bool
+					{ return !dependency.name.empty() && !dependency.description.empty() && !dependency.license.empty(); }
+			)
+	);
 
-	REQUIRE(std::ranges::all_of(
-			dependencies, [](const dependency_t& dependency) -> bool
-			{ return dependency.version.major != 0U || dependency.version.minor != 0U || dependency.version.patch != 0U; }
-	));
+	REQUIRE(
+			std::ranges::all_of(
+					dependencies, [](const dependency_t& dependency) -> bool
+					{ return dependency.version.major != 0U || dependency.version.minor != 0U || dependency.version.patch != 0U; }
+			)
+	);
 
-	REQUIRE(std::ranges::all_of(
-			dependencies,
-			[](const dependency_t& dependency) -> bool { return is_in_array(compatible_licenses_spdx, dependency.license); }
-	));
+	REQUIRE(
+			std::ranges::all_of(
+					dependencies, [](const dependency_t& dependency) -> bool
+					{ return is_in_array(compatible_licenses_spdx, dependency.license); }
+			)
+	);
 }

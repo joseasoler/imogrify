@@ -3,6 +3,8 @@
  * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+#include <type_traits>
+
 #include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("Operative system preprocessor defines.")
@@ -10,7 +12,7 @@ TEST_CASE("Operative system preprocessor defines.")
 	static_assert(IMOGRIFY_OS_LINUX + IMOGRIFY_OS_WINDOWS <= 1U);
 }
 
-TEST_CASE("Compiler preprocessor defines.")
+TEST_CASE("Compiler preprocessor defines")
 {
 	static_assert(IMOGRIFY_COMPILER_CLANG + IMOGRIFY_COMPILER_GCC + IMOGRIFY_COMPILER_MSVC <= 1U);
 
@@ -25,27 +27,9 @@ TEST_CASE("Compiler preprocessor defines.")
 #endif
 }
 
-TEST_CASE("CMake option preprocessor defines.")
+TEST_CASE("CMake option preprocessor defines")
 {
-	// NOLINTBEGIN(misc-redundant-expression)
-
-#if !defined(IMOGRIFY_SHOW_DEBUG_REPORTS)
-	static_assert(false, "CMake error, IMOGRIFY_SHOW_DEBUG_REPORTS is undefined.");
-#else
-	static_assert(IMOGRIFY_SHOW_DEBUG_REPORTS == 0 || IMOGRIFY_SHOW_DEBUG_REPORTS == 1);
-#endif
-
-#if !defined(IMOGRIFY_USE_LIBASSERT)
-	static_assert(false, "CMake error, IMOGRIFY_USE_LIBASSERT is undefined.");
-#else
-	static_assert(IMOGRIFY_USE_LIBASSERT == 0 || IMOGRIFY_USE_LIBASSERT == 1);
-#endif
-
-#if !defined(IMOGRIFY_USE_LIBCPUID)
-	static_assert(false, "CMake error, IMOGRIFY_USE_LIBCPUID is undefined.");
-#else
-	static_assert(IMOGRIFY_USE_LIBCPUID == 0 || IMOGRIFY_USE_LIBCPUID == 1);
-#endif
-
-	// NOLINTEND(misc-redundant-expression)
+	static_assert(std::is_same_v<decltype(IMOGRIFY_SHOW_DEBUG_REPORTS), bool>);
+	static_assert(std::is_same_v<decltype(IMOGRIFY_USE_LIBASSERT), bool>);
+	static_assert(std::is_same_v<decltype(IMOGRIFY_USE_LIBCPUID), bool>);
 }
