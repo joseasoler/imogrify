@@ -7,16 +7,25 @@
 	},
 	"configurePresets": [
 		{
-			"name": "base-development",
+			"name": "base-workflow",
 			"binaryDir": "build/${presetName}",
 			"hidden": true,
 			"generator": "Ninja",
 			"cacheVariables": {
 				"CMAKE_COMPILE_WARNING_AS_ERROR": "ON",
 				"IMOGRIFY_BUILD_UNIT_TESTS": "ON",
-				"IMOGRIFY_CLANG_TIDY": "ON",
 				"IMOGRIFY_CMAKE_VERBOSE": "ON"
 			}
+		},
+		{
+			"name": "base-development",
+			"hidden": true,
+			"cacheVariables": {
+				"IMOGRIFY_CLANG_TIDY": "ON"
+			},
+			"inherits": [
+				"base-workflow"
+			]
 		},
 		{
 			"name": "pkg-system",
@@ -113,7 +122,7 @@
 		{
 			"name": "system-linux-gcc-release",
 			"inherits": [
-				"base-development",
+				"base-workflow",
 				"pkg-system",
 				"os-linux",
 				"compiler-gcc",
@@ -123,7 +132,7 @@
 		{
 			"name": "vcpkg-linux-gcc-debug",
 			"inherits": [
-				"base-development",
+				"base-workflow",
 				"pkg-vcpkg",
 				"os-linux",
 				"compiler-gcc",
@@ -134,7 +143,7 @@
 		{
 			"name": "vcpkg-linux-gcc-release",
 			"inherits": [
-				"base-development",
+				"base-workflow",
 				"pkg-vcpkg",
 				"os-linux",
 				"compiler-gcc",
@@ -145,7 +154,7 @@
 		{
 			"name": "vcpkg-linux-clang-debug",
 			"inherits": [
-				"base-development",
+				"base-workflow",
 				"pkg-vcpkg",
 				"os-linux",
 				"compiler-clang",
@@ -156,7 +165,7 @@
 		{
 			"name": "vcpkg-linux-clang-release",
 			"inherits": [
-				"base-development",
+				"base-workflow",
 				"pkg-vcpkg",
 				"os-linux",
 				"compiler-clang",
@@ -170,7 +179,7 @@
 				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreadedDebug"
 			},
 			"inherits": [
-				"base-development",
+				"base-workflow",
 				"pkg-vcpkg",
 				"os-windows",
 				"compiler-msvc",
@@ -184,12 +193,34 @@
 				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded"
 			},
 			"inherits": [
-				"base-development",
+				"base-workflow",
 				"pkg-vcpkg",
 				"os-windows",
 				"compiler-msvc",
 				"build-release",
 				"triplet-vcpkg-windows-msvc"
+			]
+		},
+		{
+			"name": "dev-linux-debug",
+			"inherits": [
+				"base-development",
+				"pkg-vcpkg",
+				"os-linux",
+				"compiler-gcc",
+				"build-debug",
+				"triplet-vcpkg-linux-gcc"
+			]
+		},
+		{
+			"name": "dev-linux-release",
+			"inherits": [
+				"base-development",
+				"pkg-vcpkg",
+				"os-linux",
+				"compiler-gcc",
+				"build-release",
+				"triplet-vcpkg-linux-gcc"
 			]
 		}
 	],
@@ -221,6 +252,14 @@
 		{
 			"name": "vcpkg-windows-msvc-release",
 			"configurePreset": "vcpkg-windows-msvc-release"
+		},
+		{
+			"name": "dev-linux-debug",
+			"configurePreset": "dev-linux-debug"
+		},
+		{
+			"name": "dev-linux-release",
+			"configurePreset": "dev-linux-release"
 		}
 	],
 	"testPresets": [
@@ -251,6 +290,14 @@
 		{
 			"name": "vcpkg-windows-msvc-release",
 			"configurePreset": "vcpkg-windows-msvc-release"
+		},
+		{
+			"name": "dev-linux-debug",
+			"configurePreset": "dev-linux-debug"
+		},
+		{
+			"name": "dev-linux-release",
+			"configurePreset": "dev-linux-release"
 		}
 	],
 	"workflowPresets": [
@@ -272,36 +319,36 @@
 			]
 		},
 		{
-			"name": "vcpkg-linux-gcc-debug",
+			"name": "vcpkg-linux-gcc-debug-tidy",
 			"steps": [
 				{
 					"type": "configure",
-					"name": "vcpkg-linux-gcc-debug"
+					"name": "dev-linux-debug"
 				},
 				{
 					"type": "build",
-					"name": "vcpkg-linux-gcc-debug"
+					"name": "dev-linux-debug"
 				},
 				{
 					"type": "test",
-					"name": "vcpkg-linux-gcc-debug"
+					"name": "dev-linux-debug"
 				}
 			]
 		},
 		{
-			"name": "vcpkg-linux-gcc-release",
+			"name": "vcpkg-linux-gcc-release-tidy",
 			"steps": [
 				{
 					"type": "configure",
-					"name": "vcpkg-linux-gcc-release"
+					"name": "dev-linux-release"
 				},
 				{
 					"type": "build",
-					"name": "vcpkg-linux-gcc-release"
+					"name": "dev-linux-release"
 				},
 				{
 					"type": "test",
-					"name": "vcpkg-linux-gcc-release"
+					"name": "dev-linux-release"
 				}
 			]
 		},

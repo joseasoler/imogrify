@@ -14,7 +14,7 @@ Create an issue on the [tracker](https://github.com/joseasoler/imogrify/issues) 
 
 - Check that compilers report no warnings by enabling the `CMAKE_COMPILE_WARNING_AS_ERROR` CMake option.
 
-- Make sure that [clang-tidy](https://clang.llvm.org/extra/clang-tidy) and [clang-format](https://clang.llvm.org/docs/ClangFormat.html) are enabled and report no issues.
+- Make sure that [clang-tidy](https://clang.llvm.org/extra/clang-tidy) and [clang-format](https://clang.llvm.org/docs/ClangFormat.html) report no issues.
 
 - Unit tests must be built by enabling the `IMOGRIFY_BUILD_UNIT_TESTS` CMake option. They must be updated as needed and run successfully.
 
