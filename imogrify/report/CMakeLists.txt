@@ -1,7 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
 # distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-add_library(imogrify_report STATIC src/report_queue.cpp src/report_utility.cpp)
+add_library(imogrify_report STATIC src/report_level.cpp src/report_queue.cpp src/report_utility.cpp)
 
 target_include_directories(imogrify_report PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>/include)
 

@@ -12,20 +12,10 @@
 
 #include <fmt/format.h>
 
-#include <array>
 #include <iterator>
 #include <string>
 #include <string_view>
 #include <vector>
-
-namespace
-{
-
-constexpr std::array<std::string_view, static_cast<imfy::size_t>(imfy::report::level::fatal) + 1U> level_names{
-		"trace", "info", "warn", "error", "halt", "fatal"
-};
-
-}
 
 namespace imfy::report
 {
@@ -53,9 +43,7 @@ void report_queue::make_report(const report_token_t& token, const level lvl, con
 	}
 	constexpr std::string_view format{"[{:d} ns] [@{:s}] [{:s}] {:s}"};
 	const int64_t nanoseconds = (clock::now() - _start_time).count();
-	_logs.enqueue(
-			token, fmt::format(format, nanoseconds, this_thread::name(), level_names[static_cast<size_t>(lvl)], text)
-	);
+	_logs.enqueue(token, fmt::format(format, nanoseconds, this_thread::name(), level_name(lvl), text));
 }
 
 void report_queue::make_debug_report(
