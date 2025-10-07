@@ -119,8 +119,6 @@ IncludeCategories:
   # SortPriority can be used to sort includes in the same group.
   - Regex: '^<imfy.*'
     Priority: 100
-  - Regex: '^<CLI.*'
-    Priority: 300
   - Regex: '^<concurrentqueue.*'
     Priority: 300
   - Regex: '^<fmt.*'

@@ -33,8 +33,6 @@ Dependencies are retrieved through the `find_package` CMake feature.
 
 - **[ConcurrentQueue](https://github.com/cameron314/concurrentqueue)**: An industrial-strength lock-free queue for C++.
 
-- **[CLI11](https://github.com/CLIUtils/CLI11)**: Command line parser for C++11.
-
 - **[fmt](https://fmt.dev/latest/index.html)**: Modern formatting and printing library.
 
 #### Optional dependencies

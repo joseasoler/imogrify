@@ -72,17 +72,17 @@ TEST_CASE("Project information")
 {
 	using namespace imfy::core::build;
 
-	static_assert(!project.name.empty());
-	static_assert(project.version.major > 0U || project.version.minor > 0U || project.version.patch > 0U);
-	static_assert(project.license == "MPL-2.0"sv);
+	STATIC_REQUIRE(!project.name.empty());
+	STATIC_REQUIRE(project.version.major > 0U || project.version.minor > 0U || project.version.patch > 0U);
+	STATIC_REQUIRE(project.license == "MPL-2.0"sv);
 	REQUIRE(is_in_array(compatible_licenses_spdx, project.license));
-	static_assert(!build_type.empty());
+	STATIC_REQUIRE(!build_type.empty());
 }
 
 TEST_CASE("Compiler information")
 {
 	using namespace imfy::core::build;
-	static_assert(!compiler_name().empty(), "Unsupported compiler. Please update the compiler metadata information.");
+	STATIC_REQUIRE(!compiler_name().empty());
 	static_assert(compiler_version.major > 0U || compiler_version.minor > 0U || compiler_version.patch > 0U);
 }
 
@@ -90,7 +90,7 @@ TEST_CASE("Dependency metadata")
 {
 	using namespace imfy::core::build;
 
-	static_assert(std::size(dependencies) > 0U);
+	STATIC_REQUIRE(std::size(dependencies) > 0U);
 	REQUIRE(std::ranges::is_sorted(dependencies, is_case_insensitive_less{}));
 	REQUIRE(std::ranges::all_of(dependencies, valid_dependency_text));
 	REQUIRE(std::ranges::all_of(dependencies, valid_dependency_version));
