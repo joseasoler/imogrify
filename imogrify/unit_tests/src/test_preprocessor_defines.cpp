@@ -9,19 +9,19 @@
 
 TEST_CASE("Operative system preprocessor defines.")
 {
-	static_assert(IMOGRIFY_OS_LINUX + IMOGRIFY_OS_WINDOWS <= 1U);
+	STATIC_REQUIRE(IMOGRIFY_OS_LINUX + IMOGRIFY_OS_WINDOWS <= 1U);
 }
 
 TEST_CASE("Compiler preprocessor defines")
 {
-	static_assert(IMOGRIFY_COMPILER_CLANG + IMOGRIFY_COMPILER_GCC + IMOGRIFY_COMPILER_MSVC <= 1U);
+	STATIC_REQUIRE(IMOGRIFY_COMPILER_CLANG + IMOGRIFY_COMPILER_GCC + IMOGRIFY_COMPILER_MSVC <= 1U);
 
 #if IMOGRIFY_COMPILER_MSVC
 #if !defined(UNICODE) || !defined(_UNICODE)
-	static_assert(false, "Unicode and UTF-8 support must be enabled when using MSVC.");
+	STATIC_REQUIRE(false);
 #endif
 #if defined(_MSVC_TRADITIONAL) && _MSVC_TRADITIONAL != 0
-	static_assert(false, "Preprocessor conformance mode must be enabled when using MSVC.");
+	STATIC_REQUIRE(false);
 #endif
 
 #endif
@@ -29,7 +29,7 @@ TEST_CASE("Compiler preprocessor defines")
 
 TEST_CASE("CMake option preprocessor defines")
 {
-	static_assert(std::is_same_v<decltype(IMOGRIFY_SHOW_DEBUG_REPORTS), bool>);
-	static_assert(std::is_same_v<decltype(IMOGRIFY_USE_LIBASSERT), bool>);
-	static_assert(std::is_same_v<decltype(IMOGRIFY_USE_LIBCPUID), bool>);
+	STATIC_REQUIRE(std::is_same_v<decltype(IMOGRIFY_SHOW_DEBUG_REPORTS), bool>);
+	STATIC_REQUIRE(std::is_same_v<decltype(IMOGRIFY_USE_LIBASSERT), bool>);
+	STATIC_REQUIRE(std::is_same_v<decltype(IMOGRIFY_USE_LIBCPUID), bool>);
 }

@@ -20,14 +20,10 @@
 TEST_CASE("Report queue type traits")
 {
 	using imfy::report::report_queue;
-	static_assert(
-			!std::is_default_constructible_v<report_queue>, "Report queues must have a min level set during construction."
-	);
-	static_assert(
-			!std::is_copy_constructible_v<report_queue> && !std::is_copy_assignable_v<report_queue> &&
-					std::movable<report_queue>,
-			"Report queue is a move-only type."
-	);
+	STATIC_REQUIRE(!std::is_default_constructible_v<report_queue>);
+	STATIC_REQUIRE(!std::is_copy_constructible_v<report_queue>);
+	STATIC_REQUIRE(!std::is_copy_assignable_v<report_queue>);
+	STATIC_REQUIRE(std::movable<report_queue>);
 }
 
 TEST_CASE("Basic test")

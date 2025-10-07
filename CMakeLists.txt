@@ -41,7 +41,6 @@ include(cmake/clang_tidy.cmake)
 # Project dependencies.
 include(cmake/dependencies/catch2.cmake)
 include(cmake/dependencies/concurrentqueue.cmake)
-include(cmake/dependencies/cli11.cmake)
 include(cmake/dependencies/libcpuid.cmake)
 include(cmake/dependencies/fmt.cmake)
 include(cmake/dependencies/libassert.cmake)

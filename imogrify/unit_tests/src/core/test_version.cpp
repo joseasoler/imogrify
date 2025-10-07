@@ -13,10 +13,10 @@
 TEST_CASE("Type traits")
 {
 	using imfy::core::build::version_t;
-	static_assert(sizeof(version_t) < sizeof(std::uint64_t));
-	static_assert(std::is_trivially_copyable_v<version_t> && std::is_standard_layout_v<version_t>);
+	STATIC_REQUIRE(sizeof(version_t) < sizeof(std::uint64_t));
+	STATIC_REQUIRE(std::is_trivially_copyable_v<version_t> && std::is_standard_layout_v<version_t>);
 
-	static_assert(version_t{}.major == 0U);
-	static_assert(version_t{}.minor == 0U);
-	static_assert(version_t{}.patch == 0U);
+	STATIC_REQUIRE(version_t{}.major == 0U);
+	STATIC_REQUIRE(version_t{}.minor == 0U);
+	STATIC_REQUIRE(version_t{}.patch == 0U);
 }

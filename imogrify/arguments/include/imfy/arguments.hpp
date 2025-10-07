@@ -5,7 +5,10 @@
 
 #pragma once
 
+#include <imfy/exit_status.hpp>
+
 #include <span>
+#include <string_view>
 #include <variant>
 
 namespace imfy::arguments
@@ -14,14 +17,10 @@ namespace imfy::arguments
 struct data final
 {
 	bool build_report{};
+	bool help{};
 };
 
-struct parse_exit_code final
-{
-	int exit_code;
-};
-
-using result_t = std::variant<data, parse_exit_code>;
+using result_t = std::variant<data, core::exit_status>;
 
 [[nodiscard]] result_t parse(std::span<const char*> arguments);
 

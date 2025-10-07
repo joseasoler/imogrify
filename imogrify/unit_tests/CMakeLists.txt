@@ -10,6 +10,7 @@ add_executable(imogrify_unit_tests
 	src/core/test_thread.cpp
 	src/core/test_version.cpp
 	src/report/test_report_queue.cpp
+	src/arguments/test_arguments_definition.cpp
 )
 
 target_compile_definitions(imogrify_unit_tests PRIVATE ${IMOGRIFY_CXX_COMPILE_DEFINITIONS})
@@ -20,6 +21,7 @@ target_link_libraries(imogrify_unit_tests PRIVATE
 	fmt::fmt
 	imogrify_core
 	imogrify_report
+	imogrify_arguments
 )
 
 if (IMOGRIFY_CLANG_FORMAT_BINARY)
