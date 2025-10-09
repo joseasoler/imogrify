@@ -11,6 +11,7 @@
 
 #include <fmt/base.h>
 
+#include <cstdio>
 #include <exception>
 #include <span>
 #include <sstream>
