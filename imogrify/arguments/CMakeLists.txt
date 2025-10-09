@@ -1,7 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
 # distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-add_library(imogrify_arguments STATIC src/arguments.cpp)
+add_library(imogrify_arguments STATIC "src/arguments_parse.cpp")
 
 target_include_directories(imogrify_arguments PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>/include)
 
