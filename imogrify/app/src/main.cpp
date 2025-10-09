@@ -10,12 +10,12 @@
 #include <imfy/report_utility.hpp>
 
 #include <fmt/base.h>
+#include <tl/expected.hpp>
 
 #include <cstdio>
 #include <exception>
 #include <span>
 #include <sstream>
-#include <variant>
 
 namespace
 {
@@ -37,12 +37,12 @@ int imogrify_main(std::span<const char*> args)
 
 	const auto result = imfy::arguments::parse(args);
 	using imfy::core::exit_status;
-	if (std::holds_alternative<exit_status>(result))
+	if (!result.has_value())
 	{
-		return get_exit_code(std::get<exit_status>(result));
+		return get_exit_code(result.error());
 	}
 
-	const auto argument_data = std::get<imfy::arguments::data>(result);
+	const auto& argument_data = result.value();
 
 	if (argument_data.build_report)
 	{

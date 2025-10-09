@@ -7,6 +7,8 @@
 
 #include <imfy/exit_status.hpp>
 
+#include <tl/expected.hpp>
+
 #include <span>
 #include <string_view>
 #include <variant>
@@ -20,7 +22,7 @@ struct data final
 	bool help{};
 };
 
-using result_t = std::variant<data, core::exit_status>;
+using result_t = tl::expected<data, core::exit_status>;
 
 [[nodiscard]] result_t parse(std::span<const char*> arguments);
 
