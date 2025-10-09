@@ -4,7 +4,8 @@
 include_guard(GLOBAL)
 
 option(IMOGRIFY_BUILD_UNIT_TESTS "Build unit tests" OFF)
-option(IMOGRIFY_CLANG_TIDY "Analyze the project with clang-tidy" OFF)
+option(IMOGRIFY_CLANG_FORMAT "Check code formatting using clang-format" OFF)
+option(IMOGRIFY_CLANG_TIDY "Analyze the project using clang-tidy" OFF)
 option(IMOGRIFY_CMAKE_VERBOSE "Show additional information during CMake configuration" OFF)
 option(IMOGRIFY_SHOW_DEBUG_REPORTS "Display debug reports on release builds" OFF)
 option(IMOGRIFY_USE_LIBASSERT "Implement asserts using libassert" OFF)
@@ -15,6 +16,7 @@ if(IMOGRIFY_CMAKE_VERBOSE)
 		STATUS "CMake options:"
 					 "\n · CMAKE_COMPILE_WARNING_AS_ERROR ${CMAKE_COMPILE_WARNING_AS_ERROR}"
 					 "\n · IMOGRIFY_BUILD_UNIT_TESTS      ${IMOGRIFY_BUILD_UNIT_TESTS}"
+					 "\n · IMOGRIFY_CLANG_FORMAT          ${IMOGRIFY_CLANG_FORMAT}"
 					 "\n · IMOGRIFY_CLANG_TIDY            ${IMOGRIFY_CLANG_TIDY}"
 					 "\n · IMOGRIFY_CMAKE_VERBOSE         ${IMOGRIFY_CMAKE_VERBOSE}"
 					 "\n · IMOGRIFY_SHOW_DEBUG_REPORTS    ${IMOGRIFY_SHOW_DEBUG_REPORTS}"

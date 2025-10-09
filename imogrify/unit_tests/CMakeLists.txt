@@ -22,7 +22,7 @@ target_link_libraries(imogrify_unit_tests PRIVATE
 	imogrify_report
 )
 
-if (IMOGRIFY_CLANG_FORMAT_BINARY)
+if (IMOGRIFY_CLANG_FORMAT)
 	add_dependencies(imogrify_unit_tests imogrify_clang_format)
 endif ()
 
