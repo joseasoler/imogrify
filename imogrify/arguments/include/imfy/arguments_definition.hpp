@@ -103,8 +103,6 @@ private:
 	std::string_view _value;
 };
 
-void arg_def_error();
-
 class arg_def final
 {
 public:
@@ -113,10 +111,18 @@ public:
 		, _snm{snm}
 		, _hlp{hlp}
 	{
-		if (!_lnm.valid() || !_snm.valid() || !_hlp.valid())
-		{
-			arg_def_error();
-		}
+	}
+
+	consteval arg_def(const std::string_view lnm, const std::string_view hlp)
+		: _lnm{lnm}
+		, _snm{'\0'}
+		, _hlp{hlp}
+	{
+	}
+
+	[[nodiscard]] consteval bool valid() const noexcept
+	{
+		return _lnm.valid() && (_snm.valid() || _snm.value() == '\0') && _hlp.valid();
 	}
 
 private:

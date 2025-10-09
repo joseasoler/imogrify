@@ -41,3 +41,13 @@ TEST_CASE("help_def")
 	STATIC_REQUIRE(help_def{"word"}.valid());
 	STATIC_REQUIRE(!help_def{""}.valid());
 }
+
+TEST_CASE("arg_def")
+{
+	using imfy::arguments::arg_def;
+	STATIC_REQUIRE(arg_def{"word", 'a', "help"}.valid());
+	STATIC_REQUIRE(arg_def{"word", "help"}.valid());
+	STATIC_REQUIRE(!arg_def{"#ord", 'a', "help"}.valid());
+	STATIC_REQUIRE(!arg_def{"word", '#', "help"}.valid());
+	STATIC_REQUIRE(!arg_def{"word", 'a', ""}.valid());
+}
