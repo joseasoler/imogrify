@@ -3,16 +3,19 @@
  * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include "imfy/arguments.hpp"
+#pragma once
+
+#include <imfy/arguments.hpp>
+#include <imfy/exit_status.hpp>
+
+#include <tl/expected.hpp>
 
 #include <span>
+#include <string_view>
 
 namespace imfy::arguments
 {
+using result_t = tl::expected<data, core::exit_status>;
 
-result_t parse([[maybe_unused]] const std::span<const char*> arguments)
-{
-	return {};
-}
-
+[[nodiscard]] result_t parse(std::span<const char*> arguments);
 }

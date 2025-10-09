@@ -3,15 +3,16 @@
  * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#pragma once
+#include "imfy/arguments_parse.hpp"
+
+#include <span>
 
 namespace imfy::arguments
 {
 
-struct data final
+result_t parse([[maybe_unused]] const std::span<const char*> arguments)
 {
-	bool build_report{};
-	bool help{};
-};
+	return {};
+}
 
 }
