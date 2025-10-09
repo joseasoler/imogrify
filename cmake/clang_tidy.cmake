@@ -19,6 +19,10 @@ if(IMOGRIFY_CLANG_TIDY)
 				-extra-arg=-DIMOGRIFY_CLANG_TIDY_ANALYSIS
 		)
 
+		if(IMOGRIFY_CXX_COMPILER_MSVC)
+			list(APPEND IMOGRIFY_CLANG_TIDY_OPTIONS --extra-arg=/EHsc)
+		endif()
+
 		if(CMAKE_COMPILE_WARNING_AS_ERROR)
 			list(APPEND IMOGRIFY_CLANG_TIDY_OPTIONS -warnings-as-errors=*)
 		endif()
