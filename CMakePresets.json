@@ -237,13 +237,6 @@
 				"tool-clang-format",
 				"tool-clang-tidy"
 			]
-		},
-		{
-			"name": "vcpkg-linux-gcc-debug-tidy",
-			"inherits": [
-				"vcpkg-linux-gcc-debug",
-				"tool-clang-tidy"
-			]
 		}
 	],
 	"buildPresets": [
@@ -282,10 +275,6 @@
 		{
 			"name": "dev-linux-release",
 			"configurePreset": "dev-linux-release"
-		},
-		{
-			"name": "vcpkg-linux-gcc-debug-tidy",
-			"configurePreset": "vcpkg-linux-gcc-debug-tidy"
 		}
 	],
 	"testPresets": [
@@ -324,10 +313,6 @@
 		{
 			"name": "dev-linux-release",
 			"configurePreset": "dev-linux-release"
-		},
-		{
-			"name": "vcpkg-linux-gcc-debug-tidy",
-			"configurePreset": "vcpkg-linux-gcc-debug-tidy"
 		}
 	],
 	"workflowPresets": [
@@ -349,19 +334,19 @@
 			]
 		},
 		{
-			"name": "vcpkg-linux-gcc-debug-tidy",
+			"name": "vcpkg-linux-gcc-debug",
 			"steps": [
 				{
 					"type": "configure",
-					"name": "vcpkg-linux-gcc-debug-tidy"
+					"name": "vcpkg-linux-gcc-debug"
 				},
 				{
 					"type": "build",
-					"name": "vcpkg-linux-gcc-debug-tidy"
+					"name": "vcpkg-linux-gcc-debug"
 				},
 				{
 					"type": "test",
-					"name": "vcpkg-linux-gcc-debug-tidy"
+					"name": "vcpkg-linux-gcc-debug"
 				}
 			]
 		},

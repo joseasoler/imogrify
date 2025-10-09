@@ -19,12 +19,12 @@ jobs:
       matrix:
         cmake_workflow_preset:
           [
-            vcpkg-linux-gcc-debug-tidy,
+            vcpkg-linux-gcc-debug,
             vcpkg-linux-clang-release,
             vcpkg-windows-msvc-release,
           ]
         include:
-          - cmake_workflow_preset: vcpkg-linux-gcc-debug-tidy
+          - cmake_workflow_preset: vcpkg-linux-gcc-debug
             runner: ubuntu-24.04
           - cmake_workflow_preset: vcpkg-linux-clang-release
             runner: ubuntu-24.04

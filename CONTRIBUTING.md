@@ -12,6 +12,6 @@ Create an issue on the [tracker](https://github.com/joseasoler/imogrify/issues) 
 
 ### Source code contributions
 
-It is recommended to use the dev- CMake presets as they will run all required checks automatically. You will need relatively recent versions of [clang-tidy](https://clang.llvm.org/extra/clang-tidy) and [clang-format](https://clang.llvm.org/docs/ClangFormat.html). Also please make sure that unit tests compile and run successfully. These conditions will also be checked by CI.
+It is recommended to use the dev- CMake presets as they will run all required checks automatically. You will need the latest version of [clang-tidy](https://clang.llvm.org/extra/clang-tidy) and [clang-format](https://clang.llvm.org/docs/ClangFormat.html). Also please make sure that unit tests compile and run successfully. These conditions will also be checked by CI.
 
 imogrify uses UTF-8 encoding by default. Check the [UTF-8 Everywhere Manifesto](http://utf8everywhere.org) for details.
