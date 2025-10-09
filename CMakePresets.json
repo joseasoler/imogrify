@@ -21,6 +21,7 @@
 			"name": "base-development",
 			"hidden": true,
 			"cacheVariables": {
+				"IMOGRIFY_CLANG_FORMAT": "ON",
 				"IMOGRIFY_CLANG_TIDY": "ON"
 			},
 			"inherits": [
@@ -222,6 +223,34 @@
 				"compiler-gcc",
 				"build-release",
 				"triplet-vcpkg-linux-gcc"
+			]
+		},
+		{
+			"name": "dev-windows-debug",
+			"cacheVariables": {
+				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreadedDebug"
+			},
+			"inherits": [
+				"base-development",
+				"pkg-vcpkg",
+				"os-windows",
+				"compiler-msvc",
+				"build-debug",
+				"triplet-vcpkg-windows-msvc"
+			]
+		},
+		{
+			"name": "dev-windows-release",
+			"cacheVariables": {
+				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded"
+			},
+			"inherits": [
+				"base-development",
+				"pkg-vcpkg",
+				"os-windows",
+				"compiler-msvc",
+				"build-release",
+				"triplet-vcpkg-windows-msvc"
 			]
 		}
 	],

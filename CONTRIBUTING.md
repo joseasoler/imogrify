@@ -12,10 +12,6 @@ Create an issue on the [tracker](https://github.com/joseasoler/imogrify/issues) 
 
 ### Source code contributions
 
-- Check that compilers report no warnings by enabling the `CMAKE_COMPILE_WARNING_AS_ERROR` CMake option.
+It is recommended to use the dev- CMake presets as they will run all required checks automatically. You will need relatively recent versions of [clang-tidy](https://clang.llvm.org/extra/clang-tidy) and [clang-format](https://clang.llvm.org/docs/ClangFormat.html). Also please make sure that unit tests compile and run successfully. These conditions will also be checked by CI.
 
-- Make sure that [clang-tidy](https://clang.llvm.org/extra/clang-tidy) and [clang-format](https://clang.llvm.org/docs/ClangFormat.html) report no issues.
-
-- Unit tests must be built by enabling the `IMOGRIFY_BUILD_UNIT_TESTS` CMake option. They must be updated as needed and run successfully.
-
-- imogrify uses UTF-8 encoding by default. Check the [UTF-8 Everywhere Manifesto](http://utf8everywhere.org) for details.
+imogrify uses UTF-8 encoding by default. Check the [UTF-8 Everywhere Manifesto](http://utf8everywhere.org) for details.
