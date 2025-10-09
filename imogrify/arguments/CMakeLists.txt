@@ -8,4 +8,4 @@ target_include_directories(imogrify_arguments PUBLIC $<BUILD_INTERFACE:${CMAKE_C
 target_compile_definitions(imogrify_arguments PRIVATE ${IMOGRIFY_CXX_COMPILE_DEFINITIONS})
 target_compile_options(imogrify_arguments PRIVATE ${IMOGRIFY_CXX_COMPILE_OPTIONS})
 
-target_link_libraries(imogrify_arguments PRIVATE fmt::fmt imogrify_core)
+target_link_libraries(imogrify_arguments PRIVATE fmt::fmt imogrify_core PUBLIC tl::expected)

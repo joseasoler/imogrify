@@ -6,7 +6,7 @@ add_executable(imogrify_app ${PROJECT_SOURCE_DIR}/imogrify_application.manifest 
 target_compile_definitions(imogrify_app PRIVATE ${IMOGRIFY_CXX_COMPILE_DEFINITIONS})
 target_compile_options(imogrify_app PRIVATE ${IMOGRIFY_CXX_COMPILE_OPTIONS})
 
-target_link_libraries(imogrify_app PRIVATE fmt::fmt imogrify_core imogrify_report imogrify_arguments)
+target_link_libraries(imogrify_app PRIVATE fmt::fmt tl::expected imogrify_core imogrify_report imogrify_arguments)
 
 if (IMOGRIFY_CLANG_FORMAT)
 	add_dependencies(imogrify_app imogrify_clang_format)
