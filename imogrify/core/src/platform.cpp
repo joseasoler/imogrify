@@ -7,9 +7,9 @@
 
 #if IMOGRIFY_OS_WINDOWS
 
-#include <imfy/fundamental.hpp>
 
 #include <cstdio>
+#include <imfy/fundamental.hpp>
 
 // NOLINTNEXTLINE(misc-include-cleaner)
 #include <Windows.h>
@@ -21,7 +21,6 @@ namespace imfy::core::platform
 const char* initialize() noexcept
 {
 #if IMOGRIFY_OS_WINDOWS
-	// NOLINTNEXTLINE(misc-include-cleaner)
 	if (const auto console_output = static_cast<bool>(SetConsoleOutputCP(CP_UTF8)); !console_output)
 	{
 		return "UTF-8 encoding issue. Could not set terminal output code page to CP_UTF8.";
