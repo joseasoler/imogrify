@@ -18,15 +18,18 @@
 			}
 		},
 		{
-			"name": "base-development",
+			"name": "tool-clang-format",
 			"hidden": true,
 			"cacheVariables": {
-				"IMOGRIFY_CLANG_FORMAT": "ON",
+				"IMOGRIFY_CLANG_FORMAT": "ON"
+			}
+		},
+		{
+			"name": "tool-clang-tidy",
+			"hidden": true,
+			"cacheVariables": {
 				"IMOGRIFY_CLANG_TIDY": "ON"
-			},
-			"inherits": [
-				"base-workflow"
-			]
+			}
 		},
 		{
 			"name": "pkg-system",
@@ -206,51 +209,40 @@
 		{
 			"name": "dev-linux-debug",
 			"inherits": [
-				"base-development",
-				"pkg-vcpkg",
-				"os-linux",
-				"compiler-gcc",
-				"build-debug",
-				"triplet-vcpkg-linux-gcc"
+				"vcpkg-linux-gcc-debug",
+				"tool-clang-format",
+				"tool-clang-tidy"
 			]
 		},
 		{
 			"name": "dev-linux-release",
 			"inherits": [
-				"base-development",
-				"pkg-vcpkg",
-				"os-linux",
-				"compiler-gcc",
-				"build-release",
-				"triplet-vcpkg-linux-gcc"
+				"vcpkg-linux-gcc-release",
+				"tool-clang-format",
+				"tool-clang-tidy"
 			]
 		},
 		{
 			"name": "dev-windows-debug",
-			"cacheVariables": {
-				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreadedDebug"
-			},
 			"inherits": [
-				"base-development",
-				"pkg-vcpkg",
-				"os-windows",
-				"compiler-msvc",
-				"build-debug",
-				"triplet-vcpkg-windows-msvc"
+				"vcpkg-windows-msvc-debug",
+				"tool-clang-format",
+				"tool-clang-tidy"
 			]
 		},
 		{
 			"name": "dev-windows-release",
-			"cacheVariables": {
-				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded"
-			},
 			"inherits": [
-				"base-development",
-				"pkg-vcpkg",
-				"os-windows",
-				"compiler-msvc",
-				"build-release",
-				"triplet-vcpkg-windows-msvc"
+				"vcpkg-windows-msvc-release",
+				"tool-clang-format",
+				"tool-clang-tidy"
+			]
+		},
+		{
+			"name": "vcpkg-linux-gcc-debug-tidy",
+			"inherits": [
+				"vcpkg-linux-gcc-debug",
+				"tool-clang-tidy"
 			]
 		}
 	],
@@ -290,6 +282,10 @@
 		{
 			"name": "dev-linux-release",
 			"configurePreset": "dev-linux-release"
+		},
+		{
+			"name": "vcpkg-linux-gcc-debug-tidy",
+			"configurePreset": "vcpkg-linux-gcc-debug-tidy"
 		}
 	],
 	"testPresets": [
@@ -328,6 +324,10 @@
 		{
 			"name": "dev-linux-release",
 			"configurePreset": "dev-linux-release"
+		},
+		{
+			"name": "vcpkg-linux-gcc-debug-tidy",
+			"configurePreset": "vcpkg-linux-gcc-debug-tidy"
 		}
 	],
 	"workflowPresets": [
@@ -353,49 +353,15 @@
 			"steps": [
 				{
 					"type": "configure",
-					"name": "dev-linux-debug"
+					"name": "vcpkg-linux-gcc-debug-tidy"
 				},
 				{
 					"type": "build",
-					"name": "dev-linux-debug"
+					"name": "vcpkg-linux-gcc-debug-tidy"
 				},
 				{
 					"type": "test",
-					"name": "dev-linux-debug"
-				}
-			]
-		},
-		{
-			"name": "vcpkg-linux-gcc-release-tidy",
-			"steps": [
-				{
-					"type": "configure",
-					"name": "dev-linux-release"
-				},
-				{
-					"type": "build",
-					"name": "dev-linux-release"
-				},
-				{
-					"type": "test",
-					"name": "dev-linux-release"
-				}
-			]
-		},
-		{
-			"name": "vcpkg-linux-clang-debug",
-			"steps": [
-				{
-					"type": "configure",
-					"name": "vcpkg-linux-clang-debug"
-				},
-				{
-					"type": "build",
-					"name": "vcpkg-linux-clang-debug"
-				},
-				{
-					"type": "test",
-					"name": "vcpkg-linux-clang-debug"
+					"name": "vcpkg-linux-gcc-debug-tidy"
 				}
 			]
 		},
@@ -413,24 +379,6 @@
 				{
 					"type": "test",
 					"name": "vcpkg-linux-clang-release"
-				}
-			]
-		}
-		,
-		{
-			"name": "vcpkg-windows-msvc-debug",
-			"steps": [
-				{
-					"type": "configure",
-					"name": "vcpkg-windows-msvc-debug"
-				},
-				{
-					"type": "build",
-					"name": "vcpkg-windows-msvc-debug"
-				},
-				{
-					"type": "test",
-					"name": "vcpkg-windows-msvc-debug"
 				}
 			]
 		},
