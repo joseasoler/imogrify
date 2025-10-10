@@ -15,7 +15,7 @@
 
 namespace imfy::arguments
 {
-using result_t = tl::expected<data, core::exit_status>;
+using result_t = tl::expected<arg_data, core::exit_status>;
 
 [[nodiscard]] result_t parse(std::span<const char*> arguments);
 }

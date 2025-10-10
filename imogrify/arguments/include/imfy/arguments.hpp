@@ -8,7 +8,7 @@
 namespace imfy::arguments
 {
 
-struct data final
+struct arg_data final
 {
 	bool build_report{};
 	bool help{};
