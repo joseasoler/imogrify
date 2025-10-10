@@ -3,9 +3,27 @@
  * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include "imfy/arguments_definition.hpp"
+#include <imfy/arguments.hpp>
+#include <imfy/arguments_definition.hpp>
 
 #include <catch2/catch_test_macros.hpp>
+
+namespace
+{
+
+template <int count>
+imfy::arguments::arg_def::parse_result_t set_flag_func(imfy::arguments::arg_data& /*data*/)
+{
+	return {};
+}
+
+template <int count>
+imfy::arguments::arg_def::parse_result_t parse_next_func(const char* /*next_arg*/, imfy::arguments::arg_data& /*data*/)
+{
+	return {};
+}
+
+}
 
 TEST_CASE("short_name_def")
 {
@@ -45,9 +63,21 @@ TEST_CASE("help_def")
 TEST_CASE("arg_def")
 {
 	using imfy::arguments::arg_def;
-	STATIC_REQUIRE(arg_def{"word", 'a', "help"}.valid());
-	STATIC_REQUIRE(arg_def{"word", "help"}.valid());
-	STATIC_REQUIRE(!arg_def{"#ord", 'a', "help"}.valid());
-	STATIC_REQUIRE(!arg_def{"word", '#', "help"}.valid());
-	STATIC_REQUIRE(!arg_def{"word", 'a', ""}.valid());
+	SECTION("Flags")
+	{
+		STATIC_REQUIRE(arg_def{"word", 'a', "help", set_flag_func<0>}.valid());
+		STATIC_REQUIRE(arg_def{"word", "help", set_flag_func<0>}.valid());
+		STATIC_REQUIRE(!arg_def{"#ord", 'a', "help", set_flag_func<0>}.valid());
+		STATIC_REQUIRE(!arg_def{"word", '#', "help", set_flag_func<0>}.valid());
+		STATIC_REQUIRE(!arg_def{"word", 'a', "", set_flag_func<0>}.valid());
+	}
+
+	SECTION("Options")
+	{
+		STATIC_REQUIRE(arg_def{"word", 'a', "help", parse_next_func<0>}.valid());
+		STATIC_REQUIRE(arg_def{"word", "help", parse_next_func<0>}.valid());
+		STATIC_REQUIRE(!arg_def{"#ord", 'a', "help", parse_next_func<0>}.valid());
+		STATIC_REQUIRE(!arg_def{"word", '#', "help", parse_next_func<0>}.valid());
+		STATIC_REQUIRE(!arg_def{"word", 'a', "", parse_next_func<0>}.valid());
+	}
 }

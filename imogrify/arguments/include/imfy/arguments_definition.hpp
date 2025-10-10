@@ -5,9 +5,15 @@
 
 #pragma once
 
+#include <imfy/arguments.hpp>
 #include <imfy/character.hpp>
+#include <imfy/fundamental.hpp>
 
+#include <tl/expected.hpp>
+
+#include <span>
 #include <string_view>
+#include <vector>
 
 namespace imfy::arguments
 {
@@ -106,17 +112,39 @@ private:
 class arg_def final
 {
 public:
-	consteval arg_def(const std::string_view lnm, const char snm, const std::string_view hlp)
+	using parse_result_t = tl::expected<void, std::string_view>;
+	using set_flag_func_t = parse_result_t (*)(arg_data&);
+	using parse_next_func_t = parse_result_t (*)(const char*, arg_data&);
+
+	consteval arg_def(
+			const std::string_view lnm, const char snm, const std::string_view hlp, const set_flag_func_t set_flag_func
+	)
 		: _lnm{lnm}
 		, _snm{snm}
 		, _hlp{hlp}
+		, _set_flag_func{set_flag_func}
+		, _parse_next_func{nullptr}
 	{
 	}
 
-	consteval arg_def(const std::string_view lnm, const std::string_view hlp)
+	consteval arg_def(const std::string_view lnm, const std::string_view hlp, const set_flag_func_t set_flag_func)
+		: arg_def{lnm, '\0', hlp, set_flag_func}
+	{
+	}
+
+	consteval arg_def(
+			const std::string_view lnm, const char snm, const std::string_view hlp, const parse_next_func_t parse_next_func
+	)
 		: _lnm{lnm}
-		, _snm{'\0'}
+		, _snm{snm}
 		, _hlp{hlp}
+		, _set_flag_func{nullptr}
+		, _parse_next_func{parse_next_func}
+	{
+	}
+
+	consteval arg_def(const std::string_view lnm, const std::string_view hlp, const parse_next_func_t parse_next_func)
+		: arg_def{lnm, '\0', hlp, parse_next_func}
 	{
 	}
 
@@ -125,10 +153,18 @@ public:
 		return _lnm.valid() && (_snm.valid() || _snm.value() == '\0') && _hlp.valid();
 	}
 
+	[[nodiscard]] constexpr std::string_view long_name() const noexcept { return _lnm.value(); }
+	[[nodiscard]] constexpr char short_name() const noexcept { return _snm.value(); }
+	[[nodiscard]] constexpr std::string_view help() const noexcept { return _hlp.value(); }
+	[[nodiscard]] constexpr set_flag_func_t set_flag_func() const noexcept { return _set_flag_func; }
+	[[nodiscard]] constexpr parse_next_func_t parse_next_func() const noexcept { return _parse_next_func; }
+
 private:
 	long_name_def _lnm;
 	short_name_def _snm;
 	help_def _hlp;
+	set_flag_func_t _set_flag_func;
+	parse_next_func_t _parse_next_func;
 };
 
 }
