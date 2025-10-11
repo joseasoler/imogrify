@@ -32,7 +32,8 @@
 #elif IMOGRIFY_COMPILER_GCC
 #define IMFY_ASSUME(expression, ...) __attribute__((assume(expression)))
 #elif IMOGRIFY_COMPILER_CLANG
-#define IMFY_ASSUME(expression, ...) __builtin_assume(expression)
+#define IMFY_ASSUME(expression, ...) \
+	if (!(expression)) __builtin_unreachable()
 #else
 #define IMFY_ASSUME(expression, ...) ((void)0)
 #endif
