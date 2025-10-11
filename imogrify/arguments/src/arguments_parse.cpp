@@ -19,6 +19,7 @@
 #include <iostream>
 #include <limits>
 #include <span>
+#include <string_view>
 #include <unordered_map>
 #include <utility>
 
@@ -33,25 +34,44 @@ def_result_t set_help_flag(arg_data& data)
 	return {};
 }
 
-def_result_t set_build_report_flag(arg_data& data)
+def_result_t set_version_flag(arg_data& data)
 {
-	data.build_report = true;
+	data.report = imfy::arguments::report_type::version;
+	return {};
+}
+
+def_result_t parse_report_option(const char* next_argument, arg_data& data)
+{
+	// ToDo enum parsing
+	if (std::string_view{next_argument} != "all")
+	{
+		return tl::make_unexpected("ToDo");
+	}
+	data.report = imfy::arguments::report_type::all;
 	return {};
 }
 
 using imfy::arguments::arg_def;
 
+consteval bool compare_arg_defs(const arg_def& lhs, const arg_def& rhs)
+{
+	return std::less{}(lhs.long_name(), rhs.long_name());
+}
+
 consteval auto create_argument_definitions()
 {
-	constexpr auto argument_definitions = std::to_array(
-			{arg_def{"help", 'h', "Show this help and exit.", set_help_flag},
-			 arg_def{"build-report", "Report build metadata and runtime hardware.", set_build_report_flag}}
+	auto argument_definitions = std::to_array(
+			{arg_def{"help", 'h', "Show command-line options help.", set_help_flag},
+			 arg_def{"report", "Print application information report", parse_report_option},
+			 arg_def{"version", 'v', "Print application version", set_version_flag}}
 	);
-	static_assert(imfy::arguments::validate_argument_definitions(argument_definitions));
+
+	std::ranges::sort(argument_definitions, compare_arg_defs);
 	return argument_definitions;
 }
 
 constexpr auto argument_definitions = create_argument_definitions();
+static_assert(imfy::arguments::validate_argument_definitions(argument_definitions));
 
 auto create_parser_maps()
 {
@@ -99,7 +119,6 @@ imfy::size_t get_def_index(
 
 	return invalid_def_index;
 }
-
 }
 
 namespace imfy::arguments
@@ -130,7 +149,7 @@ result_t parse(const std::span<const char*> arguments)
 			const auto result = def.set_flag_func()(data);
 			if (!result.has_value())
 			{
-				fmt::println("Error in flag {:s}: {:s}", def.long_name(), result.error());
+				fmt::println("Error in flag -{}: {:s}", def.short_name(), result.error());
 				return tl::make_unexpected(core::exit_status::wrong_cli_arguments);
 			}
 		}
@@ -138,10 +157,15 @@ result_t parse(const std::span<const char*> arguments)
 		{
 			IMFY_ASSUME(def.parse_next_func() != nullptr);
 			++index;
+			if (index >= arguments.size())
+			{
+				fmt::println("Error in argument --{:s}: Parameter not provided.", def.long_name());
+				return tl::make_unexpected(core::exit_status::wrong_cli_arguments);
+			}
 			const auto result = def.parse_next_func()(arguments[index], data);
 			if (!result.has_value())
 			{
-				fmt::println("Error in argument {:s} {:s}: {:s}", def.long_name(), arguments[index], result.error());
+				fmt::println("Error in argument --{:s} {:s}: {:s}", def.long_name(), arguments[index], result.error());
 				return tl::make_unexpected(core::exit_status::wrong_cli_arguments);
 			}
 		}

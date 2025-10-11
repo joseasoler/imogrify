@@ -182,7 +182,7 @@ private:
 			return false;
 		}
 
-		if (std::find(long_names.cbegin(), long_names.cend(), def.long_name()) != long_names.cend())
+		if (std::ranges::find(long_names, def.long_name()) != long_names.cend())
 		{
 			return false;
 		}
@@ -190,7 +190,7 @@ private:
 
 		if (const auto short_name = def.short_name(); short_name != '\0')
 		{
-			if (std::find(short_names.cbegin(), short_names.cend(), short_name) != short_names.cend())
+			if (std::ranges::find(short_names, short_name) != short_names.cend())
 			{
 				return false;
 			}
@@ -199,7 +199,7 @@ private:
 
 		if (const auto set_flag_func = def.set_flag_func(); set_flag_func != nullptr)
 		{
-			if (std::find(set_flags.cbegin(), set_flags.cend(), set_flag_func) != set_flags.cend())
+			if (std::ranges::find(set_flags, set_flag_func) != set_flags.cend())
 			{
 				return false;
 			}
@@ -208,7 +208,7 @@ private:
 
 		if (const auto parse_next_func = def.parse_next_func(); parse_next_func != nullptr)
 		{
-			if (std::find(parse_nexts.cbegin(), parse_nexts.cend(), parse_next_func) != parse_nexts.cend())
+			if (std::ranges::find(parse_nexts, parse_next_func) != parse_nexts.cend())
 			{
 				return false;
 			}
