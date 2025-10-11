@@ -35,6 +35,8 @@ Dependencies are retrieved through the `find_package` CMake feature.
 
 - **[fmt](https://fmt.dev/latest/index.html)**: Modern formatting and printing library.
 
+* **[tl-expected](https://github.com/TartanLlama/expected):** Single header implementation of `std::expected` with functional-style extensions.
+
 #### Optional dependencies
 
 These are only required if a CMake option is enabled.

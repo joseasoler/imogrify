@@ -127,6 +127,8 @@ IncludeCategories:
     Priority: 300
   - Regex: '^<libcpuid.*'
     Priority: 300
+  - Regex: '^<tl.*'
+    Priority: 300
   - Regex: '^<catch2.*'
     Priority: 1000
   - Regex: '^<.*'

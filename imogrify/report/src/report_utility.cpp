@@ -38,6 +38,11 @@ constexpr std::string_view list_prefix = " · ";
 namespace imfy::report
 {
 
+void generate_version_report(std::ostringstream& buffer)
+{
+	buffer << project << '\n';
+}
+
 void generate_build_report(std::ostringstream& buffer)
 {
 	buffer << "Build:" << '\n';

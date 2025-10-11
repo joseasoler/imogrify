@@ -5,23 +5,27 @@
 
 #pragma once
 
-#include <imfy/exit_status.hpp>
-
-#include <span>
-#include <string_view>
-#include <variant>
+#include <imfy/fundamental.hpp>
 
 namespace imfy::arguments
 {
 
-struct data final
+enum class report_type : imfy::uint8_t
 {
-	bool build_report{};
-	bool help{};
+	none,
+	version,
+	build,
+	dependencies,
+	runtime,
+	all
 };
 
-using result_t = std::variant<data, core::exit_status>;
+struct arg_data final
+{
+	bool help{};
+	report_type report{};
+};
 
-[[nodiscard]] result_t parse(std::span<const char*> arguments);
+void show_help();
 
 }

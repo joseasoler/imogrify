@@ -3,9 +3,29 @@
  * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include "imfy/arguments_definition.hpp"
+#include <imfy/arguments.hpp>
+#include <imfy/arguments_definition.hpp>
+
+#include <array>
 
 #include <catch2/catch_test_macros.hpp>
+
+namespace
+{
+
+template <int count>
+imfy::arguments::arg_def::result_t set_flag_func(imfy::arguments::arg_data& /*data*/)
+{
+	return {};
+}
+
+template <int count>
+imfy::arguments::arg_def::result_t parse_next_func(const char* /*next_arg*/, imfy::arguments::arg_data& /*data*/)
+{
+	return {};
+}
+
+}
 
 TEST_CASE("short_name_def")
 {
@@ -40,4 +60,76 @@ TEST_CASE("help_def")
 	using imfy::arguments::help_def;
 	STATIC_REQUIRE(help_def{"word"}.valid());
 	STATIC_REQUIRE(!help_def{""}.valid());
+}
+
+TEST_CASE("arg_def")
+{
+	using imfy::arguments::arg_def;
+	SECTION("Flags")
+	{
+		STATIC_REQUIRE(arg_def{"word", 'a', "help", set_flag_func<0>}.valid());
+		STATIC_REQUIRE(arg_def{"word", "help", set_flag_func<0>}.valid());
+		STATIC_REQUIRE(!arg_def{"#ord", 'a', "help", set_flag_func<0>}.valid());
+		STATIC_REQUIRE(!arg_def{"word", '#', "help", set_flag_func<0>}.valid());
+		STATIC_REQUIRE(!arg_def{"word", 'a', "", set_flag_func<0>}.valid());
+	}
+
+	SECTION("Options")
+	{
+		STATIC_REQUIRE(arg_def{"word", 'a', "help", parse_next_func<0>}.valid());
+		STATIC_REQUIRE(arg_def{"word", "help", parse_next_func<0>}.valid());
+		STATIC_REQUIRE(!arg_def{"#ord", 'a', "help", parse_next_func<0>}.valid());
+		STATIC_REQUIRE(!arg_def{"word", '#', "help", parse_next_func<0>}.valid());
+		STATIC_REQUIRE(!arg_def{"word", 'a', "", parse_next_func<0>}.valid());
+	}
+}
+
+TEST_CASE("arg_defs")
+{
+	using imfy::arguments::arg_def;
+	using imfy::arguments::validate_argument_definitions;
+	SECTION("Valid arguments")
+	{
+		constexpr auto defs = std::to_array(
+				{arg_def{"aaaa", 'a', "help", parse_next_func<0>}, arg_def{"bbbb", 'b', "help", set_flag_func<0>},
+				 arg_def{"cccc", "help", parse_next_func<1>}, arg_def{"dddd", "help", set_flag_func<1>}}
+		);
+
+		STATIC_REQUIRE(validate_argument_definitions(defs));
+	}
+
+	SECTION("Repeated long name")
+	{
+		constexpr auto defs = std::to_array(
+				{arg_def{"aaaa", 'a', "help", parse_next_func<0>}, arg_def{"aaaa", 'b', "help", parse_next_func<1>}}
+		);
+
+		STATIC_REQUIRE(!validate_argument_definitions(defs));
+	}
+
+	SECTION("Repeated short name")
+	{
+		constexpr auto defs = std::to_array(
+				{arg_def{"aaaa", 'a', "help", parse_next_func<0>}, arg_def{"bbbb", 'a', "help", parse_next_func<1>}}
+		);
+
+		STATIC_REQUIRE(!validate_argument_definitions(defs));
+	}
+
+	SECTION("Repeated set_flag_func")
+	{
+		constexpr auto defs =
+				std::to_array({arg_def{"aaaa", 'a', "help", set_flag_func<0>}, arg_def{"bbbb", 'b', "help", set_flag_func<0>}});
+
+		STATIC_REQUIRE(!validate_argument_definitions(defs));
+	}
+
+	SECTION("Repeated parse_next_func")
+	{
+		constexpr auto defs = std::to_array(
+				{arg_def{"aaaa", 'a', "help", parse_next_func<0>}, arg_def{"bbbb", 'b', "help", parse_next_func<0>}}
+		);
+
+		STATIC_REQUIRE(!validate_argument_definitions(defs));
+	}
 }

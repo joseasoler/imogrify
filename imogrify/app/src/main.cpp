@@ -4,6 +4,7 @@
  */
 
 #include <imfy/arguments.hpp>
+#include <imfy/arguments_parse.hpp>
 #include <imfy/exit_status.hpp>
 #include <imfy/fundamental.hpp>
 #include <imfy/platform.hpp>
@@ -11,11 +12,9 @@
 
 #include <fmt/base.h>
 
-#include <cstdio>
 #include <exception>
 #include <span>
 #include <sstream>
-#include <variant>
 
 namespace
 {
@@ -37,22 +36,44 @@ int imogrify_main(std::span<const char*> args)
 
 	const auto result = imfy::arguments::parse(args);
 	using imfy::core::exit_status;
-	if (std::holds_alternative<exit_status>(result))
+	if (!result.has_value())
 	{
-		return get_exit_code(std::get<exit_status>(result));
+		return get_exit_code(result.error());
 	}
 
-	const auto argument_data = std::get<imfy::arguments::data>(result);
+	const auto& argument_data = result.value();
 
-	if (argument_data.build_report)
+	using imfy::arguments::report_type;
+	if (argument_data.report != report_type::none)
 	{
 		std::ostringstream buffer;
-		imfy::report::generate_build_report(buffer);
-		imfy::report::generate_runtime_report(buffer);
-		imfy::report::generate_dependencies_report(buffer);
+
+		if (argument_data.report == report_type::version)
+		{
+			imfy::report::generate_version_report(buffer);
+		}
+		if (argument_data.report == report_type::build || argument_data.report == report_type::all)
+		{
+			imfy::report::generate_build_report(buffer);
+		}
+		if (argument_data.report == report_type::runtime || argument_data.report == report_type::all)
+		{
+			imfy::report::generate_runtime_report(buffer);
+		}
+		if (argument_data.report == report_type::dependencies || argument_data.report == report_type::all)
+		{
+			imfy::report::generate_dependencies_report(buffer);
+		}
+
 		fmt::print("{:s}", buffer.view());
+		return get_exit_code(exit_status::success);
 	}
 
+	if (argument_data.help)
+	{
+		imfy::arguments::show_help();
+		return get_exit_code(exit_status::success);
+	}
 	return get_exit_code(exit_status::success);
 }
 
