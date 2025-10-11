@@ -19,6 +19,7 @@ enum class exit_status : imfy::uint8_t
 	bash_shell_misuse = 2U,					// Avoided as it has special meaning on bash.
 	platform_initialization_failed, // imogrify platform-specific initialization has failed.
 	max_allowed_code = 63U,					// First code used by sysexits.h.
+	wrong_cli_arguments = 64U,			// Command-line usage error.
 };
 
 }

@@ -14,13 +14,13 @@ namespace
 {
 
 template <int count>
-imfy::arguments::arg_def::parse_result_t set_flag_func(imfy::arguments::arg_data& /*data*/)
+imfy::arguments::arg_def::result_t set_flag_func(imfy::arguments::arg_data& /*data*/)
 {
 	return {};
 }
 
 template <int count>
-imfy::arguments::arg_def::parse_result_t parse_next_func(const char* /*next_arg*/, imfy::arguments::arg_data& /*data*/)
+imfy::arguments::arg_def::result_t parse_next_func(const char* /*next_arg*/, imfy::arguments::arg_data& /*data*/)
 {
 	return {};
 }
