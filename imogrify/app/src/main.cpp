@@ -12,7 +12,6 @@
 
 #include <fmt/base.h>
 
-#include <cstdio>
 #include <exception>
 #include <span>
 #include <sstream>
@@ -51,8 +50,14 @@ int imogrify_main(std::span<const char*> args)
 		imfy::report::generate_runtime_report(buffer);
 		imfy::report::generate_dependencies_report(buffer);
 		fmt::print("{:s}", buffer.view());
+		return get_exit_code(exit_status::success);
 	}
 
+	if (argument_data.help)
+	{
+		imfy::arguments::show_help();
+		return get_exit_code(exit_status::success);
+	}
 	return get_exit_code(exit_status::success);
 }
 
