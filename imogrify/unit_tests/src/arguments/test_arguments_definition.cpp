@@ -6,6 +6,8 @@
 #include <imfy/arguments.hpp>
 #include <imfy/arguments_definition.hpp>
 
+#include <array>
+
 #include <catch2/catch_test_macros.hpp>
 
 namespace
@@ -79,5 +81,55 @@ TEST_CASE("arg_def")
 		STATIC_REQUIRE(!arg_def{"#ord", 'a', "help", parse_next_func<0>}.valid());
 		STATIC_REQUIRE(!arg_def{"word", '#', "help", parse_next_func<0>}.valid());
 		STATIC_REQUIRE(!arg_def{"word", 'a', "", parse_next_func<0>}.valid());
+	}
+}
+
+TEST_CASE("arg_defs")
+{
+	using imfy::arguments::arg_def;
+	using imfy::arguments::validate_argument_definitions;
+	SECTION("Valid arguments")
+	{
+		constexpr auto defs = std::to_array(
+				{arg_def{"aaaa", 'a', "help", parse_next_func<0>}, arg_def{"bbbb", 'b', "help", set_flag_func<0>},
+				 arg_def{"cccc", "help", parse_next_func<1>}, arg_def{"dddd", "help", set_flag_func<1>}}
+		);
+
+		STATIC_REQUIRE(validate_argument_definitions(defs));
+	}
+
+	SECTION("Repeated long name")
+	{
+		constexpr auto defs = std::to_array(
+				{arg_def{"aaaa", 'a', "help", parse_next_func<0>}, arg_def{"aaaa", 'b', "help", parse_next_func<1>}}
+		);
+
+		STATIC_REQUIRE(!validate_argument_definitions(defs));
+	}
+
+	SECTION("Repeated short name")
+	{
+		constexpr auto defs = std::to_array(
+				{arg_def{"aaaa", 'a', "help", parse_next_func<0>}, arg_def{"bbbb", 'a', "help", parse_next_func<1>}}
+		);
+
+		STATIC_REQUIRE(!validate_argument_definitions(defs));
+	}
+
+	SECTION("Repeated set_flag_func")
+	{
+		constexpr auto defs =
+				std::to_array({arg_def{"aaaa", 'a', "help", set_flag_func<0>}, arg_def{"bbbb", 'b', "help", set_flag_func<0>}});
+
+		STATIC_REQUIRE(!validate_argument_definitions(defs));
+	}
+
+	SECTION("Repeated parse_next_func")
+	{
+		constexpr auto defs = std::to_array(
+				{arg_def{"aaaa", 'a', "help", parse_next_func<0>}, arg_def{"bbbb", 'b', "help", parse_next_func<0>}}
+		);
+
+		STATIC_REQUIRE(!validate_argument_definitions(defs));
 	}
 }
