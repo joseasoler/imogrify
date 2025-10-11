@@ -10,6 +10,7 @@
 namespace imfy::report
 {
 
+void generate_version_report(std::ostringstream& buffer);
 void generate_build_report(std::ostringstream& buffer);
 void generate_dependencies_report(std::ostringstream& buffer);
 void generate_runtime_report(std::ostringstream& buffer);

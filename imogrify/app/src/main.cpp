@@ -43,12 +43,28 @@ int imogrify_main(std::span<const char*> args)
 
 	const auto& argument_data = result.value();
 
-	if (argument_data.build_report)
+	using imfy::arguments::report_type;
+	if (argument_data.report != report_type::none)
 	{
 		std::ostringstream buffer;
-		imfy::report::generate_build_report(buffer);
-		imfy::report::generate_runtime_report(buffer);
-		imfy::report::generate_dependencies_report(buffer);
+
+		if (argument_data.report == report_type::version)
+		{
+			imfy::report::generate_version_report(buffer);
+		}
+		if (argument_data.report == report_type::build || argument_data.report == report_type::all)
+		{
+			imfy::report::generate_build_report(buffer);
+		}
+		if (argument_data.report == report_type::runtime || argument_data.report == report_type::all)
+		{
+			imfy::report::generate_runtime_report(buffer);
+		}
+		if (argument_data.report == report_type::dependencies || argument_data.report == report_type::all)
+		{
+			imfy::report::generate_dependencies_report(buffer);
+		}
+
 		fmt::print("{:s}", buffer.view());
 		return get_exit_code(exit_status::success);
 	}
