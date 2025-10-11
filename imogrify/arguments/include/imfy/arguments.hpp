@@ -14,4 +14,6 @@ struct arg_data final
 	bool help{};
 };
 
+void show_help();
+
 }

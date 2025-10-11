@@ -13,7 +13,7 @@ include(cmake/dependencies/vcpkg.cmake)
 project(
 	imogrify
 	VERSION 0.1.0
-	DESCRIPTION "Batch image format conversion tool."
+	DESCRIPTION "Batch image format conversion tool"
 	HOMEPAGE_URL "https://github.com/joseasoler/imogrify"
 	LANGUAGES C CXX
 )
