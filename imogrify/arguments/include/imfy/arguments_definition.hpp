@@ -11,6 +11,7 @@
 
 #include <tl/expected.hpp>
 
+#include <algorithm>
 #include <span>
 #include <string_view>
 #include <vector>
@@ -112,9 +113,9 @@ private:
 class arg_def final
 {
 public:
-	using parse_result_t = tl::expected<void, std::string_view>;
-	using set_flag_func_t = parse_result_t (*)(arg_data&);
-	using parse_next_func_t = parse_result_t (*)(const char*, arg_data&);
+	using result_t = tl::expected<void, std::string_view>;
+	using set_flag_func_t = result_t (*)(arg_data&);
+	using parse_next_func_t = result_t (*)(const char*, arg_data&);
 
 	consteval arg_def(
 			const std::string_view lnm, const char snm, const std::string_view hlp, const set_flag_func_t set_flag
