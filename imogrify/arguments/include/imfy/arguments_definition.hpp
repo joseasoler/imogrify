@@ -117,34 +117,34 @@ public:
 	using parse_next_func_t = parse_result_t (*)(const char*, arg_data&);
 
 	consteval arg_def(
-			const std::string_view lnm, const char snm, const std::string_view hlp, const set_flag_func_t set_flag_func
+			const std::string_view lnm, const char snm, const std::string_view hlp, const set_flag_func_t set_flag
 	)
 		: _lnm{lnm}
 		, _snm{snm}
 		, _hlp{hlp}
-		, _set_flag_func{set_flag_func}
+		, _set_flag_func{set_flag}
 		, _parse_next_func{nullptr}
 	{
 	}
 
-	consteval arg_def(const std::string_view lnm, const std::string_view hlp, const set_flag_func_t set_flag_func)
-		: arg_def{lnm, '\0', hlp, set_flag_func}
+	consteval arg_def(const std::string_view lnm, const std::string_view hlp, const set_flag_func_t set_flag)
+		: arg_def{lnm, '\0', hlp, set_flag}
 	{
 	}
 
 	consteval arg_def(
-			const std::string_view lnm, const char snm, const std::string_view hlp, const parse_next_func_t parse_next_func
+			const std::string_view lnm, const char snm, const std::string_view hlp, const parse_next_func_t parse_next
 	)
 		: _lnm{lnm}
 		, _snm{snm}
 		, _hlp{hlp}
 		, _set_flag_func{nullptr}
-		, _parse_next_func{parse_next_func}
+		, _parse_next_func{parse_next}
 	{
 	}
 
-	consteval arg_def(const std::string_view lnm, const std::string_view hlp, const parse_next_func_t parse_next_func)
-		: arg_def{lnm, '\0', hlp, parse_next_func}
+	consteval arg_def(const std::string_view lnm, const std::string_view hlp, const parse_next_func_t parse_next)
+		: arg_def{lnm, '\0', hlp, parse_next}
 	{
 	}
 
@@ -166,5 +166,55 @@ private:
 	set_flag_func_t _set_flag_func;
 	parse_next_func_t _parse_next_func;
 };
+
+[[nodiscard]] consteval bool validate_argument_definitions(const std::span<const arg_def> arg_defs)
+{
+	std::vector<std::string_view> long_names{};
+	std::vector<char> short_names{};
+	std::vector<arg_def::set_flag_func_t> set_flags{};
+	std::vector<arg_def::parse_next_func_t> parse_nexts{};
+
+	for (const auto& def : arg_defs)
+	{
+		if (!def.valid())
+		{
+			return false;
+		}
+
+		if (std::find(long_names.cbegin(), long_names.cend(), def.long_name()) != long_names.cend())
+		{
+			return false;
+		}
+		long_names.emplace_back(def.long_name());
+
+		if (const auto short_name = def.short_name(); short_name != '\0')
+		{
+			if (std::find(short_names.cbegin(), short_names.cend(), short_name) != short_names.cend())
+			{
+				return false;
+			}
+			short_names.emplace_back(short_name);
+		}
+
+		if (const auto set_flag_func = def.set_flag_func(); set_flag_func != nullptr)
+		{
+			if (std::find(set_flags.cbegin(), set_flags.cend(), set_flag_func) != set_flags.cend())
+			{
+				return false;
+			}
+			set_flags.emplace_back(set_flag_func);
+		}
+
+		if (const auto parse_next_func = def.parse_next_func(); parse_next_func != nullptr)
+		{
+			if (std::find(parse_nexts.cbegin(), parse_nexts.cend(), parse_next_func) != parse_nexts.cend())
+			{
+				return false;
+			}
+			parse_nexts.emplace_back(parse_next_func);
+		}
+	}
+	return true;
+}
 
 }
