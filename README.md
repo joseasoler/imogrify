@@ -47,6 +47,12 @@ These are only required if a CMake option is enabled.
 
 - **[libassert](https://github.com/jeremy-rifkin/libassert)**: The most over-engineered C++ assertion library. `IMOGRIFY_USE_LIBASSERT`.
 
+#### Included dependencies
+
+These libraries are included in the imogrify repository. They reside in the thirdparty subfolder, and each one includes its separate, original license. These libraries are not modified from upstream unless explicitly mentioned.
+
+- **[Enchantum](https://github.com/ZXShady/enchantum)**: A modern header-only library for compile-time enum reflection.
+
 #### vcpkg
 
 imogrify has optional [vcpkg](https://github.com/microsoft/vcpkg) support, disabled by default. imogrify uses custom ports for some of its dependencies, which can be found in the cmake/vcpkg/ports subfolder.

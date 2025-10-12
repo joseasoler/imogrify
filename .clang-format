@@ -121,6 +121,8 @@ IncludeCategories:
     Priority: 100
   - Regex: '^<concurrentqueue.*'
     Priority: 300
+  - Regex: '^<enchantum.*'
+    Priority: 300
   - Regex: '^<fmt.*'
     Priority: 300
   - Regex: '^<libassert.*'

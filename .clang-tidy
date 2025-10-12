@@ -23,8 +23,10 @@ CheckOptions:
   - { key: readability-identifier-naming.VariableCase,           value: lower_case }
   # Ignore public members in structs.
   - { key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic, value: true }
-  # String view literals using MSVC
+  # String view literals in MSVC.
   - { key: misc-include-cleaner.IgnoreHeaders, value: "__msvc_string_view.hpp" }
+  # Macros such as IMFY_ASSUME should not increase cognitive complexity.
+  - { key: readability-function-cognitive-complexity.IgnoreMacros, value: true}
 
 WarningsAsErrors: '*'
 
