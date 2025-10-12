@@ -77,6 +77,7 @@ TEST_CASE("Project information")
 	STATIC_REQUIRE(project.license == "MPL-2.0"sv);
 	REQUIRE(is_in_array(compatible_licenses_spdx, project.license));
 	STATIC_REQUIRE(!build_type.empty());
+	STATIC_REQUIRE(!project_homepage_url.empty());
 }
 
 TEST_CASE("Compiler information")
