@@ -75,11 +75,15 @@ elseif(IMOGRIFY_CXX_COMPILER_MSVC)
 		/analyze
 		# concurrentqueue library
 		/wd6011
+		# Enchantum library
+		/wd6262
 		# fmt library
 		/wd6294
 		# fmt library
 		/wd6240
 		# fmt library
 		/wd6326
+		# Enchantum library
+		/wd28020
 	)
 endif()
