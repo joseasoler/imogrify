@@ -5,14 +5,23 @@
 
 #pragma once
 
+#include <imfy/fundamental.hpp>
+
 #include <sstream>
 
 namespace imfy::report
 {
 
-void generate_version_report(std::ostringstream& buffer);
-void generate_build_report(std::ostringstream& buffer);
-void generate_dependencies_report(std::ostringstream& buffer);
-void generate_runtime_report(std::ostringstream& buffer);
+enum class report_type : imfy::uint8_t
+{
+	none,
+	version,
+	build,
+	dependencies,
+	runtime,
+	all
+};
+
+void generate_report(report_type report, std::ostringstream& buffer);
 
 }

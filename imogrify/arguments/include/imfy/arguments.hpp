@@ -5,25 +5,15 @@
 
 #pragma once
 
-#include <imfy/fundamental.hpp>
+#include <imfy/report_utility.hpp>
 
 namespace imfy::arguments
 {
 
-enum class report_type : imfy::uint8_t
-{
-	none,
-	version,
-	build,
-	dependencies,
-	runtime,
-	all
-};
-
 struct arg_data final
 {
 	bool help{};
-	report_type report{};
+	report::report_type report{};
 };
 
 void show_help();
