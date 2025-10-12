@@ -7,6 +7,8 @@
 
 #include <imfy/report_utility.hpp>
 
+#include <sstream>
+
 namespace imfy::arguments
 {
 
@@ -16,6 +18,6 @@ struct arg_data final
 	report::report_type report{};
 };
 
-void show_help();
+void generate_help(std::ostringstream& buffer);
 
 }

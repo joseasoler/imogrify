@@ -53,9 +53,12 @@ int imogrify_main(std::span<const char*> args)
 
 	if (argument_data.help)
 	{
-		imfy::arguments::show_help();
+		std::ostringstream buffer;
+		imfy::arguments::generate_help(buffer);
+		fmt::print("{:s}", buffer.view());
 		return get_exit_code(exit_status::success);
 	}
+
 	return get_exit_code(exit_status::success);
 }
 

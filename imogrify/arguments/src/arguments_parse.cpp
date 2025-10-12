@@ -19,9 +19,9 @@
 
 #include <algorithm>
 #include <array>
-#include <iostream>
 #include <limits>
 #include <span>
+#include <sstream>
 #include <string_view>
 #include <unordered_map>
 #include <utility>
@@ -181,24 +181,24 @@ result_t parse(const std::span<const char*> arguments)
 	return data;
 }
 
-void show_help()
+void generate_help(std::ostringstream& buffer)
 {
 	using core::build::project;
 
-	std::cout << project.name << ' ' << project.version.major << "." << project.version.minor << "."
-						<< project.version.patch << "\n\n";
-	std::cout << project.description << "\n\n";
+	buffer << project.name << ' ' << project.version.major << "." << project.version.minor << "." << project.version.patch
+				 << "\n\n";
+	buffer << project.description << "\n\n";
 
-	std::cout << "Usage: " << project.name << " [options] [input] [output]\n\nOptions:\n";
+	buffer << "Usage: " << project.name << " [options] [input] [output]\n\nOptions:\n";
 
 	for (const auto& def : argument_definitions)
 	{
-		std::cout << "--" << def.long_name();
+		buffer << "--" << def.long_name();
 		if (def.short_name() != '\0')
 		{
-			std::cout << ", -" << def.short_name();
+			buffer << ", -" << def.short_name();
 		}
-		std::cout << ":\n\t" << def.help() << '\n';
+		buffer << ":\n\t" << def.help() << '\n';
 	}
 }
 
