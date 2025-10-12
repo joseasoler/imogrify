@@ -12,9 +12,11 @@
 #include <imfy/exit_status.hpp>
 #include <imfy/fundamental.hpp>
 
+#include <enchantum_single_header.hpp>
 #include <fmt/base.h>
 #include <tl/expected.hpp>
 
+#include <algorithm>
 #include <array>
 #include <iostream>
 #include <limits>
@@ -42,12 +44,12 @@ def_result_t set_version_flag(arg_data& data)
 
 def_result_t parse_report_option(const char* next_argument, arg_data& data)
 {
-	// ToDo enum parsing
-	if (std::string_view{next_argument} != "all")
+	const auto enum_result = enchantum::cast<imfy::arguments::report_type>(next_argument);
+	if (!enum_result.has_value())
 	{
-		return tl::make_unexpected("ToDo");
+		return tl::make_unexpected("Invalid parameter.");
 	}
-	data.report = imfy::arguments::report_type::all;
+	data.report = enum_result.value();
 	return {};
 }
 
@@ -55,15 +57,17 @@ using imfy::arguments::arg_def;
 
 consteval bool compare_arg_defs(const arg_def& lhs, const arg_def& rhs)
 {
-	return std::less{}(lhs.long_name(), rhs.long_name());
+	return lhs.long_name() < rhs.long_name();
 }
 
 consteval auto create_argument_definitions()
 {
 	auto argument_definitions = std::to_array(
 			{arg_def{"help", 'h', "Show command-line options help.", set_help_flag},
-			 arg_def{"report", "Print application information report", parse_report_option},
-			 arg_def{"version", 'v', "Print application version", set_version_flag}}
+			 arg_def{
+					 "report", "[build, dependencies, runtime, all] Print application information report.", parse_report_option
+			 },
+			 arg_def{"version", 'v', "Print application version.", set_version_flag}}
 	);
 
 	std::ranges::sort(argument_definitions, compare_arg_defs);

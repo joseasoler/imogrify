@@ -8,7 +8,6 @@
 
 #include <fmt/base.h>
 
-#include <cstdio>
 #include <cstdlib>
 
 #include <catch2/catch_session.hpp>
