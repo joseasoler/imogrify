@@ -10,6 +10,6 @@ target_compile_options(imogrify_arguments PRIVATE ${IMOGRIFY_CXX_COMPILE_OPTIONS
 
 target_link_libraries(
 	imogrify_arguments
-	PRIVATE enchantum::enchantum fmt::fmt imogrify_core
+	PRIVATE enchantum::enchantum fmt::fmt imogrify_core imogrify_report
 	PUBLIC tl::expected
 )

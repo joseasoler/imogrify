@@ -33,11 +33,6 @@ constexpr std::string_view list_prefix = " · ";
 	return oss;
 }
 
-}
-
-namespace imfy::report
-{
-
 void generate_version_report(std::ostringstream& buffer)
 {
 	buffer << project << '\n';
@@ -64,11 +59,11 @@ void generate_dependencies_report(std::ostringstream& buffer)
 
 void generate_runtime_report(std::ostringstream& buffer)
 {
-	if constexpr (core::runtime::available)
+	if constexpr (imfy::core::runtime::available)
 	{
 		buffer << "Runtime:" << '\n';
 
-		const auto [model, microarchitecture] = core::runtime::get_cpu_info();
+		const auto [model, microarchitecture] = imfy::core::runtime::get_cpu_info();
 		if (const bool error = model.empty(); !error)
 		{
 			buffer << list_prefix << "CPU Model: " << model << '\n';
@@ -78,6 +73,31 @@ void generate_runtime_report(std::ostringstream& buffer)
 		{
 			buffer << list_prefix << "CPU information error: " << microarchitecture << '\n';
 		}
+	}
+}
+
+}
+
+namespace imfy::report
+{
+
+void generate_report(const report_type report, std::ostringstream& buffer)
+{
+	if (report == report_type::version)
+	{
+		generate_version_report(buffer);
+	}
+	if (report == report_type::build || report == report_type::all)
+	{
+		generate_build_report(buffer);
+	}
+	if (report == report_type::runtime || report == report_type::all)
+	{
+		generate_runtime_report(buffer);
+	}
+	if (report == report_type::dependencies || report == report_type::all)
+	{
+		generate_dependencies_report(buffer);
 	}
 }
 

@@ -11,6 +11,7 @@
 #include <imfy/build.hpp>
 #include <imfy/exit_status.hpp>
 #include <imfy/fundamental.hpp>
+#include <imfy/report_utility.hpp>
 
 #include <enchantum_single_header.hpp>
 #include <fmt/base.h>
@@ -38,13 +39,13 @@ def_result_t set_help_flag(arg_data& data)
 
 def_result_t set_version_flag(arg_data& data)
 {
-	data.report = imfy::arguments::report_type::version;
+	data.report = imfy::report::report_type::version;
 	return {};
 }
 
 def_result_t parse_report_option(const char* next_argument, arg_data& data)
 {
-	const auto enum_result = enchantum::cast<imfy::arguments::report_type>(next_argument);
+	const auto enum_result = enchantum::cast<imfy::report::report_type>(next_argument);
 	if (!enum_result.has_value())
 	{
 		return tl::make_unexpected("Invalid parameter.");
