@@ -11,7 +11,7 @@
 #pragma GCC diagnostic ignored "-Wnull-dereference"
 #endif
 
-#include <concurrentqueue/moodycamel/concurrentqueue.h>
+#include <moodycamel/concurrentqueue.h>
 
 #if IMOGRIFY_COMPILER_GCC
 #pragma GCC diagnostic pop

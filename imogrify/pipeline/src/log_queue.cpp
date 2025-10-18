@@ -9,9 +9,9 @@
 #include <imfy/fundamental.hpp>
 #include <imfy/log_level.hpp>
 
-#include <concurrentqueue/moodycamel/concurrentqueue.h>
 #include <enchantum_single_header.hpp>
 #include <fmt/format.h>
+#include <moodycamel/concurrentqueue.h>
 
 #include <iterator>
 #include <string>
