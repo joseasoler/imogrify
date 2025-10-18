@@ -1,32 +1,36 @@
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+# This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
+# distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-add_executable(imogrify_unit_tests
+add_executable(
+	imogrify_unit_tests
 	${PROJECT_SOURCE_DIR}/imogrify_application.manifest
 	src/imogrify_tests_main.cpp
 	src/test_preprocessor_defines.cpp
 	src/core/test_build.cpp
-	src/core/test_thread.cpp
 	src/core/test_version.cpp
-	src/report/test_report_queue.cpp
 	src/arguments/test_arguments_definition.cpp
+	src/pipeline/test_log_queue.cpp
+	src/pipeline/test_pipeline.cpp
+	src/worker/test_supervisor.cpp
 )
 
 target_compile_definitions(imogrify_unit_tests PRIVATE ${IMOGRIFY_CXX_COMPILE_DEFINITIONS})
 target_compile_options(imogrify_unit_tests PRIVATE ${IMOGRIFY_CXX_COMPILE_OPTIONS})
 
-target_link_libraries(imogrify_unit_tests PRIVATE
-	Catch2::Catch2
-	fmt::fmt
-	imogrify_core
-	imogrify_report
-	imogrify_arguments
+target_link_libraries(
+	imogrify_unit_tests
+	PRIVATE Catch2::Catch2
+					fmt::fmt
+					imogrify_core
+					imogrify_report
+					imogrify_arguments
+					imogrify_pipeline
+					imogrify_worker
 )
 
-if (IMOGRIFY_CLANG_FORMAT)
+if(IMOGRIFY_CLANG_FORMAT)
 	add_dependencies(imogrify_unit_tests imogrify_clang_format)
-endif ()
+endif()
 
 include(Catch)
 set(CMAKE_CATCH_DISCOVER_TESTS_DISCOVERY_MODE PRE_TEST)

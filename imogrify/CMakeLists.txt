@@ -7,6 +7,10 @@ add_subdirectory(core)
 add_subdirectory(report)
 # Arguments definition and parsing.
 add_subdirectory(arguments)
+# Task management.
+add_subdirectory(pipeline)
+# Manage workers which will perform tasks.
+add_subdirectory(worker)
 # Executable of the application.
 add_subdirectory(app)
 

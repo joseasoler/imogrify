@@ -3,14 +3,14 @@
  * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#pragma once
+#include "imfy/reporter.hpp"
 
-#include <string>
-
-namespace imfy::this_thread
+namespace imfy::worker
 {
 
-void set_name(std::string name);
-[[nodiscard]] const std::string& name();
+reporter::reporter()
+	: worker("reporter")
+{
+}
 
 }

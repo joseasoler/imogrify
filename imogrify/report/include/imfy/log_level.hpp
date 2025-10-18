@@ -12,7 +12,7 @@
 namespace imfy::report
 {
 
-enum class level : uint8_t
+enum class log_level : uint8_t
 {
 	trace = 0U, // Detailed reports for the user. Not shown unless explicitly enabled.
 	info,				// Standard reports for the user.
@@ -21,7 +21,5 @@ enum class level : uint8_t
 	halt,				// Request to stop the application. Items in progress will be finished first.
 	fatal,			// Error preventing multiple items from being processed. imogrify will be terminated.
 };
-
-[[nodiscard]] std::string_view level_name(level lvl) noexcept;
 
 }

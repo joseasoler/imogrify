@@ -16,3 +16,22 @@
 #if IMOGRIFY_COMPILER_GCC
 #pragma GCC diagnostic pop
 #endif
+
+namespace imfy::core::concurrentqueue
+{
+
+/** Strong-type wrapper for producer tokens of different queues. */
+template <typename Type>
+struct producer_token final
+{
+	moodycamel::ProducerToken value;
+};
+
+/** Strong-type wrapper for consumer tokens of different queues. */
+template <typename Type>
+struct consumer_token final
+{
+	moodycamel::ConsumerToken value;
+};
+
+}
