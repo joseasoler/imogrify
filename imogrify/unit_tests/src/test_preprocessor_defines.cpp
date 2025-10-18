@@ -29,7 +29,7 @@ TEST_CASE("Compiler preprocessor defines")
 
 TEST_CASE("CMake option preprocessor defines")
 {
-	STATIC_REQUIRE(std::is_same_v<decltype(IMOGRIFY_SHOW_DEBUG_REPORTS), bool>);
+	STATIC_REQUIRE(std::is_same_v<decltype(IMOGRIFY_SHOW_DEBUG_LOGS), bool>);
 	STATIC_REQUIRE(std::is_same_v<decltype(IMOGRIFY_USE_LIBASSERT), bool>);
 	STATIC_REQUIRE(std::is_same_v<decltype(IMOGRIFY_USE_LIBCPUID), bool>);
 }
