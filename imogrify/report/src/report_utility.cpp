@@ -100,7 +100,7 @@ std::string_view type_to_str(const report_type rep_type) noexcept
 
 std::optional<report_type> str_to_type(const std::string_view rep_str) noexcept
 {
-	const auto* const itr = std::ranges::find(type_names, rep_str);
+	const auto itr = std::ranges::find(type_names, rep_str);
 	if (itr == std::cend(type_names))
 	{
 		return std::nullopt;
