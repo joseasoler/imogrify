@@ -39,12 +39,14 @@ WarningsAsErrors: '*'
 # cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays: Aliases for modernize-avoid-c-arrays
 # cppcoreguidelines-no-malloc: Alias for hicpp-no-malloc.
 # cppcoreguidelines-owning-memory: Allow owning memory pointers without requiring gsl libraries.
+# cppcoreguidelines-pro-bounds-avoid-unchecked-container-access: Checked through IMFY_ASSUME and IMFY_ASSERT macros.
 # cppcoreguidelines-pro-bounds-constant-array-index: Allow casting enum values to use them as array indexes.
 # cppcoreguidelines-pro-bounds-pointer-arithmetic: Allow pointer arithmetic.
 # hicpp-use-nullptr, modernize-use-nullptr: Workaround for https://github.com/llvm/llvm-project/issues/53778
 # llvm-header-guard: Allow #pragma once
 # llvm-namespace-comment: Do not require closing comments in namespaces.
 # modernize-use-trailing-return-type: Do not force use of trailing return types.
+# portability-avoid-pragma-once: Allow using pragma once.
 # portability-template-virtual-member-function: Triggers on std::ostream.
 
 Checks: '
@@ -64,11 +66,13 @@ Checks: '
 -cppcoreguidelines-avoid-c-arrays,-hicpp-avoid-c-arrays,
 -cppcoreguidelines-no-malloc,
 -cppcoreguidelines-owning-memory,
+-cppcoreguidelines-pro-bounds-avoid-unchecked-container-access,
 -cppcoreguidelines-pro-bounds-constant-array-index,
 -cppcoreguidelines-pro-bounds-pointer-arithmetic,
 -hicpp-use-nullptr, -modernize-use-nullptr,
 -llvm-header-guard,
 -llvm-namespace-comment,
 -modernize-use-trailing-return-type,
+-portability-avoid-pragma-once,
 -portability-template-virtual-member-function,
 '

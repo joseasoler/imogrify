@@ -30,12 +30,12 @@ struct dependency_t final
 };
 
 constexpr dependency_t project{
-		"@CMAKE_PROJECT_NAME@",
+		.name="@CMAKE_PROJECT_NAME@",
 		// clang-format off
-		{@CMAKE_PROJECT_VERSION_MAJOR@, @CMAKE_PROJECT_VERSION_MINOR@, @CMAKE_PROJECT_VERSION_PATCH@},
+		.version={.major=@CMAKE_PROJECT_VERSION_MAJOR@, .minor=@CMAKE_PROJECT_VERSION_MINOR@, .patch=@CMAKE_PROJECT_VERSION_PATCH@},
 		// clang-format on
-		"@CMAKE_PROJECT_DESCRIPTION@",
-		"MPL-2.0"
+		.description="@CMAKE_PROJECT_DESCRIPTION@",
+		.license="MPL-2.0"
 };
 
 inline constexpr std::string_view project_homepage_url{"@CMAKE_PROJECT_HOMEPAGE_URL@"};
@@ -52,7 +52,7 @@ consteval std::string_view operative_system_name()
 		return "Windows";
 	}
 
-	return {};
+	return "Unsupported";
 }
 
 consteval std::string_view compiler_name()
@@ -69,20 +69,17 @@ consteval std::string_view compiler_name()
 	{
 		return "MSVC";
 	}
-	return {};
+	return "Unsupported";
 }
 
-inline constexpr version_t compiler_version
-{
-	// clang-format off
-	@IMOGRIFY_CXX_COMPILER_VERSION@
-	// clang-format on
-};
+// clang-format off
+// NOLINTNEXTLINE(modernize-use-designated-initializers)
+inline constexpr version_t compiler_version{@IMOGRIFY_CXX_COMPILER_VERSION@};
 
-constexpr auto dependencies = std::to_array<dependency_t>({
-	// clang-format off
-	@IMOGRIFY_DEPENDENCY_DATA_STRING@
-	// clang-format on
-});
+// NOLINTBEGIN(modernize-use-designated-initializers)
+inline constexpr auto dependencies = std::to_array<dependency_t>({@IMOGRIFY_DEPENDENCY_DATA_STRING@});
+// NOLINTEND(modernize-use-designated-initializers)
+
+// clang-format on
 
 }

@@ -20,7 +20,7 @@
 #define IMFY_ASSERT(expression, ...) assert(expression)
 #endif
 
-#if defined(IMOGRIFY_CLANG_TIDY_ANALYSIS)
+#ifdef IMOGRIFY_CLANG_TIDY_ANALYSIS
 #define IMFY_ASSUME(expression, ...) ((void)0)
 #elif !defined(NDEBUG) && IMOGRIFY_USE_LIBASSERT
 #define IMFY_ASSUME(expression, ...) \
