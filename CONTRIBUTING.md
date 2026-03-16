@@ -1,3 +1,7 @@
+<!--
+SPDX-FileCopyrightText: 2026 José Ángel Soler Ortiz
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
 # Contributing to imogrify
 
 Thank you for your interest on contributing!

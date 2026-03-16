@@ -1,6 +1,6 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
- * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ * SPDX-FileCopyrightText: 2026 José Ángel Soler Ortiz
+ * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
 #include "imfy/arguments_parse.hpp"
@@ -13,7 +13,6 @@
 #include <imfy/fundamental.hpp>
 #include <imfy/report_utility.hpp>
 
-#include <enchantum_single_header.hpp>
 #include <fmt/base.h>
 #include <tl/expected.hpp>
 
@@ -45,7 +44,7 @@ def_result_t set_version_flag(arg_data& data)
 
 def_result_t parse_report_option(const char* next_argument, arg_data& data)
 {
-	const auto enum_result = enchantum::cast<imfy::report::report_type>(next_argument);
+	const auto enum_result = imfy::report::str_to_type(std::string_view{next_argument});
 	if (!enum_result.has_value())
 	{
 		return tl::make_unexpected("Invalid parameter.");

@@ -1,6 +1,6 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
- * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ * SPDX-FileCopyrightText: 2026 José Ángel Soler Ortiz
+ * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
 #pragma once
@@ -35,7 +35,7 @@ constexpr dependency_t project{
 		.version={.major=@CMAKE_PROJECT_VERSION_MAJOR@, .minor=@CMAKE_PROJECT_VERSION_MINOR@, .patch=@CMAKE_PROJECT_VERSION_PATCH@},
 		// clang-format on
 		.description="@CMAKE_PROJECT_DESCRIPTION@",
-		.license="MPL-2.0"
+		.license="AGPL-3.0-or-later"
 };
 
 inline constexpr std::string_view project_homepage_url{"@CMAKE_PROJECT_HOMEPAGE_URL@"};

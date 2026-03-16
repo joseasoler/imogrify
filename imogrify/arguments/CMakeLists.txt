@@ -1,5 +1,5 @@
-# This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
-# distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+# SPDX-FileCopyrightText: 2026 José Ángel Soler Ortiz
+# SPDX-License-Identifier: AGPL-3.0-or-later
 
 add_library(imogrify_arguments STATIC "src/arguments_parse.cpp")
 
@@ -10,6 +10,6 @@ target_compile_options(imogrify_arguments PRIVATE ${IMOGRIFY_CXX_COMPILE_OPTIONS
 
 target_link_libraries(
 	imogrify_arguments
-	PRIVATE enchantum::enchantum fmt::fmt imogrify_core imogrify_report
+	PRIVATE fmt::fmt imogrify_core imogrify_report
 	PUBLIC tl::expected
 )

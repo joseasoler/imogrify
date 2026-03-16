@@ -1,13 +1,11 @@
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+# SPDX-FileCopyrightText: 2026 José Ángel Soler Ortiz
+# SPDX-License-Identifier: AGPL-3.0-or-later
 
 add_executable(imogrify_unit_tests
 	${PROJECT_SOURCE_DIR}/imogrify_application.manifest
 	src/imogrify_tests_main.cpp
 	src/test_preprocessor_defines.cpp
 	src/core/test_build.cpp
-	src/core/test_thread.cpp
 	src/core/test_version.cpp
 	src/report/test_report_queue.cpp
 	src/arguments/test_arguments_definition.cpp

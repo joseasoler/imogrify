@@ -1,5 +1,5 @@
-# This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
-# distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+# SPDX-FileCopyrightText: 2026 José Ángel Soler Ortiz
+# SPDX-License-Identifier: AGPL-3.0-or-later
 
 include_guard(GLOBAL)
 
@@ -41,7 +41,14 @@ if(IMOGRIFY_CXX_COMPILER_CLANG OR IMOGRIFY_CXX_COMPILER_GCC)
 		# An undefined identifier is evaluated in an #if directive.
 		-Wundef
 	)
-	if(IMOGRIFY_CXX_COMPILER_GCC)
+	if(IMOGRIFY_CXX_COMPILER_CLANG)
+		list(
+			APPEND
+			IMOGRIFY_CXX_COMPILE_OPTIONS
+			# Triggered by Catch2.
+			-Wno-c2y-extensions
+		)
+	elseif(IMOGRIFY_CXX_COMPILER_GCC)
 		list(
 			APPEND
 			IMOGRIFY_CXX_COMPILE_OPTIONS
@@ -75,15 +82,11 @@ elseif(IMOGRIFY_CXX_COMPILER_MSVC)
 		/analyze
 		# concurrentqueue library
 		/wd6011
-		# Enchantum library
-		/wd6262
 		# fmt library
 		/wd6294
 		# fmt library
 		/wd6240
 		# fmt library
 		/wd6326
-		# Enchantum library
-		/wd28020
 	)
 endif()

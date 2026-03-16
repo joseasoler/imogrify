@@ -1,6 +1,6 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
- * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ * SPDX-FileCopyrightText: 2026 José Ángel Soler Ortiz
+ * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
 #include "imfy/report_queue.hpp"
@@ -8,7 +8,6 @@
 #include <imfy/assert.hpp>
 #include <imfy/fundamental.hpp>
 #include <imfy/report_level.hpp>
-#include <imfy/thread.hpp>
 
 #include <fmt/format.h>
 
@@ -43,7 +42,7 @@ void report_queue::make_report(const report_token_t& token, const level lvl, con
 	}
 	constexpr std::string_view format{"[{:d} ns] [@{:s}] [{:s}] {:s}"};
 	const int64_t nanoseconds = (clock::now() - _start_time).count();
-	_logs.enqueue(token, fmt::format(format, nanoseconds, this_thread::name(), level_name(lvl), text));
+	_logs.enqueue(token, fmt::format(format, nanoseconds, "", level_name(lvl), text));
 }
 
 void report_queue::make_debug_report(

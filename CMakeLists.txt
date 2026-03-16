@@ -1,5 +1,5 @@
-# This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
-# distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+# SPDX-FileCopyrightText: 2026 José Ángel Soler Ortiz
+# SPDX-License-Identifier: AGPL-3.0-or-later
 
 cmake_minimum_required(VERSION 3.25)
 
@@ -41,14 +41,10 @@ include(cmake/clang_tidy.cmake)
 # Project dependencies.
 include(cmake/dependencies/catch2.cmake)
 include(cmake/dependencies/concurrentqueue.cmake)
-include(cmake/dependencies/enchantum.cmake)
 include(cmake/dependencies/libcpuid.cmake)
 include(cmake/dependencies/fmt.cmake)
 include(cmake/dependencies/libassert.cmake)
 include(cmake/dependencies/tl-expected.cmake)
-
-# Dependencies included as source.
-add_subdirectory(thirdparty)
 
 # Project source files
 add_subdirectory(imogrify)

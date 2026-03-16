@@ -1,3 +1,7 @@
+<!--
+SPDX-FileCopyrightText: 2026 José Ángel Soler Ortiz
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
 # Acknowledgements
 
 Alphabetical order list of people and groups who have helped imogrify development in a significant way.

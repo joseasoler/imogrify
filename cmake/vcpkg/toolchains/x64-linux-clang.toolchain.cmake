@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: Microsoft Corporation
+# SPDX-FileCopyrightText: 2026 José Ángel Soler Ortiz
+# SPDX-License-Identifier: MIT
+
 set(CMAKE_C_COMPILER "clang")
 set(CMAKE_CXX_COMPILER "clang++")
 set(VCPKG_C_FLAGS "-march=x86-64-v3 -mavx2")

@@ -1,3 +1,7 @@
+<!--
+SPDX-FileCopyrightText: 2026 José Ángel Soler Ortiz
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!-- Used to enable UTF-8 code pages and longer file paths on Windows platforms. -->
 <assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">

@@ -1,3 +1,7 @@
+<!--
+SPDX-FileCopyrightText: 2026 José Ángel Soler Ortiz
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
 # Style guide
 
 Most of the style is enforced by  [.clang-format](https://clang.llvm.org/docs/ClangFormat.html) and [.clang-tidy](https://clang.llvm.org/extra/clang-tidy) files. The following rules must also be followed:

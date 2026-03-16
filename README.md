@@ -1,6 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2026 José Ángel Soler Ortiz
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
 # imogrify
-
-[![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
 Batch image format conversion tool.
 
@@ -10,7 +12,7 @@ imogrify encourages community involvement and contributions, check [CONTRIBUTING
 
 ## License
 
-imogrify is licensed under the Mozilla Public License, v. 2.0. See the [LICENSE](LICENSE) file and the [MPL 2.0 FAQ](https://www.mozilla.org/en-US/MPL/2.0/FAQ) for details.
+imogrify is licensed under the GNU Affero General Public License Version 3 or any later version. See the [LICENSE](LICENSES/AGPL-3.0-or-later.txt) file and the [FAQ](https://www.gnu.org/licenses/gpl-faq.html) for details. This project is compliant with version 3.3 of the [REUSE Specification](https://reuse.software/faq/).
 
 ## Building
 
@@ -46,12 +48,6 @@ These are only required if a CMake option is enabled.
 - **[libcpuid](https://libcpuid.sourceforge.net/)**: Provides CPU identification. `IMOGRIFY_USE_LIBCPUID`.
 
 - **[libassert](https://github.com/jeremy-rifkin/libassert)**: The most over-engineered C++ assertion library. `IMOGRIFY_USE_LIBASSERT`.
-
-#### Included dependencies
-
-These libraries are included in the imogrify repository. They reside in the thirdparty subfolder, and each one includes its separate, original license. These libraries are not modified from upstream unless explicitly mentioned.
-
-- **[Enchantum](https://github.com/ZXShady/enchantum)**: A modern header-only library for compile-time enum reflection.
 
 #### vcpkg
 

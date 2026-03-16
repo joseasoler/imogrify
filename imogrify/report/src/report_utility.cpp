@@ -1,22 +1,32 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
- * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ * SPDX-FileCopyrightText: 2026 José Ángel Soler Ortiz
+ * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
 #include "imfy/report_utility.hpp"
 
+#include <imfy/assert.hpp>
 #include <imfy/build.hpp>
+#include <imfy/fundamental.hpp>
+#include <imfy/runtime.hpp>
 #include <imfy/version.hpp>
 
+#include <algorithm>
+#include <array>
+#include <iterator>
+#include <optional>
 #include <ostream>
 #include <sstream>
 #include <string_view>
 
-#include "imfy/runtime.hpp"
-
 namespace
 {
 using namespace imfy::core::build;
+
+constexpr auto type_count = static_cast<imfy::size_t>(imfy::report::report_type::all) + 1U;
+
+constexpr std::array<std::string_view, type_count> type_names{"none",					"version", "build",
+																															"dependencies", "runtime", "all"};
 
 constexpr std::string_view list_prefix = " · ";
 
@@ -80,6 +90,24 @@ void generate_runtime_report(std::ostringstream& buffer)
 
 namespace imfy::report
 {
+
+std::string_view type_to_str(const report_type rep_type) noexcept
+{
+	const auto index = static_cast<size_t>(rep_type);
+	IMFY_ASSUME(index < type_count);
+	return type_names[index];
+}
+
+std::optional<report_type> str_to_type(const std::string_view rep_str) noexcept
+{
+	const auto* const itr = std::ranges::find(type_names, rep_str);
+	if (itr == std::cend(type_names))
+	{
+		return std::nullopt;
+	}
+
+	return static_cast<report_type>(std::distance(std::cbegin(type_names), itr));
+}
 
 void generate_report(const report_type report, std::ostringstream& buffer)
 {
