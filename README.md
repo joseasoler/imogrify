@@ -8,7 +8,7 @@ Batch image format conversion tool.
 
 ## Contributing
 
-imogrify encourages community involvement and contributions, check [CONTRIBUTING.md](CONTRIBUTING.md) for details. Contributors can be found in the [contributors list](https://github.com/joseasoler/imogrify/graphs/contributors).
+imogrify encourages community involvement and contributions, check [CONTRIBUTING.md](CONTRIBUTING.md) for details. Contributors can be found in the [contributors list](ToDo).
 
 ## License
 
